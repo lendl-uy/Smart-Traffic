@@ -1,0 +1,86 @@
+# Author: Jan Lendl R. Uy
+# CoE 199 MPC Parameters
+
+import numpy as np
+import traffic_distribution as td
+
+# Prediction Horizon
+N = 5 # (TUNABLE)
+
+# Traffic model variables (s)
+T = 200 # Control interval
+L = 9  # Lost time (3 phases * 3s)
+
+# Saturation flow rate (veh/hr -> veh/s)
+S_1 = 3000*(1/3600) # Saturation flow (DUMMY)
+S_2 = 3000*(1/3600) # Saturation flow (DUMMY)
+S_3 = 3000*(1/3600) # Saturation flow (DUMMY)
+S_4 = 3000*(1/3600) # Saturation flow (DUMMY)
+
+# Demand values from 6 AM to 8 PM (veh/hr)
+d_1 = np.array([1367.,1884.,1659.,1574.,1430.,1149.,1172.,886.,1074.,1451.,1292.,1432.,
+                1082.,945.])
+d_2 = np.array([2024.,2135.,1872.,2065.,2032.,1923.,1992.,1716.,1979.,2010.,2861.,2935.,
+                2381.,2274.])
+d_3 = np.array([1549.,1776.,1828.,1833.,1805.,1829.,1941.,1992.,2404.,2699.,2802.,3598.,
+                3748.,3217.])
+d_4 = np.array([4562.,4850.,5995.,3327.,2921.,2560.,2319.,4458.,3396.,3445.,3286.,3655.,
+                3130.,2649.])
+
+# Traffic model matrices
+
+# x is the state variable (vehicle count)
+# u is the control input (green time)
+xmin = np.array([0,0,0,0])
+#xmax = np.array([50,50,50,50]) # (TUNABLE)
+xref = np.array([0,0,0,0]) # (TUNABLE)
+umin = np.array([5,5,5,5]) # Cannot have a zero timer setting
+
+xmin = np.tile(xmin, (N+1,1))
+#xmax = np.tile(xmax, (N+1,1))
+umin = np.tile(umin, (N,1))
+#umax = np.tile(umax, (N,1))
+
+# B contains the road link properties
+B = np.array([[S_1,0,0,0],
+              [0,S_2,0,0],
+              [0,0,S_3,0],
+              [0,0,0,S_4]
+              ])
+B = -T*B
+
+# D is the demand matrix
+d_1p = td.poissonify(T,d_1[0])
+d_2p = td.poissonify(T,d_2[0])
+d_3p = td.poissonify(T,d_3[0])
+d_4p = td.poissonify(T,d_4[0])
+
+d = np.array([[d_1p[0], d_2p[0], d_3p[0], d_4p[0]]])
+for i in range(1,N):
+  d = np.concatenate((d, [[d_1p[i], d_2p[i], d_3p[i], d_4p[i]]]))
+D = d
+
+#D = np.tile(d, (N,1))
+#D = T*D
+
+# Weighting matrix W (traffic volume penalization)
+w_1 = 1/((960+287)**2)
+w_2 = 1/((2661+184)**2)
+w_3 = 1/((3312+436)**2)
+w_4 = 1/((1083+3209+166)**2)
+Q = np.array([[w_1,0,0,0],
+              [0,w_2,0,0],
+              [0,0,w_3,0],
+              [0,0,0,w_4]
+              ])
+
+# Weighting matrix R (control input penalization)
+r_1 = 0.05 # (TUNABLE)
+r_2 = 0.05 # (TUNABLE)
+r_3 = 0.05 # (TUNABLE)
+r_4 = 0.05 # (TUNABLE)
+R = np.array([[r_1,0,0,0],
+              [0,r_2,0,0],
+              [0,0,r_3,0],
+              [0,0,0,r_4]
+              ])
