@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- generated on 2023-03-04 20:09:44 by Eclipse SUMO netedit Version 1.15.0
+-->
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/routes_file.xsd">
+ <!-- Routes -->
+ <route edges="933952934#0 4601641#0" id="aurora_e_aurora_w"/>
+ <route edges="933952934#0 26296778#0 26296778#2.16 26296778#2.51" id="aurora_e_katip_n"/>
+ <route edges="933952934#0 703023054 780157088 780157088.15 780157088.34" id="aurora_e_katip_s"/>
+ <route edges="591107291#0 591107291#1 609205085 1078018160 430789454#0 1078018158" id="aurora_w_aurora_e"/>
+ <route edges="591107291#0 591107291#1 26296781#0 26296781#1 780157088 780157088.15 780157088.34" id="aurora_w_katip_s"/>
+ <route edges="1076383725 1076383725.44 1076383725.80 1078018160 430789454#0 1078018158" id="katip_n_aurora_e"/>
+ <route edges="1076383725 1076383725.44 1076383725.80 4601641#0" id="katip_n_aurora_w"/>
+ <route edges="1076383725 E1 26296778#2.51" id="katip_n_u_turn"/>
+ <route edges="780157087#0 780157087#0.14 780157087#0.33 780157087#2 1078018164 1078018160 430789454#0 1078018158" id="katip_s_aurora_e"/>
+ <route edges="780157087#0 780157087#0.14 780157087#0.33 780157087#2 1078018163 4601641#0" id="katip_s_aurora_w"/>
+ <route edges="780157087#0 E3 780157088.34" id="katip_s_u_turn"/>
+ <!-- Vehicles, persons and containers (sorted by depart) -->
+ <flow begin="0.0" end="3600.0" id="f_0_0" route="katip_s_aurora_w" vehsPerHour="584.0"/>
+ <flow begin="0.0" end="3600.0" id="f_1_0" route="katip_s_u_turn" vehsPerHour="628.0"/>
+ <flow begin="0.0" end="3600.0" id="f_10_0" route="katip_n_u_turn" vehsPerHour="126.0"/>
+ <flow begin="0.0" end="3600.0" id="f_2_0" route="katip_s_aurora_e" vehsPerHour="155.0"/>
+ <flow begin="0.0" end="3600.0" id="f_3_0" route="aurora_e_katip_n" vehsPerHour="124.0"/>
+ <flow begin="0.0" end="3600.0" id="f_4_0" route="aurora_e_aurora_w" vehsPerHour="4157.0"/>
+ <flow begin="0.0" end="3600.0" id="f_5_0" route="katip_n_aurora_w" vehsPerHour="237.0"/>
+ <flow begin="0.0" end="3600.0" id="f_6_0" route="katip_n_aurora_e" vehsPerHour="1661.0"/>
+ <flow begin="0.0" end="3600.0" id="f_7_0" route="aurora_w_aurora_e" vehsPerHour="1247.0"/>
+ <flow begin="0.0" end="3600.0" id="f_8_0" route="aurora_w_katip_s" vehsPerHour="302.0"/>
+ <flow begin="0.0" end="3600.0" id="f_9_0" route="aurora_e_katip_s" vehsPerHour="281.0"/>
+ <flow begin="3600.0" end="7200.0" id="f_0_1" route="katip_s_aurora_w" vehsPerHour="789.0"/>
+ <flow begin="3600.0" end="7200.0" id="f_1_1" route="katip_s_u_turn" vehsPerHour="755.0"/>
+ <flow begin="3600.0" end="7200.0" id="f_10_1" route="katip_n_u_turn" vehsPerHour="150.0"/>
+ <flow begin="3600.0" end="7200.0" id="f_2_1" route="katip_s_aurora_e" vehsPerHour="340.0"/>
+ <flow begin="3600.0" end="7200.0" id="f_3_1" route="aurora_e_katip_n" vehsPerHour="144.0"/>
+ <flow begin="3600.0" end="7200.0" id="f_4_1" route="aurora_e_aurora_w" vehsPerHour="4430.0"/>
+ <flow begin="3600.0" end="7200.0" id="f_5_1" route="katip_n_aurora_w" vehsPerHour="232.0"/>
+ <flow begin="3600.0" end="7200.0" id="f_6_1" route="katip_n_aurora_e" vehsPerHour="1753.0"/>
+ <flow begin="3600.0" end="7200.0" id="f_7_1" route="aurora_w_aurora_e" vehsPerHour="1490.0"/>
+ <flow begin="3600.0" end="7200.0" id="f_8_1" route="aurora_w_katip_s" vehsPerHour="286.0"/>
+ <flow begin="3600.0" end="7200.0" id="f_9_1" route="aurora_e_katip_s" vehsPerHour="276.0"/>
+ <flow begin="7200.0" end="10800.0" id="f_0_2" route="katip_s_aurora_w" vehsPerHour="934.0"/>
+ <flow begin="7200.0" end="10800.0" id="f_1_2" route="katip_s_u_turn" vehsPerHour="464.0"/>
+ <flow begin="7200.0" end="10800.0" id="f_10_2" route="katip_n_u_turn" vehsPerHour="131.0"/>
+ <flow begin="7200.0" end="10800.0" id="f_2_2" route="katip_s_aurora_e" vehsPerHour="261.0"/>
+ <flow begin="7200.0" end="10800.0" id="f_3_2" route="aurora_e_katip_n" vehsPerHour="162.0"/>
+ <flow begin="7200.0" end="10800.0" id="f_4_2" route="aurora_e_aurora_w" vehsPerHour="5593.0"/>
+ <flow begin="7200.0" end="10800.0" id="f_5_2" route="katip_n_aurora_w" vehsPerHour="217.0"/>
+ <flow begin="7200.0" end="10800.0" id="f_6_2" route="katip_n_aurora_e" vehsPerHour="1524.0"/>
+ <flow begin="7200.0" end="10800.0" id="f_7_2" route="aurora_w_aurora_e" vehsPerHour="1473.0"/>
+ <flow begin="7200.0" end="10800.0" id="f_8_2" route="aurora_w_katip_s" vehsPerHour="355.0"/>
+ <flow begin="7200.0" end="10800.0" id="f_9_2" route="aurora_e_katip_s" vehsPerHour="240.0"/>
+ <flow begin="10800.0" end="14400.0" id="f_0_3" route="katip_s_aurora_w" vehsPerHour="811.0"/>
+ <flow begin="10800.0" end="14400.0" id="f_1_3" route="katip_s_u_turn" vehsPerHour="429.0"/>
+ <flow begin="10800.0" end="14400.0" id="f_10_3" route="katip_n_u_turn" vehsPerHour="156.0"/>
+ <flow begin="10800.0" end="14400.0" id="f_2_3" route="katip_s_aurora_e" vehsPerHour="334.0"/>
+ <flow begin="10800.0" end="14400.0" id="f_3_3" route="aurora_e_katip_n" vehsPerHour="177.0"/>
+ <flow begin="10800.0" end="14400.0" id="f_4_3" route="aurora_e_aurora_w" vehsPerHour="2963.0"/>
+ <flow begin="10800.0" end="14400.0" id="f_5_3" route="katip_n_aurora_w" vehsPerHour="199.0"/>
+ <flow begin="10800.0" end="14400.0" id="f_6_3" route="katip_n_aurora_e" vehsPerHour="1710.0"/>
+ <flow begin="10800.0" end="14400.0" id="f_7_3" route="aurora_w_aurora_e" vehsPerHour="1519.0"/>
+ <flow begin="10800.0" end="14400.0" id="f_8_3" route="aurora_w_katip_s" vehsPerHour="314.0"/>
+ <flow begin="10800.0" end="14400.0" id="f_9_3" route="aurora_e_katip_s" vehsPerHour="187.0"/>
+ <flow begin="14400.0" end="18000.0" id="f_0_4" route="katip_s_aurora_w" vehsPerHour="780.0"/>
+ <flow begin="14400.0" end="18000.0" id="f_1_4" route="katip_s_u_turn" vehsPerHour="418.0"/>
+ <flow begin="14400.0" end="18000.0" id="f_10_4" route="katip_n_u_turn" vehsPerHour="159.0"/>
+ <flow begin="14400.0" end="18000.0" id="f_2_4" route="katip_s_aurora_e" vehsPerHour="232.0"/>
+ <flow begin="14400.0" end="18000.0" id="f_3_4" route="aurora_e_katip_n" vehsPerHour="298.0"/>
+ <flow begin="14400.0" end="18000.0" id="f_4_4" route="aurora_e_aurora_w" vehsPerHour="2261.0"/>
+ <flow begin="14400.0" end="18000.0" id="f_5_4" route="katip_n_aurora_w" vehsPerHour="215.0"/>
+ <flow begin="14400.0" end="18000.0" id="f_6_4" route="katip_n_aurora_e" vehsPerHour="1658.0"/>
+ <flow begin="14400.0" end="18000.0" id="f_7_4" route="aurora_w_aurora_e" vehsPerHour="1473.0"/>
+ <flow begin="14400.0" end="18000.0" id="f_8_4" route="aurora_w_katip_s" vehsPerHour="332.0"/>
+ <flow begin="14400.0" end="18000.0" id="f_9_4" route="aurora_e_katip_s" vehsPerHour="362.0"/>
+ <flow begin="18000.0" end="21600.0" id="f_0_5" route="katip_s_aurora_w" vehsPerHour="463.0"/>
+ <flow begin="18000.0" end="21600.0" id="f_1_5" route="katip_s_u_turn" vehsPerHour="421.0"/>
+ <flow begin="18000.0" end="21600.0" id="f_10_5" route="katip_n_u_turn" vehsPerHour="116.0"/>
+ <flow begin="18000.0" end="21600.0" id="f_2_5" route="katip_s_aurora_e" vehsPerHour="265.0"/>
+ <flow begin="18000.0" end="21600.0" id="f_3_5" route="aurora_e_katip_n" vehsPerHour="160.0"/>
+ <flow begin="18000.0" end="21600.0" id="f_4_5" route="aurora_e_aurora_w" vehsPerHour="2130.0"/>
+ <flow begin="18000.0" end="21600.0" id="f_5_5" route="katip_n_aurora_w" vehsPerHour="117.0"/>
+ <flow begin="18000.0" end="21600.0" id="f_6_5" route="katip_n_aurora_e" vehsPerHour="1690.0"/>
+ <flow begin="18000.0" end="21600.0" id="f_7_5" route="aurora_w_aurora_e" vehsPerHour="1554.0"/>
+ <flow begin="18000.0" end="21600.0" id="f_8_5" route="aurora_w_katip_s" vehsPerHour="275.0"/>
+ <flow begin="18000.0" end="21600.0" id="f_9_5" route="aurora_e_katip_s" vehsPerHour="270.0"/>
+ <flow begin="21600.0" end="25200.0" id="f_0_6" route="katip_s_aurora_w" vehsPerHour="488.0"/>
+ <flow begin="21600.0" end="25200.0" id="f_1_6" route="katip_s_u_turn" vehsPerHour="376.0"/>
+ <flow begin="21600.0" end="25200.0" id="f_10_6" route="katip_n_u_turn" vehsPerHour="140.0"/>
+ <flow begin="21600.0" end="25200.0" id="f_2_6" route="katip_s_aurora_e" vehsPerHour="308.0"/>
+ <flow begin="21600.0" end="25200.0" id="f_3_6" route="aurora_e_katip_n" vehsPerHour="217.0"/>
+ <flow begin="21600.0" end="25200.0" id="f_4_6" route="aurora_e_aurora_w" vehsPerHour="1912.0"/>
+ <flow begin="21600.0" end="25200.0" id="f_5_6" route="katip_n_aurora_w" vehsPerHour="57.0"/>
+ <flow begin="21600.0" end="25200.0" id="f_6_6" route="katip_n_aurora_e" vehsPerHour="1795.0"/>
+ <flow begin="21600.0" end="25200.0" id="f_7_6" route="aurora_w_aurora_e" vehsPerHour="1679.0"/>
+ <flow begin="21600.0" end="25200.0" id="f_8_6" route="aurora_w_katip_s" vehsPerHour="262.0"/>
+ <flow begin="21600.0" end="25200.0" id="f_9_6" route="aurora_e_katip_s" vehsPerHour="190.0"/>
+ <flow begin="25200.0" end="28800.0" id="f_0_7" route="katip_s_aurora_w" vehsPerHour="490.0"/>
+ <flow begin="25200.0" end="28800.0" id="f_1_7" route="katip_s_u_turn" vehsPerHour="212.0"/>
+ <flow begin="25200.0" end="28800.0" id="f_10_7" route="katip_n_u_turn" vehsPerHour="104.0"/>
+ <flow begin="25200.0" end="28800.0" id="f_2_7" route="katip_s_aurora_e" vehsPerHour="184.0"/>
+ <flow begin="25200.0" end="28800.0" id="f_3_7" route="aurora_e_katip_n" vehsPerHour="166.0"/>
+ <flow begin="25200.0" end="28800.0" id="f_4_7" route="aurora_e_aurora_w" vehsPerHour="3209.0"/>
+ <flow begin="25200.0" end="28800.0" id="f_5_7" route="katip_n_aurora_w" vehsPerHour="230.0"/>
+ <flow begin="25200.0" end="28800.0" id="f_6_7" route="katip_n_aurora_e" vehsPerHour="1382.0"/>
+ <flow begin="25200.0" end="28800.0" id="f_7_7" route="aurora_w_aurora_e" vehsPerHour="1588.0"/>
+ <flow begin="25200.0" end="28800.0" id="f_8_7" route="aurora_w_katip_s" vehsPerHour="404.0"/>
+ <flow begin="25200.0" end="28800.0" id="f_9_7" route="aurora_e_katip_s" vehsPerHour="1083.0"/>
+ <flow begin="28800.0" end="32400.0" id="f_0_8" route="katip_s_aurora_w" vehsPerHour="594.0"/>
+ <flow begin="28800.0" end="32400.0" id="f_1_8" route="katip_s_u_turn" vehsPerHour="292.0"/>
+ <flow begin="28800.0" end="32400.0" id="f_10_8" route="katip_n_u_turn" vehsPerHour="121.0"/>
+ <flow begin="28800.0" end="32400.0" id="f_2_8" route="katip_s_aurora_e" vehsPerHour="188.0"/>
+ <flow begin="28800.0" end="32400.0" id="f_3_8" route="aurora_e_katip_n" vehsPerHour="216.0"/>
+ <flow begin="28800.0" end="32400.0" id="f_4_8" route="aurora_e_aurora_w" vehsPerHour="2043.0"/>
+ <flow begin="28800.0" end="32400.0" id="f_5_8" route="katip_n_aurora_w" vehsPerHour="217.0"/>
+ <flow begin="28800.0" end="32400.0" id="f_6_8" route="katip_n_aurora_e" vehsPerHour="1641.0"/>
+ <flow begin="28800.0" end="32400.0" id="f_7_8" route="aurora_w_aurora_e" vehsPerHour="1959.0"/>
+ <flow begin="28800.0" end="32400.0" id="f_8_8" route="aurora_w_katip_s" vehsPerHour="445.0"/>
+ <flow begin="28800.0" end="32400.0" id="f_9_8" route="aurora_e_katip_s" vehsPerHour="1137.0"/>
+ <flow begin="32400.0" end="36000.0" id="f_0_9" route="katip_s_aurora_w" vehsPerHour="960.0"/>
+ <flow begin="32400.0" end="36000.0" id="f_1_9" route="katip_s_u_turn" vehsPerHour="204.0"/>
+ <flow begin="32400.0" end="36000.0" id="f_10_9" route="katip_n_u_turn" vehsPerHour="111.0"/>
+ <flow begin="32400.0" end="36000.0" id="f_2_9" route="katip_s_aurora_e" vehsPerHour="287.0"/>
+ <flow begin="32400.0" end="36000.0" id="f_3_9" route="aurora_e_katip_n" vehsPerHour="189.0"/>
+ <flow begin="32400.0" end="36000.0" id="f_4_9" route="aurora_e_aurora_w" vehsPerHour="2525.0"/>
+ <flow begin="32400.0" end="36000.0" id="f_5_9" route="katip_n_aurora_w" vehsPerHour="170.0"/>
+ <flow begin="32400.0" end="36000.0" id="f_6_9" route="katip_n_aurora_e" vehsPerHour="1729.0"/>
+ <flow begin="32400.0" end="36000.0" id="f_7_9" route="aurora_w_aurora_e" vehsPerHour="2315.0"/>
+ <flow begin="32400.0" end="36000.0" id="f_8_9" route="aurora_w_katip_s" vehsPerHour="384.0"/>
+ <flow begin="32400.0" end="36000.0" id="f_9_9" route="aurora_e_katip_s" vehsPerHour="731.0"/>
+ <flow begin="36000.0" end="39600.0" id="f_0_10" route="katip_s_aurora_w" vehsPerHour="580.0"/>
+ <flow begin="36000.0" end="39600.0" id="f_1_10" route="katip_s_u_turn" vehsPerHour="332.0"/>
+ <flow begin="36000.0" end="39600.0" id="f_10_10" route="katip_n_u_turn" vehsPerHour="93.0"/>
+ <flow begin="36000.0" end="39600.0" id="f_2_10" route="katip_s_aurora_e" vehsPerHour="380.0"/>
+ <flow begin="36000.0" end="39600.0" id="f_3_10" route="aurora_e_katip_n" vehsPerHour="165.0"/>
+ <flow begin="36000.0" end="39600.0" id="f_4_10" route="aurora_e_aurora_w" vehsPerHour="2439.0"/>
+ <flow begin="36000.0" end="39600.0" id="f_5_10" route="katip_n_aurora_w" vehsPerHour="169.0"/>
+ <flow begin="36000.0" end="39600.0" id="f_6_10" route="katip_n_aurora_e" vehsPerHour="2599.0"/>
+ <flow begin="36000.0" end="39600.0" id="f_7_10" route="aurora_w_aurora_e" vehsPerHour="2285.0"/>
+ <flow begin="36000.0" end="39600.0" id="f_8_10" route="aurora_w_katip_s" vehsPerHour="517.0"/>
+ <flow begin="36000.0" end="39600.0" id="f_9_10" route="aurora_e_katip_s" vehsPerHour="682.0"/>
+ <flow begin="39600.0" end="43200.0" id="f_0_11" route="katip_s_aurora_w" vehsPerHour="601.0"/>
+ <flow begin="39600.0" end="43200.0" id="f_1_11" route="katip_s_u_turn" vehsPerHour="297.0"/>
+ <flow begin="39600.0" end="43200.0" id="f_10_11" route="katip_n_u_turn" vehsPerHour="90.0"/>
+ <flow begin="39600.0" end="43200.0" id="f_2_11" route="katip_s_aurora_e" vehsPerHour="534.0"/>
+ <flow begin="39600.0" end="43200.0" id="f_3_11" route="aurora_e_katip_n" vehsPerHour="201.0"/>
+ <flow begin="39600.0" end="43200.0" id="f_4_11" route="aurora_e_aurora_w" vehsPerHour="2881.0"/>
+ <flow begin="39600.0" end="43200.0" id="f_5_11" route="katip_n_aurora_w" vehsPerHour="184.0"/>
+ <flow begin="39600.0" end="43200.0" id="f_6_11" route="katip_n_aurora_e" vehsPerHour="2661.0"/>
+ <flow begin="39600.0" end="43200.0" id="f_7_11" route="aurora_w_aurora_e" vehsPerHour="3150.0"/>
+ <flow begin="39600.0" end="43200.0" id="f_8_11" route="aurora_w_katip_s" vehsPerHour="448.0"/>
+ <flow begin="39600.0" end="43200.0" id="f_9_11" route="aurora_e_katip_s" vehsPerHour="573.0"/>
+ <flow begin="43200.0" end="46800.0" id="f_0_12" route="katip_s_aurora_w" vehsPerHour="328.0"/>
+ <flow begin="43200.0" end="46800.0" id="f_1_12" route="katip_s_u_turn" vehsPerHour="304.0"/>
+ <flow begin="43200.0" end="46800.0" id="f_10_12" route="katip_n_u_turn" vehsPerHour="86.0"/>
+ <flow begin="43200.0" end="46800.0" id="f_2_12" route="katip_s_aurora_e" vehsPerHour="450.0"/>
+ <flow begin="43200.0" end="46800.0" id="f_3_12" route="aurora_e_katip_n" vehsPerHour="149.0"/>
+ <flow begin="43200.0" end="46800.0" id="f_4_12" route="aurora_e_aurora_w" vehsPerHour="2552.0"/>
+ <flow begin="43200.0" end="46800.0" id="f_5_12" route="katip_n_aurora_w" vehsPerHour="137.0"/>
+ <flow begin="43200.0" end="46800.0" id="f_6_12" route="katip_n_aurora_e" vehsPerHour="2158.0"/>
+ <flow begin="43200.0" end="46800.0" id="f_7_12" route="aurora_w_aurora_e" vehsPerHour="3312.0"/>
+ <flow begin="43200.0" end="46800.0" id="f_8_12" route="aurora_w_katip_s" vehsPerHour="436.0"/>
+ <flow begin="43200.0" end="46800.0" id="f_9_12" route="aurora_e_katip_s" vehsPerHour="429.0"/>
+ <flow begin="46800.0" end="50400.0" id="f_0_13" route="katip_s_aurora_w" vehsPerHour="288.0"/>
+ <flow begin="46800.0" end="50400.0" id="f_1_13" route="katip_s_u_turn" vehsPerHour="209.0"/>
+ <flow begin="46800.0" end="50400.0" id="f_10_13" route="katip_n_u_turn" vehsPerHour="74.0"/>
+ <flow begin="46800.0" end="50400.0" id="f_2_13" route="katip_s_aurora_e" vehsPerHour="448.0"/>
+ <flow begin="46800.0" end="50400.0" id="f_3_13" route="aurora_e_katip_n" vehsPerHour="124.0"/>
+ <flow begin="46800.0" end="50400.0" id="f_4_13" route="aurora_e_aurora_w" vehsPerHour="2018.0"/>
+ <flow begin="46800.0" end="50400.0" id="f_5_13" route="katip_n_aurora_w" vehsPerHour="119.0"/>
+ <flow begin="46800.0" end="50400.0" id="f_6_13" route="katip_n_aurora_e" vehsPerHour="2081.0"/>
+ <flow begin="46800.0" end="50400.0" id="f_7_13" route="aurora_w_aurora_e" vehsPerHour="2852.0"/>
+ <flow begin="46800.0" end="50400.0" id="f_8_13" route="aurora_w_katip_s" vehsPerHour="365.0"/>
+ <flow begin="46800.0" end="50400.0" id="f_9_13" route="aurora_e_katip_s" vehsPerHour="507.0"/>
+</routes>
