@@ -1,5 +1,5 @@
 # Smart Traffic
-A repository for the different programs to be used for an undergraduate project
+A repository for the different programs to be used for the undergraduate project with the same title as this repository
 
 Prerequisites:
 
