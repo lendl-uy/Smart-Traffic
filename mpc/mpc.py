@@ -19,7 +19,7 @@ import numpy as np
 from mpc_params import *
 import traffic_distribution as td
 
-def do_mpc():
+def do_mpc(x_curr=np.array([0,0,0,0])):
 
   # Initialize a model
   m = gp.Model("MPC")
@@ -46,7 +46,7 @@ def do_mpc():
   z = m.addMVar(shape=(N,4), lb=-GRB.INFINITY, vtype=GRB.CONTINUOUS, name="z") # u(k_o+k)-u(k_o)
 
   # Constraints
-  m.addConstr(x[0, :] == np.array([0,0,0,0])) # Initial number of vehicles
+  m.addConstr(x[0, :] == x_curr) # Initial number of vehicles
   for k in range(N):
 
     # Traffic model
@@ -152,6 +152,13 @@ def get_timer_settings(u, C):
   u_sorted = [u_katip_s, u_katip_n, u_aurora_w, u_aurora_e_katip_s, u_aurora_e_aurora_w]
   r_sorted = [r_katip_s, r_katip_n, r_aurora_w, r_aurora_e_katip_s_1, r_aurora_e_katip_s_2,
               r_aurora_e_aurora_w]
+  
+  phase_1 = 1
+  phase_2 = u_katip_s + A
+  phase_3 = u_katip_s + u_aurora_e_katip_s + 2*A
+
+  phases = [phase_1, phase_2, phase_3]
+
   '''
   print(f"u_katip_s = {u_katip_s}")
   print(f"u_katip_n = {u_katip_n}")
@@ -166,9 +173,8 @@ def get_timer_settings(u, C):
   print(f"r_aurora_e_katip_s_2 = {r_aurora_e_katip_s_2}")
   print(f"r_aurora_e_aurora_w = {r_aurora_e_aurora_w}")
   '''
-  return u_sorted, r_sorted
+  return u_sorted, r_sorted, phases
   
-
 def main():
   u, C = do_mpc()
   print(f"u[0,:] = {u}")
