@@ -8,7 +8,7 @@ import traffic_distribution as td
 N = 12 # (TUNABLE)
 
 # Traffic model variables (s)
-T = 300 # Control interval (must be divisible to 3600)
+T = 200 # Control interval (must be divisible to 3600)
 L = 9  # Lost time (3 phases * 3s)
 
 # Saturation flow rate (veh/hr -> veh/s)
@@ -18,26 +18,24 @@ S_3 = 3000*(1/3600) # Saturation flow (DUMMY)
 S_4 = 3000*(1/3600) # Saturation flow (DUMMY)
 
 # Demand values from 6 AM to 8 PM (veh/hr)
-d_1 = np.array([1367.,1884.,1659.,1574.,1430.,1149.,1172.,886.,1074.,1451.,1292.,1432.,
-                1082.,945.])
-d_2 = np.array([2024.,2135.,1872.,2065.,2032.,1923.,1992.,1716.,1979.,2010.,2861.,2935.,
-                2381.,2274.])
-d_3 = np.array([1549.,1776.,1828.,1833.,1805.,1829.,1941.,1992.,2404.,2699.,2802.,3598.,
-                3748.,3217.])
-d_4 = np.array([4562.,4850.,5995.,3327.,2921.,2560.,2319.,4458.,3396.,3445.,3286.,3655.,
-                3130.,2649.])
+d_1 = np.array([1147., 1636., 1465., 1408., 1277., 995., 1046., 
+                831., 1014., 1397., 1200., 1343., 1004., 894.])
+d_2 = np.array([1955., 2061., 1809., 2004., 1981., 1874., 1911., 
+                1655., 1902., 1945., 2808., 2877., 2332., 2229.])
+d_3 = np.array([1294., 1495., 1494., 1489., 1527., 1576., 1692., 
+                1802., 2149., 2443., 2479., 3283., 3464., 2960.])
+d_4 = np.array([4095., 4426., 5537., 2997., 2486., 2209., 1936., 
+                4093., 3041., 3086., 2975., 3273., 2820., 2416.])
 
 # Consequence of road links unaffected by traffic signals (veh/hr)
-d_1_out = np.array([628.+155.,755.+340.,464.+261.,429.+334.,418.+232.,421.+265.,
-                    376.+308.,212.+184.,292.+188.,204.+287.,332.+380.,297.+534.,
-                    304.+450.,209.+448.])
-d_2_out = np.array([237.+126.,232.+150.,217.+131.,199.+156.,215.+159.,117.+116.,
-                    57.+140.,230.+104.,217.+121.,170.+111.,169.+93.,184.+90.,
-                    137.+86.,119.+74.])
-d_3_out = np.array([302.,286.,355.,314.,332.,275.,262.,404.,445.,384.,517.,448.,
-                    436.,365.])
-d_4_out = np.array([124.,144.,162.,177.,298.,160.,217.,166.,216.,189.,165.,201.,
-                    149.,124.])
+d_1_out = np.array([570., 851., 536., 598., 498., 533., 558., 
+                    344., 422., 437., 621., 743., 678., 607.])
+d_2_out = np.array([296., 309., 285., 297., 326., 185., 119., 
+                    273., 261., 217., 209., 216., 174., 148.])
+d_3_out = np.array([243., 243., 284., 259., 281., 228., 233., 
+                    376., 409., 363., 468., 405., 398., 338.])
+d_4_out = np.array([44., 48., 53., 54., 98., 32., 66., 40., 
+                    68., 48., 62., 93., 68., 54.])
 
 # Traffic model matrices
 
@@ -46,7 +44,7 @@ d_4_out = np.array([124.,144.,162.,177.,298.,160.,217.,166.,216.,189.,165.,201.,
 xmin = np.array([0,0,0,0])
 #xmax = np.array([50,50,50,50]) # (TUNABLE)
 xref = np.array([0,0,0,0]) # (TUNABLE)
-umin = np.array([5,5,5,5]) # Cannot have a zero timer setting
+umin = np.array([15,15,15,15]) # Cannot have a zero timer setting
 
 xmin = np.tile(xmin, (N+1,1))
 #xmax = np.tile(xmax, (N+1,1))
@@ -62,23 +60,16 @@ B = np.array([[S_1,0,0,0],
 B = -T*B
 
 # D is the demand matrix
-d_1p = td.poissonify(T,d_1[0]-d_1_out[0])
-d_2p = td.poissonify(T,d_2[0]-d_2_out[0])
-d_3p = td.poissonify(T,d_3[0]-d_3_out[0])
-d_4p = td.poissonify(T,d_4[0]-d_4_out[0])
-#print(f"d_1p = {d_1p}")
-for i in range(1,len(d_1)):
-  d_1p = np.append(d_1p, td.poissonify(T,d_1[i]-d_1_out[i]))
-  d_2p = np.append(d_2p, td.poissonify(T,d_2[i]-d_2_out[i]))
-  d_3p = np.append(d_3p, td.poissonify(T,d_3[i]-d_3_out[i]))
-  d_4p = np.append(d_4p, td.poissonify(T,d_4[i]-d_4_out[i]))
+d_1p = td.uniformify(T,d_1[0]-d_1_out[0])
+d_2p = td.uniformify(T,d_2[0]-d_2_out[0])
+d_3p = td.uniformify(T,d_3[0]-d_3_out[0])
+d_4p = td.uniformify(T,d_4[0]-d_4_out[0])
 
-d = np.array([[d_1p[0], d_2p[0], d_3p[0], d_4p[0]]])
-for i in range(1,N):
-  d = np.concatenate((d, [[d_1p[i], d_2p[i], d_3p[i], d_4p[i]]]))
-D = d
-#print(f"d_2p = {d_2p}")
-#print(f"d_2p = {sum(d_2p)}")
+for i in range(1,len(d_1)):
+  d_1p = np.append(d_1p, td.uniformify(T,d_1[i]-d_1_out[i]))
+  d_2p = np.append(d_2p, td.uniformify(T,d_2[i]-d_2_out[i]))
+  d_3p = np.append(d_3p, td.uniformify(T,d_3[i]-d_3_out[i]))
+  d_4p = np.append(d_4p, td.uniformify(T,d_4[i]-d_4_out[i]))
 #D = np.tile(d, (N,1))
 #D = T*D
 
