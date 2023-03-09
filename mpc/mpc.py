@@ -105,7 +105,7 @@ def do_mpc(x_curr=np.array([0,0,0,0])):
     for v in m.getVars():
       if v.VarName in names_to_retrieve:
         vals[v.VarName] = v.X
-        #print('%s %g' % (v.VarName, v.X))
+        print('%s %g' % (v.VarName, v.X))
         if v.VarName[:3] == "u[0" or (v.VarName == "u_41" or v.VarName == "u_43"):
           u_res.append(v.X)
 
@@ -141,39 +141,15 @@ def get_timer_settings(u, C):
   u_aurora_e_katip_s = u[4] # Green time of Aurora East for phase 2
   u_aurora_e_aurora_w = u[5] # Green time of Aurora East for phase 3
 
-  # Red times of relevant roads
-  r_katip_s = C-A-u_katip_s # Red time for Katipunan South after phase 1
-  r_katip_n = r_katip_s # Red time for Katipunan North after phase 1
-  r_aurora_w = u_katip_s+u_aurora_e_katip_s+2*A # Red time of Aurora West just before phase 3
-  r_aurora_e_katip_s_1 = u_katip_s+A # Red time of Aurora East before phase 2
-  r_aurora_e_katip_s_2 = C-(u_katip_s+u_aurora_e_katip_s+2*A) # Red time of Aurora East after phase 2
-  r_aurora_e_aurora_w = u_katip_s+A# Green time of Aurora East for phase 3
-
   u_sorted = [u_katip_s, u_katip_n, u_aurora_w, u_aurora_e_katip_s, u_aurora_e_aurora_w]
-  r_sorted = [r_katip_s, r_katip_n, r_aurora_w, r_aurora_e_katip_s_1, r_aurora_e_katip_s_2,
-              r_aurora_e_aurora_w]
   
-  phase_1 = 1
+  phase_1 = 0
   phase_2 = u_katip_s + A
   phase_3 = u_katip_s + u_aurora_e_katip_s + 2*A
 
   phases = [phase_1, phase_2, phase_3]
 
-  '''
-  print(f"u_katip_s = {u_katip_s}")
-  print(f"u_katip_n = {u_katip_n}")
-  print(f"u_aurora_w = {u_aurora_w}")
-  print(f"u_aurora_e_katip_s = {u_aurora_e_katip_s}")
-  print(f"u_aurora_e_aurora_w = {u_aurora_e_aurora_w}")
-
-  print(f"r_katip_s = {r_katip_s}")
-  print(f"r_katip_n = {r_katip_n}")
-  print(f"r_aurora_w = {r_aurora_w}")
-  print(f"r_aurora_e_katip_s_1 = {r_aurora_e_katip_s_1}")
-  print(f"r_aurora_e_katip_s_2 = {r_aurora_e_katip_s_2}")
-  print(f"r_aurora_e_aurora_w = {r_aurora_e_aurora_w}")
-  '''
-  return u_sorted, r_sorted, phases
+  return u_sorted, phases
   
 def main():
   u, C = do_mpc()
