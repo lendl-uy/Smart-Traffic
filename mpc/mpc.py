@@ -19,7 +19,7 @@ import numpy as np
 from mpc_params import *
 import traffic_distribution as td
 
-def do_mpc(x_curr=np.array([0,0,0,0])):
+def do_mpc(x_curr=np.array([0,0,0,0]), step=0):
 
   # Initialize a model
   m = gp.Model("MPC")
@@ -35,6 +35,15 @@ def do_mpc(x_curr=np.array([0,0,0,0])):
   # C_dummy: to be used for division
   C = m.addVar(vtype=GRB.INTEGER, lb=20.0, name="C")
   C_dummy = m.addVar(vtype=GRB.CONTINUOUS, name="C_dummy")
+
+  # step: Current time step in the simulation
+  # Used for generating a new vehicle distribution when an hour has elapsed
+  t_step = int(step/T)
+
+  d = np.array([[d_1p[t_step], d_2p[t_step], d_3p[t_step], d_4p[t_step]]])
+  for i in range(t_step+1,t_step+N):
+    d = np.concatenate((d, [[d_1p[i], d_2p[i], d_3p[i], d_4p[i]]]))
+  D = d
 
   # u_41 and u_43 divides sum of green times in Aurora Blvd. East
   # Aurora Blvd. East has two phases, to Katipunan Ave. South and Aurora Blvd. West
@@ -59,7 +68,7 @@ def do_mpc(x_curr=np.array([0,0,0,0])):
     m.addConstr(C == u[k, 0] + u_43 + 6) # Total cycle time is equal to phase 1 + phase 2 + phase 3
 
     m.addConstr(C*C_dummy == 1) # To achieve same effect as 1/C
-    m.addConstr(C <= 240)
+    m.addConstr(C <= 300)
 
     # Intermediate variable to compute Q and R norm
     #m.addConstr(y[k, :] == x[k, :] - x[0, :])
@@ -84,7 +93,7 @@ def do_mpc(x_curr=np.array([0,0,0,0])):
   m.reset(0) # Clear previous results
   m.params.NonConvex = 2 # To allow division operator
   m.setParam('TimeLimit', 30) # 30s time limit
-  #m.feasRelaxS(0, True, False, False) # Ease model if infeasible
+  m.feasRelaxS(0, True, False, False) # Ease model if infeasible
   m.optimize()
 
   # Obtain the results of the optimization
@@ -105,7 +114,7 @@ def do_mpc(x_curr=np.array([0,0,0,0])):
     for v in m.getVars():
       if v.VarName in names_to_retrieve:
         vals[v.VarName] = v.X
-        print('%s %g' % (v.VarName, v.X))
+        #print('%s %g' % (v.VarName, v.X))
         if v.VarName[:3] == "u[0" or (v.VarName == "u_41" or v.VarName == "u_43"):
           u_res.append(v.X)
 
