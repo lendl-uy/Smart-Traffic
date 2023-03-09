@@ -13,6 +13,7 @@ import traci
 import traci.constants as tc
 import numpy as np
 
+from mpc_params import *
 from mpc import *
 
 def convert_to_real_time(step):
@@ -145,10 +146,10 @@ for step in range(sim_duration):
     #sumcar=sumcar+AuroEl0+AuroEl1+AuroEl2+AuroEl3+AuroW+KatipSl0+KatipSl1+KatipSJ+KatipSl0+KatipSl1+KatipSJ
     
     # print(sumcar)
-    # Perform MPC once a cycle has completed
-    if delta_step == C-1:
+    # Perform MPC once a control interval has completed
+    if delta_step+1 == C:
         # Recompute timer settings and cycle time
-        u, C = do_mpc(np.array([katip_south, katip_north, aurora_west, aurora_east]))
+        u, C = do_mpc(np.array([katip_south, katip_north, aurora_west, aurora_east]), step+1)
         u_sorted, phases = get_timer_settings(u, C) # Retrieves parsed timer setting information
         step_C = step
      
