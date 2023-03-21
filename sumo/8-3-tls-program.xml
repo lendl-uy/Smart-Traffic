@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on 2023-03-08 23:41:23 by Eclipse SUMO netedit Version 1.15.0
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/netconvertConfiguration.xsd">
+
+    <input>
+        <sumo-net-file value="C:\Users\lendl\Documents\smart_traffic\sumo\4-3-lendl-ver.net.xml"/>
+    </input>
+
+    <output>
+        <output-file value="C:\Users\lendl\Documents\smart_traffic\sumo\4-3-lendl-ver.net.xml"/>
+        <output.street-names value="true"/>
+    </output>
+
+    <processing>
+        <geometry.min-radius.fix.railways value="false"/>
+        <geometry.max-grade.fix value="false"/>
+        <offset.disable-normalization value="true"/>
+        <lefthand value="0"/>
+    </processing>
+
+    <junctions>
+        <no-turnarounds value="true"/>
+        <junctions.corner-detail value="5"/>
+        <junctions.limit-turn-speed value="5.50"/>
+        <rectangular-lane-cut value="0"/>
+    </junctions>
+
+    <pedestrian>
+        <walkingareas value="0"/>
+    </pedestrian>
+
+</configuration>
+-->
+
+<additional xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/additional_file.xsd">
+    <tlLogic id="cluster9883633497_cluster_25353129_33471551_cluster_26272655_288063291_29500569_5064338396_#2more" type="static" programID="0" offset="0">
+        <param key="barrier2Phases" value="2,6"/>
+        <param key="barrierPhases" value="4,8"/>
+        <param key="ring1" value="0,2,0,4"/>
+        <param key="ring2" value="0,6,0,8"/>
+        <phase duration="61" state="gGGgrrrrrGGgrrrr"/>
+        <phase duration="3" state="gyygrrrrrgyyrrrr"/>
+        <phase duration="39" state="grrgGGGGGgrrrrrr"/>
+        <phase duration="3" state="grrgGGGyygrrrrrr"/>
+        <phase duration="45" state="grrgGGGrrgrrGGGG"/>
+        <phase duration="3" state="grrgyyyrrgrryyyy"/>
+    </tlLogic>
+</additional>

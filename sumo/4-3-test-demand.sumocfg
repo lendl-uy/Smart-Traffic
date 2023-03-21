@@ -1,0 +1,4 @@
+<configuration>
+    <net-file value="C:\Users\lendl\Documents\smart_traffic\sumo\19-3-lendl-ver.net.xml"/>
+    <route-files value="C:\Users\lendl\Documents\smart_traffic\sumo\4-3-test-demand-vianetedit.rou.xml"/>
+</configuration>

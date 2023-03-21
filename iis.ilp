@@ -1,0 +1,13 @@
+\ Model MPC_copy
+\ LP format - for model browsing. Use MPS format to capture full model detail.
+Minimize
+ 
+Subject To
+ R0: x[0,0] = 0
+ R4: - x[0,0] + x[1,0] + 166.6666666666667 u[0,0] = 66
+Bounds
+ x[0,0] free
+ u[0,0] >= 15
+Generals
+ x[0,0] x[1,0] u[0,0]
+End

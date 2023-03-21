@@ -1,0 +1,15 @@
+Loading net-file from 'C:\Users\lendl\Documents\smart_traffic\sumo\19-3-lendl-ver.net.xml' ... done (11ms).
+Loading additional-files from '038/../edgedata.add.xml' ... done (1ms).
+Loading done.
+Simulation version 1.15.0 started with time: 0.00.
+Simulation ended at time: 103906.00
+Reason: All vehicles have left the simulation.
+Performance: 
+ Duration: 384.01s
+ Real time factor: 270.584
+ UPS: 26125.076171
+Vehicles: 
+ Inserted: 125347
+ Running: 0
+ Waiting: 0
+
