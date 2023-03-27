@@ -6,8 +6,11 @@ import traffic_distribution as td
 
 from create_demand_mpc import create_dua_demand
 
-# Prediction Horizon
+# Tunable parameters
 N = 5 # (TUNABLE)
+u_min_val = 15 # (TUNABLE)
+C_min = 50 # (TUNABLE)
+C_max = 100 # (TUNABLE)
 
 # Traffic model variables (s)
 T = 100 # Control interval (must be divisible to 3600)
@@ -46,8 +49,7 @@ d_4_out = np.array([44., 48., 53., 54., 98., 32., 66., 40.,
 xmin = np.array([0,0,0,0])
 #xmax = np.array([50,50,50,50]) # (TUNABLE)
 xref = np.array([0,0,0,0]) # (TUNABLE)
-umin = np.array([15,15,15,15]) # Cannot have a zero timer setting
-#umin = np.array([20,20,20,20]) # Cannot have a zero timer setting
+umin = np.array([u_min_val,u_min_val,u_min_val,u_min_val]) # Cannot have a zero timer setting
 
 xmin = np.tile(xmin, (N+1,1))
 #xmax = np.tile(xmax, (N+1,1))

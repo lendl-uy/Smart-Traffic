@@ -139,7 +139,7 @@ def post_proc_ql(hrs, data):
         #temp_array_conc = sum(temp_array, [])
         temp_array_conc = list(itertools.chain.from_iterable(temp_array))
         ql_post_proc.append(sum(temp_array_conc)/float(len(temp_array_conc)))
-
+    print(f"ql_post_proc = {ql_post_proc[-1]}")
     return ql_post_proc
 
 # Post process average queue time into per hour data
@@ -157,7 +157,7 @@ def post_proc_qt(hrs, data):
         #temp_array_conc = sum(temp_array, [])
         temp_array_conc = list(itertools.chain.from_iterable(temp_array))
         qt_post_proc.append(sum(temp_array_conc)/float(len(temp_array_conc)))
-
+    print(f"qt_post_proc = {qt_post_proc[-1]}")
     return qt_post_proc
 
 # Post process flow rate into per hour data
@@ -197,6 +197,7 @@ def post_proc_flow(hrs, data):
     print(f"max flow of aurora_w = {max(u_aurora_w)}")
     print(f"max flow of aurora_e = {max(u_aurora_e)}")
     '''
+    print(f"flow_post_proc = {flow_post_proc[-1]}")
     return flow_post_proc
 
 # Post process cycle time
@@ -251,7 +252,7 @@ def post_proc_spawned(data):
 
     total_spawned = int(spawned_katip_s[-1]+spawned_katip_n[-1]+spawned_aurora_w[-1]+spawned_aurora_e[-1])
 
-    print(f"Total number of vehicles spawned in the simulation = {total_spawned}")
+    #print(f"Total number of vehicles spawned in the simulation = {total_spawned}")
 
     return spawned_katip_s, spawned_katip_n, spawned_aurora_w, spawned_aurora_e, total_spawned_int
 
@@ -335,12 +336,12 @@ max_cap_aurora_e = max(veh_counts_aurora_e)
 
 def main():
 
-    num_hours = 14
-
     fixed_time_dir = "results\\fixed_time"
     mpc_dir_1 = "results\\test1(cmin=60,cmax=100,umin=15,n=5)\\"
     #mpc_dir_2 = "results\\test30\\"
     #mpc_dir_3 = "results\\test12(extended_roads,umin=15,n=5)\\"
+
+    num_hours = 14
 
     # Simulation time stored as an array
     sim_hr = ["7:00", "8:00", "9:00", "10:00", "11:00", "12:00", 
@@ -382,7 +383,6 @@ def main():
               "Fixed-time TSC", "MPC-based TSC Test 1", "Average Queue Time in the Katipunan Ave. - Aurora Blvd. Intersection")
     plot_line_2_params(sim_hr, flow_fixed_time, flow_mpc_1, "Time of Day (hr:min)", "Flow Rate (veh/hr)", 
               "Fixed-time TSC", "MPC-based TSC Test 1", "Flow Rate of Traffic in the Katipunan Ave. - Aurora Blvd. Intersection")
-    plot_line_1_param(sim_sec, c_times, "Time (s)", "Cycle Time (s)", "Cycle Time of MPC-based Traffic Signal Control")
 
     '''
     plot_line_3_params(sim_hr, ql_fixed_time, ql_mpc_1, ql_mpc_2, "Time of Day (hr:min)", "Average Queue Length (m)", 

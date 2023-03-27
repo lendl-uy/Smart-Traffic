@@ -37,7 +37,7 @@ def do_mpc(x_curr=np.array([0,0,0,0]), step=0):
     # C: cycle time
     # C_dummy: to be used for division
     #C = 300
-    C = m.addVar(vtype=GRB.INTEGER, lb=50.0, ub = 100.0, name="C")
+    C = m.addVar(vtype=GRB.INTEGER, lb=C_min, ub = C_max, name="C")
     C_dummy = m.addVar(vtype=GRB.CONTINUOUS, name="C_dummy")
 
     # step: Current time step in the simulation

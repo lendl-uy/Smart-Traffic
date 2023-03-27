@@ -331,8 +331,7 @@ def get_queue_length(record_stopped_vehs, record, step):
         print(f"Overall average queue length in Aurora West: {Overall_avlenAw} m")
         print(f"Overall average queue length in Aurora East: {Overall_avlenAe} m")
 
-    return avg_ql_katip_south, avg_ql_katip_north, avg_ql_aurora_west, avg_ql_aurora_east, record_stopped_vehs
-
+    return Overall_avlenKs, Overall_avlenKn, Overall_avlenAw, Overall_avlenAe, record_stopped_vehs
 
 def get_car_flow(road_name):
     
