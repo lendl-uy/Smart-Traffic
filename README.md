@@ -5,7 +5,7 @@ This repository consists the following traffic simulation programs with their pu
 
 - `traci-mpc.py` is the main program for running the traffic simulation with the MPC-based traffic signal control scheme.
 - `traci-no-mpc.py` is the main program for running the traffic simulation with the fixed-time traffic signal control scheme.
-- `post_proc_results.py` is the main post processing program for the results of the traffic simulation. To post process specific simulation runs, make sure to edit the directory in the `main()` function.
+- `post_proc_results.py` is the main post processing program. To post process specific simulation runs, make sure to edit the directories in lines 340-343 in the `main()` function.
 - `performance_indicators.py` contains functions for measuring various traffic parameters such as:
 
   - vehicle count
@@ -18,10 +18,10 @@ This repository consists the following traffic simulation programs with their pu
 
 - `mpc.py` contains the formulation of the MPC algorithm using the `gurobipy` module.
 - `mpc_params.py` contains the relevant traffic parameters that are used in `mpc.py` which include traffic constants, traffic simulation parameters, and traffic model matrices.
-- `create_demand_mpc.py` is another intermediary program which reads the actual number of vehicles spawned in each time step in the simulation.
+- `create_demand_mpc.py` is an intermediary program which reads the actual number of vehicles spawned in each time step in the simulation.
 - `save_sim_results.py` contains the relevant functions for reading and writing traffic data measured from either `traci-mpc.py` or `traci-no-mpc.py` to a separate folder entitled `results\`
 - `road_defs.py` contains the lane IDs of all incoming roads in the intersection. This is used by the `traci` programs to check where each vehicle in the simulation is located.
-- `create_demand.py` is an intermediary program for parsing the reference route file `4-3-test-demand-vianetedit-ref.rou.xml` and for automating the generation of flow definitions to be used in duarouter.
+- `create_demand.py` is another intermediary program for parsing the reference route file `4-3-test-demand-vianetedit-ref.rou.xml` and for automating the generation of flow definitions to be used in duarouter.
 
 ### How to Properly Run the Programs
 
