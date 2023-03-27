@@ -235,6 +235,7 @@ def post_proc_spawned(data):
     spawned_katip_n = []
     spawned_aurora_w = []
     spawned_aurora_e = []
+    total_spawned_int = []
 
     for i in range(len(data["spawned"])):
         katip_s = data["spawned"][i][0]
@@ -246,12 +247,13 @@ def post_proc_spawned(data):
         spawned_katip_n.append(katip_n)
         spawned_aurora_w.append(aurora_w)
         spawned_aurora_e.append(aurora_e)
+        total_spawned_int.append(katip_s+katip_n+aurora_w+aurora_e)
 
     total_spawned = int(spawned_katip_s[-1]+spawned_katip_n[-1]+spawned_aurora_w[-1]+spawned_aurora_e[-1])
 
     print(f"Total number of vehicles spawned in the simulation = {total_spawned}")
 
-    return spawned_katip_s, spawned_katip_n, spawned_aurora_w, spawned_aurora_e
+    return spawned_katip_s, spawned_katip_n, spawned_aurora_w, spawned_aurora_e, total_spawned_int
 
 def percent_improvement(param1, param2, param_name1, param_name2, quantity):
 
@@ -336,8 +338,8 @@ def main():
     num_hours = 14
 
     fixed_time_dir = "results\\fixed_time"
-    mpc_dir_1 = "results\\test23(extend_roads,arrival_dem,umin=15,cmin=50,cmax=100,n=5,t=180)\\"
-    mpc_dir_2 = "results\\test29\\"
+    mpc_dir_1 = "results\\test1(cmin=60,cmax=100,umin=15,n=5)\\"
+    #mpc_dir_2 = "results\\test30\\"
     #mpc_dir_3 = "results\\test12(extended_roads,umin=15,n=5)\\"
 
     # Simulation time stored as an array
@@ -348,32 +350,32 @@ def main():
     # Obtain values of traffic data from simulations
     fixed_time_data = read_fixed_time_data(fixed_time_filenames, fixed_time_dir)
     mpc_data_1 = read_mpc_data(mpc_filenames, mpc_dir_1)
-    mpc_data_2 = read_mpc_data(mpc_filenames, mpc_dir_2)
+    #mpc_data_2 = read_mpc_data(mpc_filenames, mpc_dir_2)
     #mpc_data_3 = read_mpc_data(mpc_filenames, mpc_dir_3)
 
 
     ql_fixed_time = post_proc_ql(num_hours, fixed_time_data)
     ql_mpc_1 = post_proc_ql(num_hours, mpc_data_1)
-    ql_mpc_2 = post_proc_ql(num_hours, mpc_data_2)
+    #ql_mpc_2 = post_proc_ql(num_hours, mpc_data_2)
     #ql_mpc_3 = post_proc_ql(num_hours, mpc_data_3)
 
     qt_fixed_time = post_proc_qt(num_hours, fixed_time_data)
     qt_mpc_1 = post_proc_qt(num_hours, mpc_data_1)
-    qt_mpc_2 = post_proc_qt(num_hours, mpc_data_2)
+    #qt_mpc_2 = post_proc_qt(num_hours, mpc_data_2)
     #qt_mpc_3 = post_proc_qt(num_hours, mpc_data_3)
 
     flow_fixed_time = post_proc_flow(num_hours, fixed_time_data)
     flow_mpc_1 = post_proc_flow(num_hours, mpc_data_1)
-    flow_mpc_2 = post_proc_flow(num_hours, mpc_data_2)
+    #flow_mpc_2 = post_proc_flow(num_hours, mpc_data_2)
     #flow_mpc_3 = post_proc_flow(num_hours, mpc_data_3)
 
-    spawned_vehs = post_proc_spawned(mpc_data_1)
+    spawned_vehs = post_proc_spawned(fixed_time_data)
 
-    c_times = post_proc_cycle(mpc_data_2)
+    c_times = post_proc_cycle(mpc_data_1)
 
-    gt_katip_s, gt_katip_n, gt_aurora_w, gt_aurora_e_katip_s, gt_aurora_e_aurora_w = post_proc_u(mpc_data_2)
+    gt_katip_s, gt_katip_n, gt_aurora_w, gt_aurora_e_katip_s, gt_aurora_e_aurora_w = post_proc_u(mpc_data_1)
 
-    '''
+    
     plot_line_2_params(sim_hr, ql_fixed_time, ql_mpc_1, "Time of Day (hr:min)", "Average Queue Length (m)", 
               "Fixed-time TSC", "MPC-based TSC Test 1", "Average Queue Length in the Katipunan Ave. - Aurora Blvd. Intersection")
     plot_line_2_params(sim_hr, qt_fixed_time, qt_mpc_1, "Time of Day (hr:min)", "Average Queue Time (s)", 
@@ -381,25 +383,29 @@ def main():
     plot_line_2_params(sim_hr, flow_fixed_time, flow_mpc_1, "Time of Day (hr:min)", "Flow Rate (veh/hr)", 
               "Fixed-time TSC", "MPC-based TSC Test 1", "Flow Rate of Traffic in the Katipunan Ave. - Aurora Blvd. Intersection")
     plot_line_1_param(sim_sec, c_times, "Time (s)", "Cycle Time (s)", "Cycle Time of MPC-based Traffic Signal Control")
-    '''
 
+    '''
     plot_line_3_params(sim_hr, ql_fixed_time, ql_mpc_1, ql_mpc_2, "Time of Day (hr:min)", "Average Queue Length (m)", 
-              "Fixed-time TSC", "MPC-based TSC Test 1", "MPC-based TSC Test 26", "Average Queue Length in the Katipunan Ave. - Aurora Blvd. Intersection")
+              "Fixed-time TSC", "MPC-based TSC Test 1", "MPC-based TSC Test 30", "Average Queue Length in the Katipunan Ave. - Aurora Blvd. Intersection")
     plot_line_3_params(sim_hr, qt_fixed_time, qt_mpc_1, qt_mpc_2, "Time of Day (hr:min)", "Average Queue Time (s)", 
-              "Fixed-time TSC", "MPC-based TSC Test 1", "MPC-based TSC Test 26", "Average Queue Time in the Katipunan Ave. - Aurora Blvd. Intersection")
+              "Fixed-time TSC", "MPC-based TSC Test 1", "MPC-based TSC Test 30", "Average Queue Time in the Katipunan Ave. - Aurora Blvd. Intersection")
     plot_line_3_params(sim_hr, flow_fixed_time, flow_mpc_1, flow_mpc_2, "Time of Day (hr:min)", "Flow Rate (veh/hr)", 
-              "Fixed-time TSC", "MPC-based TSC Test 1", "MPC-based TSC Test 26", "Flow Rate of Traffic in the Katipunan Ave. - Aurora Blvd. Intersection")
+              "Fixed-time TSC", "MPC-based TSC Test 1", "MPC-based TSC Test 30", "Flow Rate of Traffic in the Katipunan Ave. - Aurora Blvd. Intersection")
     
+
     plot_line_4_params(sim_sec, spawned_vehs[0], spawned_vehs[1], spawned_vehs[2], spawned_vehs[3], "Time (s)", "Vehicle count", "Katipunan South", "Katipunan North", "Aurora West", "Aurora East",
                        "Number of vehicles spawned from 6:00 AM to 8:00 PM")
+    plot_line_1_param(sim_sec, spawned_vehs[4], "Time (s)", "Vehicle count", "Total number of vehicles spawned from 6:00 AM to 8:00 PM")
+    '''
+
     plot_line_1_param(sim_sec, c_times, "Time (s)", "Cycle Time (s)", "Cycle Time of MPC-based Traffic Signal Control")
     plot_line_5_params(sim_sec, gt_katip_s, gt_katip_n, gt_aurora_w, gt_aurora_e_katip_s, gt_aurora_e_aurora_w, "Time (s)", 
                        "Green Times (s)", "Green Time of Katipunan South ", "Green Time of Katipunan Nprth", "Green Time of Aurora West", 
                        "Green Time of Aurora East to Katipunan South", "Green Time of Aurora East to West", "Change in Green Times of the Stoplights in the Intersection")
     
-    percent_improvement(fixed_time_data, mpc_data_2, "Fixed-time TSC", "MPC-based TSC Test 26", "q_length")
-    percent_improvement(fixed_time_data, mpc_data_2, "Fixed-time TSC", "MPC-based TSC Test 26", "q_time")
-    percent_improvement(fixed_time_data, mpc_data_2, "Fixed-time TSC", "MPC-based TSC Test 26", "flow")
+    percent_improvement(fixed_time_data, mpc_data_1, "Fixed-time TSC", "MPC-based TSC Test 1", "q_length")
+    percent_improvement(fixed_time_data, mpc_data_1, "Fixed-time TSC", "MPC-based TSC Test 1", "q_time")
+    percent_improvement(fixed_time_data, mpc_data_1, "Fixed-time TSC", "MPC-based TSC Test 1", "flow")
     
     plt.show()
 

@@ -1,0 +1,16 @@
+Loading net-file from 'C:\Users\lendl\Documents\smart_traffic\sumo\25-3-lendl-ver.net.xml' ... done (11ms).
+Warning: Network contains internal links which are ignored. Vehicles will 'jump' across junctions and thus underestimate route lengths and travel times.
+Loading additional-files from '026/../edgedata.add.xml' ... done (0ms).
+Loading done.
+Simulation version 1.15.0 started with time: 0.00.
+Simulation ended at time: 50448.46
+Reason: All vehicles have left the simulation.
+Performance: 
+ Duration: 71.15s
+ Real time factor: 709.014
+ UPS: 3795675.825334
+Vehicles: 
+ Inserted: 125347
+ Running: 0
+ Waiting: 0
+

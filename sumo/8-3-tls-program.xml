@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- generated on 2023-03-08 23:41:23 by Eclipse SUMO netedit Version 1.15.0
+<!-- generated on 2023-03-26 12:38:30 by Eclipse SUMO netedit Version 1.15.0
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/netconvertConfiguration.xsd">
 
     <input>
-        <sumo-net-file value="C:\Users\lendl\Documents\smart_traffic\sumo\4-3-lendl-ver.net.xml"/>
+        <sumo-net-file value="C:\Users\lendl\Documents\smart_traffic\sumo\25-3-lendl-ver.net.xml"/>
     </input>
 
     <output>
-        <output-file value="C:\Users\lendl\Documents\smart_traffic\sumo\4-3-lendl-ver.net.xml"/>
+        <output-file value="C:\Users\lendl\Documents\smart_traffic\sumo\25-3-lendl-ver.net.xml"/>
         <output.street-names value="true"/>
     </output>
 
@@ -30,6 +30,10 @@
         <walkingareas value="0"/>
     </pedestrian>
 
+    <netedit>
+        <route-files value="C:\Users\lendl\Documents\smart_traffic\sumo\4-3-test-demand-vianetedit.rou.xml"/>
+    </netedit>
+
 </configuration>
 -->
 
@@ -39,11 +43,11 @@
         <param key="barrierPhases" value="4,8"/>
         <param key="ring1" value="0,2,0,4"/>
         <param key="ring2" value="0,6,0,8"/>
-        <phase duration="61" state="gGGgrrrrrGGgrrrr"/>
-        <phase duration="3" state="gyygrrrrrgyyrrrr"/>
-        <phase duration="39" state="grrgGGGGGgrrrrrr"/>
-        <phase duration="3" state="grrgGGGyygrrrrrr"/>
+        <phase duration="61" state="gGGGrrrrrgGGrrrr"/>
+        <phase duration="3" state="GyyGrrrrrGyyrrrr"/>
+        <phase duration="39" state="grrgGGGGGGrrrrrr"/>
+        <phase duration="3" state="GrrgGGGyyGrrrrrr"/>
         <phase duration="45" state="grrgGGGrrgrrGGGG"/>
-        <phase duration="3" state="grrgyyyrrgrryyyy"/>
+        <phase duration="3" state="GrrGyyyrrGrryyyy"/>
     </tlLogic>
 </additional>

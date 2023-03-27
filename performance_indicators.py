@@ -321,16 +321,16 @@ def get_queue_length(record_stopped_vehs, record, step):
         Overall_avlenKn=sum(avlenKn)/len(avlenKn)
         Overall_avlenAe=sum(avlenAe)/len(avlenAe)
         Overall_avlenAw=sum(avlenAw)/len(avlenAw)
-        '''
+
         print(f"Average queue length in Katipunan South: {avg_ql_katip_south} m")
         print(f"Average queue length in Katipunan North: {avg_ql_katip_north} m")
         print(f"Average queue length in Aurora West: {avg_ql_aurora_west} m")
         print(f"Average queue length in Aurora East: {avg_ql_aurora_east} m")
-        print(f"Overall average queue length in Katipunan South: { Overall_avlenKs} m")
-        print(f"Overall average queue length in Katipunan North: { Overall_avlenKn} m")
-        print(f"Overall average queue length in Aurora West: { Overall_avlenAw} m")
-        print(f"Overall average queue length in Aurora East: { Overall_avlenAe} m")
-        '''
+        print(f"Overall average queue length in Katipunan South: {Overall_avlenKs} m")
+        print(f"Overall average queue length in Katipunan North: {Overall_avlenKn} m")
+        print(f"Overall average queue length in Aurora West: {Overall_avlenAw} m")
+        print(f"Overall average queue length in Aurora East: {Overall_avlenAe} m")
+
     return avg_ql_katip_south, avg_ql_katip_north, avg_ql_aurora_west, avg_ql_aurora_east, record_stopped_vehs
 
 
@@ -398,9 +398,9 @@ def get_flow_rate(road_name):
 
     if step>0:
         flow_rate = total_flow*3600/step
-    '''
+
     print(f"Average flow rate in {road_name}: {flow_rate} veh/hr")
-	'''
+
     return flow_rate
 
 def get_avg_wait():
@@ -452,12 +452,12 @@ def get_avg_wait():
         avgwt_aurora_e = sum(averagewaitlist_aurora_e.values()) / float(len(averagewaitlist_aurora_e))
     else:
         avgwt_aurora_e = 0.0
-    '''
+
     print(f"Average waiting time in Katipunan South: {avgwt_katip_s} s")
     print(f"Average waiting time in Katipunan North: {avgwt_katip_n} s")
     print(f"Average waiting time in Aurora West: {avgwt_aurora_w} s")
     print(f"Average waiting time in Aurora East: {avgwt_aurora_e} s")
-    '''
+
     return avgwt_katip_s, avgwt_katip_n, avgwt_aurora_w, avgwt_aurora_e
 
 def get_spawned_vehs():

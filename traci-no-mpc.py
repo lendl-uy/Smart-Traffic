@@ -27,7 +27,7 @@ else:
 
 # Directory of sumo-gui and sumocfg files
 sumoBinary = "C:\\Program Files (x86)\\Eclipse\\Sumo\\bin\\sumo-gui.exe"
-sumoCmd = [sumoBinary, "-c", "C:\\Users\\lendl\\Documents\\smart_traffic\\sumo\\4-3-test-demand.sumocfg"]
+sumoCmd = [sumoBinary, "-c", "C:\\Users\\lendl\\Documents\\smart_traffic\\sumo\\25-3-simfile.sumocfg"]
 
 # Starts the simulation
 traci.start(sumoCmd)

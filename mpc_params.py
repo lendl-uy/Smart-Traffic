@@ -78,7 +78,7 @@ for i in range(1,len(d_1)):
   d_4p = np.append(d_4p, td.uniformify(T,d_4[i]-d_4_out[i]))
 '''
 # Demand based on DUArouter-generated flow definitions
-d_1p, d_2p, d_3p, d_4p = create_dua_demand(T, 50400, "sumo\\049\\tripinfo_049.xml")
+d_1p, d_2p, d_3p, d_4p = create_dua_demand(T, 50400, "sumo\\meso\\000\\tripinfo_000.xml")
 
 #D = np.tile(d, (N,1))
 #D = T*D

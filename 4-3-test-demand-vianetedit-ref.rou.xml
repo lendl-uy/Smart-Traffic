@@ -3,12 +3,12 @@
 -->
 <routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/routes_file.xsd">
  <!-- VTypes -->
- <vType id="CAR" vClass="passenger"/>
- <vType id="TAXI" vClass="taxi"/>
- <vType id="BUS" vClass="bus"/>
- <vType id="TRUCK" vClass="truck"/>
- <vType id="TRAILER" vClass="trailer"/>
- <vType id="MOTORCYCLE" vClass="motorcycle"/>
+ <vType id="BUS" minGap="1.25" vClass="bus" sigma="0.25" speedDev="0.0"/>
+ <vType id="CAR" minGap="1.25" vClass="passenger" sigma="0.25" speedDev="0.0"/>
+ <vType id="MOTORCYCLE" minGap="0.25" vClass="motorcycle" sigma="0.25" speedDev="0.0"/>
+ <vType id="TAXI" minGap="1.25" vClass="taxi" sigma="0.25" speedDev="0.0"/>
+ <vType id="TRAILER" minGap="1.50" vClass="trailer" sigma="0.25" speedDev="0.0"/>
+ <vType id="TRUCK" minGap="1.50" vClass="truck" sigma="0.25" speedDev="0.0"/>
  <!-- Routes -->
  <route edges="933952934#0 4601641#0" id="aurora_e_aurora_w"/>
  <route edges="933952934#0 26296778#0 26296778#2.16 26296778#2.51" id="aurora_e_katip_n"/>
