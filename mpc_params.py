@@ -11,16 +11,16 @@ N = 5 # (TUNABLE)
 u_min_val = 15 # (TUNABLE)
 C_min = 50 # (TUNABLE)
 C_max = 100 # (TUNABLE)
-
+print(f"N = {N}")
 # Traffic model variables (s)
 T = 100 # Control interval (must be divisible to 3600)
 L = 9  # Lost time (3 phases * 3s)
 
 # Saturation flow rate (veh/hr -> veh/s)
-S_1 = 3000*(1/3600) # Saturation flow (DUMMY)
-S_2 = 3000*(1/3600) # Saturation flow (DUMMY)
-S_3 = 3000*(1/3600) # Saturation flow (DUMMY)
-S_4 = 3000*(1/3600) # Saturation flow (DUMMY)
+S_1 = 841*(1/3600) # Saturation flow (DUMMY)
+S_2 = 1510*(1/3600) # Saturation flow (DUMMY)
+S_3 = 2017*(1/3600) # Saturation flow (DUMMY)
+S_4 = 3191*(1/3600) # Saturation flow (DUMMY)
 
 # Demand values from 6 AM to 8 PM (veh/hr)
 d_1 = np.array([1147., 1636., 1465., 1408., 1277., 995., 1046., 

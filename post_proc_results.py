@@ -337,7 +337,7 @@ max_cap_aurora_e = max(veh_counts_aurora_e)
 def main():
 
     fixed_time_dir = "results\\fixed_time"
-    mpc_dir_1 = "results\\test1(cmin=60,cmax=100,umin=15,n=5)\\"
+    mpc_dir_1 = "results\\test5(adjustted_s,cmin=50,cmax=100,umin=15,n=5)\\"
     #mpc_dir_2 = "results\\test30\\"
     #mpc_dir_3 = "results\\test12(extended_roads,umin=15,n=5)\\"
 
