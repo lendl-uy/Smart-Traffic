@@ -264,8 +264,10 @@ def percent_improvement(param1, param2, param_name1, param_name2, quantity):
     param1_vals = list(itertools.chain.from_iterable(param1[quantity]))
     param2_vals = list(itertools.chain.from_iterable(param2[quantity]))
 
-    area_param1 = np.trapz(param1_vals)
-    area_param2 = np.trapz(param2_vals)
+    #area_param1 = np.trapz(param1_vals)
+    #area_param2 = np.trapz(param2_vals)
+    area_param1 = param1_vals[-1]
+    area_param2 = param2_vals[-1]
 
     improvement = 0
     placeholder = ""
@@ -337,7 +339,7 @@ max_cap_aurora_e = max(veh_counts_aurora_e)
 def main():
 
     fixed_time_dir = "results\\fixed_time"
-    mpc_dir_1 = "results\\test5(adjustted_s,cmin=50,cmax=100,umin=15,n=5)\\"
+    mpc_dir_1 = "results\\test7(cmin=50,cmax=110,umin=15,n=5)\\"
     #mpc_dir_2 = "results\\test30\\"
     #mpc_dir_3 = "results\\test12(extended_roads,umin=15,n=5)\\"
 
