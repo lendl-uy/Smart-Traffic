@@ -23,6 +23,8 @@ def create_dua_demand(T, sim_time, directory):
     soup = BeautifulSoup(data, "xml")
     print("Successfully parsed the DUArouter route file")
 
+    f.close()
+
     #print(soup.prettify())
 
     trips = soup.find_all("tripinfo")

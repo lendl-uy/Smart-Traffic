@@ -8,10 +8,13 @@ from create_demand_mpc import create_dua_demand
 
 # Tunable parameters
 N = 5 # (TUNABLE)
-u_min_val = 15 # (TUNABLE)
+u_min_val = 23 # (TUNABLE)
 C_min = 50 # (TUNABLE)
 C_max = 100 # (TUNABLE)
 print(f"N = {N}")
+print(f"u_min_val = {u_min_val}")
+print(f"C_min = {C_min}")
+print(f"C_max = {C_max}")
 # Traffic model variables (s)
 T = 100 # Control interval (must be divisible to 3600)
 L = 9  # Lost time (3 phases * 3s)
@@ -80,7 +83,7 @@ for i in range(1,len(d_1)):
   d_4p = np.append(d_4p, td.uniformify(T,d_4[i]-d_4_out[i]))
 '''
 # Demand based on DUArouter-generated flow definitions
-d_1p, d_2p, d_3p, d_4p = create_dua_demand(T, 50400, "sumo\\meso\\000\\tripinfo_000.xml")
+d_1p, d_2p, d_3p, d_4p = create_dua_demand(T, 50400, "sumo\\micro-2\\003\\tripinfo_003.xml")
 
 #D = np.tile(d, (N,1))
 #D = T*D

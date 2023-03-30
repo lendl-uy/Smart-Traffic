@@ -4,14 +4,14 @@ import numpy as np
 import itertools
 
 # Store filenames of all relevant traffic data in two separate lists (fixed-time and mpc)
-fixed_time_filenames = ["green_times.txt", "cycle.txt", "veh_count.txt", "q_length.txt", "q_time.txt", "flow.txt", "spawned.txt"]
-mpc_filenames = ["mpc_green_times.txt", "mpc_cycle.txt", "mpc_veh_count.txt", "mpc_q_length.txt", "mpc_q_time.txt", "mpc_flow.txt", "mpc_spawned.txt"]
+fixed_time_filenames = ["green_times.txt", "cycle.txt", "veh_count.txt", "q_length.txt", "q_time.txt", "flow.txt"]
+mpc_filenames = ["mpc_green_times.txt", "mpc_cycle.txt", "mpc_veh_count.txt", "mpc_q_length.txt", "mpc_q_time.txt", "mpc_flow.txt"]
 
 def read_fixed_time_data(filename, directory):
 
     # Store simulation results of fixed-time traffic signal control
     fixed_time_data = {"green_times" : [], "cycle" : [], "veh_count" : [], 
-                   "q_length": [], "q_time" : [], "flow" : [], "spawned" : []}
+                   "q_length": [], "q_time" : [], "flow" : []}
 
     # Store results of fixed-time traffic signal control in arrays fixed_time_data 
     for file in filename:
@@ -34,7 +34,7 @@ def read_mpc_data(filename, directory):
 
     # Store simulation results of MPC-based traffic signal control
     mpc_data = {"green_times" : [], "cycle" : [], "veh_count" : [], 
-                 "q_length": [], "q_time" : [], "flow" : [], "spawned" : []}
+                 "q_length": [], "q_time" : [], "flow" : []}
 
     # Store results of MPC-based traffic signal control in arrays mpc_data
     for file in filename:
@@ -128,76 +128,51 @@ def plot_bar_2_params(x, y1, y2, xlabel, ylabel, y1_label, y2_label, title):
 # Post process average queue length into per hour data
 def post_proc_ql(hrs, data):
 
+    end = 0
     ql_post_proc = []
     for i in range(hrs):
         if i > 0:
-            start = (i*3600)-1
-            end = 3600*(i+1)-1
-            temp_array = data["q_length"][start:end]
+            end = 3600*(i+1)-2
         else:
-            temp_array = data["q_length"][0:3599]
+            end = 3600*(i+1)-1
+        temp_array = data["q_length"][end]
         #temp_array_conc = sum(temp_array, [])
-        temp_array_conc = list(itertools.chain.from_iterable(temp_array))
-        ql_post_proc.append(sum(temp_array_conc)/float(len(temp_array_conc)))
-    print(f"ql_post_proc = {ql_post_proc[-1]}")
+        #temp_array_conc = list(itertools.chain.from_iterable(temp_array))
+        ql_post_proc.append(sum(temp_array)/float(len(temp_array)))
     return ql_post_proc
 
 # Post process average queue time into per hour data
 
 def post_proc_qt(hrs, data):
 
+    end = 0
     qt_post_proc = []
     for i in range(hrs):
         if i > 0:
-            start = (i*3600)-1
-            end = 3600*(i+1)-1
-            temp_array = data["q_time"][start:end]
+            end = 3600*(i+1)-2
         else:
-            temp_array = data["q_time"][0:3599]
+            end = 3600*(i+1)-1           
+        temp_array = data["q_time"][end]
         #temp_array_conc = sum(temp_array, [])
-        temp_array_conc = list(itertools.chain.from_iterable(temp_array))
-        qt_post_proc.append(sum(temp_array_conc)/float(len(temp_array_conc)))
-    print(f"qt_post_proc = {qt_post_proc[-1]}")
+        #temp_array_conc = list(itertools.chain.from_iterable(temp_array))
+        qt_post_proc.append(sum(temp_array)/float(len(temp_array)))
     return qt_post_proc
 
 # Post process flow rate into per hour data
 def post_proc_flow(hrs, data):
 
+    end = 0
     flow_post_proc = []
     for i in range(hrs):
         if i > 0:
-            start = (i*3600)-1
-            end = 3600*(i+1)-1
-            temp_array = data["flow"][start:end]
+            end = 3600*(i+1)-2
         else:
-            temp_array = data["flow"][0:3599]
+            end = 3600*(i+1)-1
+        temp_array = data["flow"][end]
         #temp_array_conc = sum(temp_array, [])
-        temp_array_conc = list(itertools.chain.from_iterable(temp_array))
-        flow_post_proc.append(sum(temp_array_conc)/float(len(temp_array_conc)))
+        #temp_array_conc = list(itertools.chain.from_iterable(temp_array))
+        flow_post_proc.append(sum(temp_array)/float(len(temp_array)))
 
-    u_katip_s = []
-    u_katip_n = []
-    u_aurora_w = []
-    u_aurora_e = []
-
-    '''
-    for i in range(len(data["flow"])):
-        katip_s = data["flow"][i][0]
-        katip_n = data["flow"][i][1]
-        aurora_w = data["flow"][i][2]
-        aurora_e = data["flow"][i][3]
-
-        u_katip_s.append(katip_s)
-        u_katip_n.append(katip_n)
-        u_aurora_w.append(aurora_w)
-        u_aurora_e.append(aurora_e)
-    
-    print(f"max flow of katip_s = {max(u_katip_s)}")
-    print(f"max flow of katip_n = {max(u_katip_n)}")
-    print(f"max flow of aurora_w = {max(u_aurora_w)}")
-    print(f"max flow of aurora_e = {max(u_aurora_e)}")
-    '''
-    print(f"flow_post_proc = {flow_post_proc[-1]}")
     return flow_post_proc
 
 # Post process cycle time
@@ -256,18 +231,13 @@ def post_proc_spawned(data):
 
     return spawned_katip_s, spawned_katip_n, spawned_aurora_w, spawned_aurora_e, total_spawned_int
 
-def percent_improvement(param1, param2, param_name1, param_name2, quantity):
+def percent_improvement(post_proc_param1, post_proc_param2, param_name1, param_name2, quantity):
 
     if quantity not in ["q_length", "q_time" , "flow"]:
         return
 
-    param1_vals = list(itertools.chain.from_iterable(param1[quantity]))
-    param2_vals = list(itertools.chain.from_iterable(param2[quantity]))
-
-    #area_param1 = np.trapz(param1_vals)
-    #area_param2 = np.trapz(param2_vals)
-    area_param1 = param1_vals[-1]
-    area_param2 = param2_vals[-1]
+    param1 = post_proc_param1[-1]
+    param2 = post_proc_param2[-1]
 
     improvement = 0
     placeholder = ""
@@ -279,21 +249,21 @@ def percent_improvement(param1, param2, param_name1, param_name2, quantity):
         elif quantity == "q_time":
             placeholder = "Queue time"
 
-        if area_param1 > area_param2:
-            improvement = 1-(area_param2/area_param1)
+        if param1 > param2:
+            improvement = 1-(param2/param1)
             print(f"{placeholder} in {param_name2} is shorter than {param_name1} by {improvement*100}%")
         else:
-            improvement = 1-(area_param1/area_param2)
+            improvement = 1-(param1/param2)
             print(f"{placeholder} in {param_name1} is shorter than {param_name2} by {improvement*100}%")
     else:
 
         placeholder = "Flow rate"
 
-        if area_param1 > area_param2:
-            improvement = (area_param1/area_param2)-1
+        if param1 > param2:
+            improvement = (param1/param2)-1
             print(f"{placeholder} in {param_name1} is faster than {param_name2} by {improvement*100}%")
         else:
-            improvement = (area_param2/area_param1)-1
+            improvement = (param2/param1)-1
             print(f"{placeholder} in {param_name2} is faster than {param_name1} by {improvement*100}%")
 
 '''
@@ -339,7 +309,7 @@ max_cap_aurora_e = max(veh_counts_aurora_e)
 def main():
 
     fixed_time_dir = "results\\fixed_time"
-    mpc_dir_1 = "results\\test7(cmin=50,cmax=110,umin=15,n=5)\\"
+    mpc_dir_1 = "results\\test5\\"
     #mpc_dir_2 = "results\\test30\\"
     #mpc_dir_3 = "results\\test12(extended_roads,umin=15,n=5)\\"
 
@@ -348,7 +318,7 @@ def main():
     # Simulation time stored as an array
     sim_hr = ["7:00", "8:00", "9:00", "10:00", "11:00", "12:00", 
             "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00"]
-    sim_sec = np.arange(1,50400,1)
+    sim_sec = np.arange(1,50401,1)
 
     # Obtain values of traffic data from simulations
     fixed_time_data = read_fixed_time_data(fixed_time_filenames, fixed_time_dir)
@@ -372,8 +342,6 @@ def main():
     #flow_mpc_2 = post_proc_flow(num_hours, mpc_data_2)
     #flow_mpc_3 = post_proc_flow(num_hours, mpc_data_3)
 
-    spawned_vehs = post_proc_spawned(fixed_time_data)
-
     c_times = post_proc_cycle(mpc_data_1)
 
     gt_katip_s, gt_katip_n, gt_aurora_w, gt_aurora_e_katip_s, gt_aurora_e_aurora_w = post_proc_u(mpc_data_1)
@@ -394,9 +362,6 @@ def main():
     plot_line_3_params(sim_hr, flow_fixed_time, flow_mpc_1, flow_mpc_2, "Time of Day (hr:min)", "Flow Rate (veh/hr)", 
               "Fixed-time TSC", "MPC-based TSC Test 1", "MPC-based TSC Test 30", "Flow Rate of Traffic in the Katipunan Ave. - Aurora Blvd. Intersection")
     
-
-    plot_line_4_params(sim_sec, spawned_vehs[0], spawned_vehs[1], spawned_vehs[2], spawned_vehs[3], "Time (s)", "Vehicle count", "Katipunan South", "Katipunan North", "Aurora West", "Aurora East",
-                       "Number of vehicles spawned from 6:00 AM to 8:00 PM")
     plot_line_1_param(sim_sec, spawned_vehs[4], "Time (s)", "Vehicle count", "Total number of vehicles spawned from 6:00 AM to 8:00 PM")
     '''
 
@@ -405,9 +370,9 @@ def main():
                        "Green Times (s)", "Green Time of Katipunan South ", "Green Time of Katipunan Nprth", "Green Time of Aurora West", 
                        "Green Time of Aurora East to Katipunan South", "Green Time of Aurora East to West", "Change in Green Times of the Stoplights in the Intersection")
     
-    percent_improvement(fixed_time_data, mpc_data_1, "Fixed-time TSC", "MPC-based TSC Test 1", "q_length")
-    percent_improvement(fixed_time_data, mpc_data_1, "Fixed-time TSC", "MPC-based TSC Test 1", "q_time")
-    percent_improvement(fixed_time_data, mpc_data_1, "Fixed-time TSC", "MPC-based TSC Test 1", "flow")
+    percent_improvement(ql_fixed_time, ql_mpc_1, "Fixed-time TSC", "MPC-based TSC Test 1", "q_length")
+    percent_improvement(qt_fixed_time, qt_mpc_1, "Fixed-time TSC", "MPC-based TSC Test 1", "q_time")
+    percent_improvement(flow_fixed_time, flow_mpc_1, "Fixed-time TSC", "MPC-based TSC Test 1", "flow")
     
     plt.show()
 

@@ -241,7 +241,7 @@ def get_queue_length(record_stopped_vehs, record, step):
     if record == 0:
 
         for veh in record_stopped_vehs.keys():
-            if record_stopped_vehs[veh][0] >= 3:
+            if record_stopped_vehs[veh][0] >= 6:
 
                 lane_id = traci.vehicle.getLaneID(veh)
                 veh_len = traci.vehicle.getLength(veh)
