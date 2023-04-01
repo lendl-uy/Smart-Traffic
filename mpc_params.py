@@ -9,7 +9,7 @@ from create_demand_mpc import create_dua_demand
 # Tunable parameters
 N = 5 # (TUNABLE)
 u_min_val = 15 # (TUNABLE)
-C_min = 50 # (TUNABLE)
+C_min = 70 # (TUNABLE)
 C_max = 100 # (TUNABLE)
 print(f"N = {N}")
 print(f"u_min_val = {u_min_val}")

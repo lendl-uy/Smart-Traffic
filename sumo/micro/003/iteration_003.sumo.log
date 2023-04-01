@@ -1,18 +1,73 @@
-***Starting server on port 58290 ***
-Loading net-file from 'G:\\Documents\\Smart Traffic\\Smart-Traffic\\sumo\\micro\\003\\25-3-lendl-ver.net.xml' ... done (34ms).
-Loading additional-files from 'G:\\Documents\\Smart Traffic\\Smart-Traffic\\sumo\\micro\\003\\../edgedata.add.xml' ... done (13ms).
+***Starting server on port 61542 ***
+Loading net-file from 'G:\\Documents\\Smart Traffic\\Smart-Traffic\\sumo\\micro\\003\\25-3-lendl-ver.net.xml' ... done (42ms).
+Loading additional-files from 'G:\\Documents\\Smart Traffic\\Smart-Traffic\\sumo\\micro\\003\\../edgedata.add.xml' ... done (2ms).
 Loading done.
 Simulation started with time: 0.00.
-Error: tcpip::Socket::recvAndCheck @ recv: Socket reset by peer
-Quitting (on error).
-Simulation ended at time: 693.00
+Warning: Vehicle 'f_10_0_CAR.52' performs emergency braking on lane ':J2_2_0' with decel=9.00, wished=4.50, severity=1.00, time=3401.50.
+Warning: Vehicle 'f_10_0_CAR.53' performs emergency braking on lane ':J2_2_0' with decel=9.00, wished=4.50, severity=1.00, time=3407.50.
+Warning: Vehicle 'f_2_3_CAR.120' performs emergency braking on lane '1078018164_0' with decel=9.00, wished=4.50, severity=1.00, time=14068.50.
+Warning: Vehicle 'f_10_4_CAR.25' performs emergency braking on lane ':J2_2_0' with decel=9.00, wished=4.50, severity=1.00, time=16681.00.
+Warning: Vehicle 'f_5_4_CAR.30' performs emergency braking on lane '1076383725.80_0' with decel=9.00, wished=4.50, severity=1.00, time=18849.50.
+Warning: Vehicle 'f_5_4_CAR.30' performs emergency braking on lane ':cluster9883633497_cluster_25353129_33471551_cluster_26272655_288063291_29500569_5064338396_#2more_0_0' with decel=9.00, wished=4.50, severity=1.00, time=18852.00.
+Warning: Vehicle 'f_5_4_TAXI.19' performs emergency braking on lane '1076383725.80_0' with decel=9.00, wished=4.50, severity=1.00, time=19889.50.
+Warning: Vehicle 'f_5_4_TAXI.19' performs emergency braking on lane ':cluster9883633497_cluster_25353129_33471551_cluster_26272655_288063291_29500569_5064338396_#2more_0_0' with decel=9.00, wished=4.50, severity=1.00, time=19891.50.
+Warning: Vehicle 'f_5_4_TAXI.20' performs emergency braking on lane '1076383725.80_0' with decel=9.00, wished=4.50, severity=1.00, time=19969.50.
+Warning: Vehicle 'f_2_6_CAR.2' performs emergency braking on lane '1078018164_0' with decel=9.00, wished=4.50, severity=1.00, time=21667.50.
+Warning: Vehicle 'f_2_6_CAR.29' performs emergency braking on lane '1078018164_0' with decel=9.00, wished=4.50, severity=1.00, time=22307.50.
+Warning: Vehicle 'f_5_5_CAR.34' performs emergency braking on lane '1076383725.80_0' with decel=9.00, wished=4.50, severity=1.00, time=23809.50.
+Warning: Vehicle 'f_5_5_CAR.34' performs emergency braking on lane ':cluster9883633497_cluster_25353129_33471551_cluster_26272655_288063291_29500569_5064338396_#2more_0_0' with decel=9.00, wished=4.50, severity=1.00, time=23834.00.
+Warning: Vehicle 'f_2_6_CAR.98' performs emergency braking on lane '1078018164_0' with decel=9.00, wished=4.50, severity=1.00, time=23941.50.
+Warning: Vehicle 'f_2_7_CAR.14' performs emergency braking on lane '1078018164_0' with decel=9.00, wished=4.50, severity=1.00, time=25827.50.
+Warning: Vehicle 'f_2_8_CAR.5' performs emergency braking on lane '1078018164_0' with decel=9.00, wished=4.50, severity=1.00, time=29027.50.
+Warning: Vehicle 'f_2_8_CAR.34' performs emergency braking on lane '1078018164_0' with decel=9.00, wished=4.50, severity=1.00, time=30227.50.
+Warning: Vehicle 'f_2_8_CAR.63' performs emergency braking on lane '1078018164_0' with decel=9.00, wished=4.50, severity=1.00, time=31427.50.
+Warning: Vehicle 'f_10_8_CAR.2' performs emergency braking on lane ':J2_2_0' with decel=9.00, wished=4.50, severity=1.00, time=32226.00.
+Warning: Vehicle 'f_5_8_CAR.15' performs emergency braking on lane '1076383725.80_0' with decel=9.00, wished=4.50, severity=1.00, time=33675.50.
+Warning: Vehicle 'f_2_9_TAXI.6' performs emergency braking on lane '1078018164_0' with decel=9.00, wished=4Simulation ended at time: 50400.00
+Reason: TraCI requested termination.
 Performance: 
- Duration: 270.59s
- TraCI-Duration: 77.35s
- Real time factor: 2.56106
- UPS: 1003.259532
+ Duration: 17471.48s
+ TraCI-Duration: 13171.31s
+ Real time factor: 2.8847
+ UPS: 1655.589817
 Vehicles: 
- Inserted: 1689 (Loaded: 1965)
- Running: 243
- Waiting: 8
+ Inserted: 111794 (Loaded: 125347)
+ Running: 299
+ Waiting: 13540
+
+ith decel=9.00, wished=4.50, severity=1.00, time=41229.50.
+Warning: Vehicle 'f_2_11_CAR.183' performs emergency braking on lane '1078018164_0' with decel=9.00, wished=4.50, severity=1.00, time=43124.50.
+Simulation ended at time: 50400.00
+Reason: TraCI requested termination.
+Performance: 
+ Duration: 17634.56s
+ TraCI-Duration: 14209.41s
+ Real time factor: 2.85802
+ UPS: 1931.366423
+Vehicles: 
+ Inserted: 116993 (Loaded: 125347)
+ Running: 491
+ Waiting: 8341
+
+UPS: 1987.976670
+Vehicles: 
+ Inserted: 117333 (Loaded: 125347)
+ Running: 493
+ Waiting: 8001
+
+' with decel=9.00, wished=4.50, severity=1.00, time=47807.50.
+Warning: Vehicle 'f_2_13_CAR.113' performs emergency braking on lane '1078018164_0' with decel=9.00, wished=4.50, severity=1.00, time=49007.50.
+Warning: Vehicle 'f_2_13_CAR.175' performs emergency braking on lane '1078018164_0' with decel=9.00, wished=4.50, severity=1.00, time=50207.50.
+Simulation ended at time: 50400.00
+Reason: TraCI requested termination.
+Performance: 
+ Duration: 18021.44s
+ TraCI-Duration: 14412.49s
+ Real time factor: 2.79667
+ UPS: 1919.529469
+Vehicles: 
+ Inserted: 117279 (Loaded: 125347)
+ Running: 495
+ Waiting: 8055
+ Teleports: 2 (Collisions: 2)
 
