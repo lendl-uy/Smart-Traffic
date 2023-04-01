@@ -106,12 +106,18 @@ for step in range(sim_duration):
         traci.simulationStep()
         continue
 
+    if step >= sim_duration:
+        print("The simulation has ended!")
+        break
+
     if step%steps_per_s == 1:
 
-        delta_step = (step//steps_per_s)-step_C
+        actual_time_step = step//steps_per_s
 
-        hr, mins, sec, am_pm = perf.convert_to_real_time(step//steps_per_s)
-        print(f"Timestep: {step//steps_per_s}")
+        delta_step = actual_time_step-step_C
+
+        hr, mins, sec, am_pm = perf.convert_to_real_time(actual_time_step)
+        print(f"Timestep: {actual_time_step}")
         print(f"Current time step relative to new phase: {delta_step}")
         print(f"{hr}:{mins}:{sec} {am_pm}")
 
@@ -157,21 +163,17 @@ for step in range(sim_duration):
                             [ql_katip_south, ql_katip_north, ql_aurora_west, ql_aurora_east],
                             [qt_katip_south, qt_katip_north, qt_aurora_west, qt_aurora_east], 
                             [flow_katip_south, flow_katip_north, flow_aurora_west, flow_aurora_east],
-                            step//steps_per_s, u_sorted, C)
-        
-        # print(sumcar)
+                            [spawned_katip_south, spawned_katip_north, spawned_aurora_west, spawned_aurora_east],
+                            actual_time_step, u_sorted, C)
+
         # Perform MPC once a control interval has completed
         if delta_step+1 == C:
+
             print("Performing MPC to compute optimal green times!")
             # Recompute timer settings and cycle time
-            u, C = do_mpc(np.array([n_katip_south, n_katip_north, n_aurora_west_fair, n_aurora_east_fair]), (step//steps_per_s)+1)
+            u, C = do_mpc(np.array([n_katip_south, n_katip_north, n_aurora_west_fair, n_aurora_east_fair]), actual_time_step+1)
             u_sorted, phases = get_timer_settings(u, C) # Retrieves parsed timer setting information
-            '''
-            if (u or C) == None:
-                C = u_sorted[0]+u_sorted[3]+u_sorted[2]+9
-            else:
-                u_sorted, phases = get_timer_settings(u, C) # Retrieves parsed timer setting information
-            '''
+
             step_C = (step//steps_per_s)+1
         
             print(f"u = {u_sorted}")
@@ -182,7 +184,7 @@ for step in range(sim_duration):
     traci.simulationStep()
     print("\n")
 
-traci.close()
-
-# Record start time of simulation for optimization purposes
+# Record start time of simulation for profiling purposes
 print(f"Runtime of simulation: {time.time()-start}")
+
+traci.close()

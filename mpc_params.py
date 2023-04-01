@@ -2,28 +2,28 @@
 # CoE 199 MPC Parameters
 
 import numpy as np
-import traffic_distribution as td
+#import traffic_distribution as td
 
 from create_demand_mpc import create_dua_demand
 
 # Tunable parameters
 N = 5 # (TUNABLE)
-u_min_val = 23 # (TUNABLE)
+u_min_val = 25 # (TUNABLE)
 C_min = 50 # (TUNABLE)
-C_max = 100 # (TUNABLE)
+C_max = 240 # (TUNABLE)
 print(f"N = {N}")
 print(f"u_min_val = {u_min_val}")
 print(f"C_min = {C_min}")
 print(f"C_max = {C_max}")
 # Traffic model variables (s)
-T = 100 # Control interval (must be divisible to 3600)
+T = 100 # Control interval (must divide 3600 w/out decimal)
 L = 9  # Lost time (3 phases * 3s)
 
 # Saturation flow rate (veh/hr -> veh/s)
-S_1 = 841*(1/3600) # Saturation flow (DUMMY)
-S_2 = 1510*(1/3600) # Saturation flow (DUMMY)
-S_3 = 2017*(1/3600) # Saturation flow (DUMMY)
-S_4 = 3191*(1/3600) # Saturation flow (DUMMY)
+S_1 = 841*(1/3600) # Saturation flow
+S_2 = 1510*(1/3600) # Saturation flow
+S_3 = 2017*(1/3600) # Saturation flow
+S_4 = 3191*(1/3600) # Saturation flow
 
 # Demand values from 6 AM to 8 PM (veh/hr)
 d_1 = np.array([1147., 1636., 1465., 1408., 1277., 995., 1046., 
@@ -68,22 +68,11 @@ B = np.array([[S_1,0,0,0],
 B = -T*B
 
 # D is the demand matrix
-
-# Demand based on MMDA flow definitions
-'''
-d_1p = td.uniformify(T,d_1[0]-d_1_out[0])
-d_2p = td.uniformify(T,d_2[0]-d_2_out[0])
-d_3p = td.uniformify(T,d_3[0]-d_3_out[0])
-d_4p = td.uniformify(T,d_4[0]-d_4_out[0])
-
-for i in range(1,len(d_1)):
-  d_1p = np.append(d_1p, td.uniformify(T,d_1[i]-d_1_out[i]))
-  d_2p = np.append(d_2p, td.uniformify(T,d_2[i]-d_2_out[i]))
-  d_3p = np.append(d_3p, td.uniformify(T,d_3[i]-d_3_out[i]))
-  d_4p = np.append(d_4p, td.uniformify(T,d_4[i]-d_4_out[i]))
-'''
 # Demand based on DUArouter-generated flow definitions
-d_1p, d_2p, d_3p, d_4p = create_dua_demand(T, 50400, "sumo\\micro-2\\003\\tripinfo_003.xml")
+try:
+    d_1p, d_2p, d_3p, d_4p = create_dua_demand(T, 50400, "sumo\\micro\\003\\tripinfo_003.xml")
+except:
+    print(f"Error in creatind dua demand!")
 
 #D = np.tile(d, (N,1))
 #D = T*D
