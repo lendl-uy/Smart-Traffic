@@ -149,12 +149,11 @@ def do_mpc(x_curr=np.array([0,0,0,0]), step=0):
 
     # Post-processing of data
     additive = []
-    min_u = 15
     for i in range(len(u_res)):
         u_res[i] = int(u_res[i]+0.5) # Convert to integer
         print(f"u_res = {u_res[i]}")
-        if u_res[i] < min_u:
-            additive.append(min_u-(u_res[i])) # Dummy additive to reach minimum green time of 15s
+        if u_res[i] < u_min_val:
+            additive.append(u_min_val-(u_res[i])) # Dummy additive to reach minimum green time of 15s
             print("Model was relaxed")
             continue
 

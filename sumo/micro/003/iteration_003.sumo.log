@@ -1,36 +1,18 @@
-***Starting server on port 54404 ***
-Loading net-file from 'C:\Users\lendl\Documents\smart_traffic\sumo\25-3-lendl-ver.net.xml' ... done (26ms).
-Loading additional-files from 'C:\Users\lendl\Documents\smart_traffic\sumo\micro\003\../edgedata.add.xml' ... done (0ms).
+***Starting server on port 58290 ***
+Loading net-file from 'G:\\Documents\\Smart Traffic\\Smart-Traffic\\sumo\\micro\\003\\25-3-lendl-ver.net.xml' ... done (34ms).
+Loading additional-files from 'G:\\Documents\\Smart Traffic\\Smart-Traffic\\sumo\\micro\\003\\../edgedata.add.xml' ... done (13ms).
 Loading done.
 Simulation started with time: 0.00.
-Warning: Vehicle 'f_5_0_TAXI.0' performs emergency braking on lane '1076383725.80_0' with decel=9.00, wished=4.50, severity=1.00, time=23.50.
-Warning: Vehicle 'f_5_0_TAXI.10' performs emergency braking on lane '1076383725.80_0' with decel=9.00, wished=4.50, severity=1.00, time=1383.50.
-Warning: Vehicle 'f_5_0_TAXI.10' performs emergency braking on lane ':cluster9883633497_cluster_25353129_33471551_cluster_26272655_288063291_29500569_5064338396_#2more_0_0' with decel=9.00, wished=4.50, severity=1.00, time=1392.50.
-Warning: Vehicle 'f_2_0_CAR.31' performs emergency braking on lane '1078018164_0' with decel=9.00, wished=4.50, severity=1.00, time=1881.50.
-Warning: Vehicle 'f_10_0_CAR.50' performs emergency braking on lane ':J2_2_0' with decel=9.00, wished=4.50, severity=1.00, time=4026.00.
-Warning: Vehicle 'f_2_3_CAR.35' performs emergency braking on lane '1078018164_0' with decel=9.00, wished=4.50, severity=1.00, time=11767.50.
-Warning: Vehicle 'f_2_3_CAR.72' performs emergency braking on lane '1078018164_0' with decel=9.00, wished=4.50, severity=1.00, time=12769.50.
-Warning: Vehicle 'f_2_3_TAXI.26' performs emergency braking on lane '1078018164_0' with decel=9.00, wished=4.50, severity=1.00, time=13573.50.
-Warning: Vehicle 'f_10_3_CAR.43' performs emergency braking on lane ':J2_2_0' with decel=9.00, wished=4.50, severity=1.00, time=15670.50.
-Warning: Vehicle 'f_5_4_CAR.30' performs emergency braking on lane '1076383725.80_0' with decel=9.00, wished=4.50, severity=1.00, time=23255.50.
-Warning: Vehicle 'f_5_4_CAR.30' performs emergency braking on lane ':cluster9883633497_cluster_25353129_33471551_cluster_26272655_288063291_29500569_5064338396_#2more_0_0' with decel=9.00, wished=4.50, severity=1.00, time=23258.00.
-Warning: Vehicle 'f_2_6_CAR.90' performs emergency braking on lane '1078018164_0' with decel=9.00, wished=4.50, severity=1.00, time=23753.50.
-Warning: Vehicle 'f_2_7_CAR.75' performs emergency braking on lane '1078018164_0' with decel=9.00, wished=4.50, severity=1.00, time=28473.50.
-Warning: Vehicle 'f_10_5_CAR.60' performs emergency braking on lane ':J2_2_0' with decel=9.00, wished=4.50, severity=1.00, time=28552.00.
-Warning: Vehicle 'f_2_9_CAR.13' performs emergency braking on lane '1078018164_0' with decel=9.00, wished=4.50, severity=1.00, time=32923.50.
-Warning: Vehicle 'f_2_12_CAR.8' performs emergency braking on lane '1078018164_0' with decel=9.00, wished=4.50, severity=1.00, time=43405.50.
-Warning: Vehicle 'f_2_12_CAR.105' performs emergency braking on lane '1078018164_0' with decel=9.00, wished=4.50, severity=1.00, time=45645.50.
-Warning: Vehicle 'f_5_9_CAR.12' performs emergency braking on lane '1076383725.80_0' with decel=9.00, wished=4.50, severity=1.00, time=46107.50.
-Warning: Vehicle 'f_5_9_CAR.12' performs emergency braking on lane ':cluster9883633497_cluster_25353129_33471551_cluster_26272655_288063291_29500569_5064338396_#2more_0_0' with decel=9.00, wished=4.50, severity=1.00, time=46109.50.
-Simulation ended at time: 50400.00
-Reason: TraCI requested termination.
+Error: tcpip::Socket::recvAndCheck @ recv: Socket reset by peer
+Quitting (on error).
+Simulation ended at time: 693.00
 Performance: 
- Duration: 6442.34s
- TraCI-Duration: 3650.09s
- Real time factor: 7.82325
- UPS: 4790.579535
+ Duration: 270.59s
+ TraCI-Duration: 77.35s
+ Real time factor: 2.56106
+ UPS: 1003.259532
 Vehicles: 
- Inserted: 113162 (Loaded: 125347)
- Running: 284
- Waiting: 12172
+ Inserted: 1689 (Loaded: 1965)
+ Running: 243
+ Waiting: 8
 

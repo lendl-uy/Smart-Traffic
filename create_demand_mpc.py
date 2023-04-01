@@ -28,6 +28,8 @@ def create_dua_demand(T, sim_time, directory):
     #print(soup.prettify())
 
     trips = soup.find_all("tripinfo")
+    
+    #print(trips)
 
     i = 0
     j = 0

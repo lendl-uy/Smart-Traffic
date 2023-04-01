@@ -8,7 +8,7 @@ from create_demand_mpc import create_dua_demand
 
 # Tunable parameters
 N = 5 # (TUNABLE)
-u_min_val = 23 # (TUNABLE)
+u_min_val = 15 # (TUNABLE)
 C_min = 50 # (TUNABLE)
 C_max = 100 # (TUNABLE)
 print(f"N = {N}")
@@ -83,7 +83,7 @@ for i in range(1,len(d_1)):
   d_4p = np.append(d_4p, td.uniformify(T,d_4[i]-d_4_out[i]))
 '''
 # Demand based on DUArouter-generated flow definitions
-d_1p, d_2p, d_3p, d_4p = create_dua_demand(T, 50400, "sumo\\micro-2\\003\\tripinfo_003.xml")
+d_1p, d_2p, d_3p, d_4p = create_dua_demand(T, 50400, "sumo\\micro\\003\\tripinfo_003.xml")
 
 #D = np.tile(d, (N,1))
 #D = T*D

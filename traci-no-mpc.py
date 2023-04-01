@@ -26,8 +26,12 @@ else:
     sys.exit("please declare environment variable 'SUMO_HOME'")
 
 # Directory of sumo-gui and sumocfg files
-sumoBinary = "C:\\Program Files (x86)\\Eclipse\\Sumo\\bin\\sumo-gui.exe"
-sumoCmd = [sumoBinary, "-c", "C:\\Users\\lendl\\Documents\\smart_traffic\\sumo\\micro\\003\\iteration_003.sumocfg"]
+with open("sumoBinary.txt") as f:
+    sumoBinary = f.readline()
+with open("sumoCmd.txt") as f:
+    sumoFolder = f.readline()
+# sumoBinary = "C:\\Program Files (x86)\\Eclipse\\Sumo\\bin\\sumo-gui.exe"
+sumoCmd = [sumoBinary, "-c", sumoFolder]
 
 # Starts the simulation
 traci.start(sumoCmd)

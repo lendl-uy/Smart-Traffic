@@ -29,7 +29,7 @@ try:
     os.mkdir(new_directory)
 except:
     shutil.rmtree(new_directory, ignore_errors=True)
-    os.rmdir(new_directory)
+    #os.rmdir(new_directory)
 
 f_u = open(os.path.join(new_directory, filename_u), "w")
 f_c = open(os.path.join(new_directory, filename_c), "w")

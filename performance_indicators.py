@@ -10,7 +10,6 @@ import traci
 import traci.constants as tc
 import numpy as np
 
-from mpc_params import *
 from mpc import *
 from road_defs import *
 

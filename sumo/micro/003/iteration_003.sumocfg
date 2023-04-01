@@ -6,15 +6,13 @@
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
 
     <input>
-        <net-file value="C:\Users\lendl\Documents\smart_traffic\sumo\25-3-lendl-ver.net.xml"/>
+        <net-file value="25-3-lendl-ver.net.xml"/>
         <route-files value="4-3-test-demand-vianetedit_003.rou.xml"/>
         <additional-files value="../edgedata.add.xml"/>
     </input>
 
     <output>
         <output-prefix value="003/"/>
-        <summary-output value="../summary_003.xml"/>
-        <tripinfo-output value="../tripinfo_003.xml"/>
     </output>
 
     <time>
