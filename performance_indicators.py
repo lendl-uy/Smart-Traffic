@@ -69,7 +69,7 @@ def get_vehicle_count(road_name):
 
     # Error handling
     if road_name not in road_names:
-        print("Invalid road name. Valid road names are: [KatipN, KatipS, AuroraW, AuroraE, all]")
+        #print("Invalid road name. Valid road names are: [KatipN, KatipS, AuroraW, AuroraE, all]")
         return 0
         
     # Obtain vehicle count in KatipN
@@ -95,7 +95,7 @@ def get_vehicle_count(road_name):
 
         # The length of this set gives the total number of cars in KatipN
         KatipN_total = len(KatipN_combined_ids)
-        print("Vehicles in KatipN: ", KatipN_total)
+        #print("Vehicles in KatipN: ", KatipN_total)
         return KatipN_total
     
     # Obtain vehicle count in KatipS
@@ -121,7 +121,7 @@ def get_vehicle_count(road_name):
 
         # The length of this set gives the total number of cars in KatipS
         KatipS_total = len(KatipS_combined_ids)
-        print("Vehicles in KatipS: ", KatipS_total)
+        #print("Vehicles in KatipS: ", KatipS_total)
         return KatipS_total
 
     # Obtain vehicle count in AuroraE
@@ -147,7 +147,7 @@ def get_vehicle_count(road_name):
 
         # The length of this set gives the total number of cars in AuroraE
         AuroraE_total = len(AuroraE_combined_ids)
-        print("Vehicles in AuroraE: ", AuroraE_total)
+        #print("Vehicles in AuroraE: ", AuroraE_total)
         return AuroraE_total
 
     # Obtain vehicle count in AuroraW
@@ -173,7 +173,7 @@ def get_vehicle_count(road_name):
 
         # The length of this set gives the total number of cars in AuroraW
         AuroraW_total = len(AuroraW_combined_ids)
-        print("Vehicles in AuroraW: ", AuroraW_total)
+        #print("Vehicles in AuroraW: ", AuroraW_total)
         return AuroraW_total
     
     elif road_name == "all":
@@ -321,14 +321,14 @@ def get_queue_length(record_stopped_vehs, record, step):
         Overall_avlenAe=sum(avlenAe)/len(avlenAe)
         Overall_avlenAw=sum(avlenAw)/len(avlenAw)
 
-        print(f"Average queue length in Katipunan South: {avg_ql_katip_south} m")
-        print(f"Average queue length in Katipunan North: {avg_ql_katip_north} m")
-        print(f"Average queue length in Aurora West: {avg_ql_aurora_west} m")
-        print(f"Average queue length in Aurora East: {avg_ql_aurora_east} m")
-        print(f"Overall average queue length in Katipunan South: {Overall_avlenKs} m")
-        print(f"Overall average queue length in Katipunan North: {Overall_avlenKn} m")
-        print(f"Overall average queue length in Aurora West: {Overall_avlenAw} m")
-        print(f"Overall average queue length in Aurora East: {Overall_avlenAe} m")
+        #print(f"Average queue length in Katipunan South: {avg_ql_katip_south} m")
+        #print(f"Average queue length in Katipunan North: {avg_ql_katip_north} m")
+        #print(f"Average queue length in Aurora West: {avg_ql_aurora_west} m")
+        #print(f"Average queue length in Aurora East: {avg_ql_aurora_east} m")
+        #print(f"Overall average queue length in Katipunan South: {Overall_avlenKs} m")
+        #print(f"Overall average queue length in Katipunan North: {Overall_avlenKn} m")
+        #print(f"Overall average queue length in Aurora West: {Overall_avlenAw} m")
+        #print(f"Overall average queue length in Aurora East: {Overall_avlenAe} m")
 
     return Overall_avlenKs, Overall_avlenKn, Overall_avlenAw, Overall_avlenAe, record_stopped_vehs
 
@@ -342,7 +342,7 @@ def get_car_flow(road_name):
     road_names = ["KatipN", "KatipS", "AuroraW", "AuroraE", "all"]
     # Error handling
     if road_name not in road_names:
-        print("Invalid road name. Valid road names are: [KatipN, KatipS, AuroraW, AuroraE, all]")
+        #print("Invalid road name. Valid road names are: [KatipN, KatipS, AuroraW, AuroraE, all]")
         return 0
 
     if road_name == "KatipN":
@@ -388,7 +388,7 @@ def get_flow_rate(road_name):
 
     # Error handling
     if road_name not in road_names:
-        print("Invalid road name. Valid road names are: [KatipN, KatipS, AuroraW, AuroraE, all]")
+        #print("Invalid road name. Valid road names are: [KatipN, KatipS, AuroraW, AuroraE, all]")
         return 0
     
     total_flow = get_car_flow(road_name)
@@ -397,7 +397,7 @@ def get_flow_rate(road_name):
     if step>0:
         flow_rate = total_flow*3600/step
 
-    print(f"Average flow rate in {road_name}: {flow_rate} veh/hr")
+    #print(f"Average flow rate in {road_name}: {flow_rate} veh/hr")
 
     return flow_rate
 
@@ -451,10 +451,10 @@ def get_avg_wait():
     else:
         avgwt_aurora_e = 0.0
 
-    print(f"Average waiting time in Katipunan South: {avgwt_katip_s} s")
-    print(f"Average waiting time in Katipunan North: {avgwt_katip_n} s")
-    print(f"Average waiting time in Aurora West: {avgwt_aurora_w} s")
-    print(f"Average waiting time in Aurora East: {avgwt_aurora_e} s")
+    #print(f"Average waiting time in Katipunan South: {avgwt_katip_s} s")
+    #print(f"Average waiting time in Katipunan North: {avgwt_katip_n} s")
+    #print(f"Average waiting time in Aurora West: {avgwt_aurora_w} s")
+    #print(f"Average waiting time in Aurora East: {avgwt_aurora_e} s")
 
     return avgwt_katip_s, avgwt_katip_n, avgwt_aurora_w, avgwt_aurora_e
 
@@ -476,9 +476,9 @@ def get_spawned_vehs():
     total_spawned_aurora_w = sum(spawned_aurora_w)
     total_spawned_aurora_e = sum(spawned_aurora_e)
     '''
-    print(f"Total vehicles spawned in Katipunan South: {total_spawned_katip_s}")
-    print(f"Total vehicles spawned in Katipunan North: {total_spawned_katip_n}")
-    print(f"Total vehicles spawned in Aurora West: {total_spawned_aurora_w}")
-    print(f"Total vehicles spawned in Aurora East: {total_spawned_aurora_e}")
+    #print(f"Total vehicles spawned in Katipunan South: {total_spawned_katip_s}")
+    #print(f"Total vehicles spawned in Katipunan North: {total_spawned_katip_n}")
+    #print(f"Total vehicles spawned in Aurora West: {total_spawned_aurora_w}")
+    #print(f"Total vehicles spawned in Aurora East: {total_spawned_aurora_e}")
     '''
     return total_spawned_katip_s, total_spawned_katip_n, total_spawned_aurora_w, total_spawned_aurora_e

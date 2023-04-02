@@ -52,7 +52,7 @@ def do_mpc(x_curr=np.array([0,0,0,0]), step=0):
         else:
             d = np.concatenate((d, [[0.0, 0.0, 0.0, 0.0]]))
     D = d
-    #print(f"D = {D}")
+    ##print(f"D = {D}")
 
     # u_41 and u_43 divides sum of green times in Aurora Blvd. East
     # Aurora Blvd. East has two phases, to Katipunan Ave. South and Aurora Blvd. West
@@ -126,7 +126,7 @@ def do_mpc(x_curr=np.array([0,0,0,0]), step=0):
             names_to_retrieve.append(f"x[{i},{j}]")
 
     if m.Status == GRB.INFEASIBLE:
-        print("Model is infeasible!")
+        #print("Model is infeasible!")
         m.computeIIS() # Check for constraints leading to infeasibility
         m.write("iis.ilp")
         m.feasRelaxS(1, True, True, False) # Ease model if infeasible
@@ -135,7 +135,7 @@ def do_mpc(x_curr=np.array([0,0,0,0]), step=0):
         for v in m.getVars():
             if v.VarName in names_to_retrieve:
                 vals[v.VarName] = v.X
-                #print('%s %g' % (v.VarName, v.X))
+                ##print('%s %g' % (v.VarName, v.X))
                 if v.VarName[:3] == "u[0" or (v.VarName == "u_41" or v.VarName == "u_43"):
                     u_res.append(v.X)
         #return None, None
@@ -143,7 +143,7 @@ def do_mpc(x_curr=np.array([0,0,0,0]), step=0):
         for v in m.getVars():
             if v.VarName in names_to_retrieve:
                 vals[v.VarName] = v.X
-                #print('%s %g' % (v.VarName, v.X))
+                ##print('%s %g' % (v.VarName, v.X))
                 if v.VarName[:3] == "u[0" or (v.VarName == "u_41" or v.VarName == "u_43"):
                     u_res.append(v.X)
 
@@ -151,10 +151,10 @@ def do_mpc(x_curr=np.array([0,0,0,0]), step=0):
     additive = []
     for i in range(len(u_res)):
         u_res[i] = int(u_res[i]+0.5) # Convert to integer
-        print(f"u_res = {u_res[i]}")
+        #print(f"u_res = {u_res[i]}")
         if u_res[i] < u_min_val:
             additive.append(u_min_val-(u_res[i])) # Dummy additive to reach minimum green time of 15s
-            print("Model was relaxed")
+            #print("Model was relaxed")
             continue
 
     if len(additive) > 0:
@@ -164,14 +164,14 @@ def do_mpc(x_curr=np.array([0,0,0,0]), step=0):
         
     proc_C = int((u_res[0]+u_res[4]+u_res[2]+9)+0.5)# Convert to integer
 
-    #print(f"xmin = {xmin}")
-    #print(f"xmax = {xmax}")
-    #print(f"umin = {umin}")
-    #print(f"umax = {umax}")
-    #print(f"B = {B}")
-    #print(f"D = {D}")
-    #print(f"Q = {Q}")
-    #print(f"R = {R}")
+    ##print(f"xmin = {xmin}")
+    ##print(f"xmax = {xmax}")
+    ##print(f"umin = {umin}")
+    ##print(f"umax = {umax}")
+    ##print(f"B = {B}")
+    ##print(f"D = {D}")
+    ##print(f"Q = {Q}")
+    ##print(f"R = {R}")
 
     return u_res, proc_C
 
@@ -199,8 +199,8 @@ def get_timer_settings(u, C):
   
 def main():
     u, C = do_mpc()
-    print(f"u[0,:] = {u}")
-    print(f"C = {C}")
+    #print(f"u[0,:] = {u}")
+    #print(f"C = {C}")
     get_timer_settings(u, C)
 
 if __name__ == "__main__":

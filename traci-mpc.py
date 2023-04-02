@@ -65,9 +65,9 @@ stopped_vehs = {}
 
 #ql_sampling_time = 2
 
-print(f"u = {u_sorted}")
-print(f"C = {C}")
-print(f"phases = {phases}")
+#print(f"u = {u_sorted}")
+#print(f"C = {C}")
+#print(f"phases = {phases}")
 
 n_aurora_west = 0
 n_aurora_east = 0
@@ -115,9 +115,9 @@ for step in range(sim_duration):
         delta_step = (step//steps_per_s)-step_C
 
         hr, mins, sec, am_pm = perf.convert_to_real_time(step//steps_per_s)
-        print(f"Timestep: {step//steps_per_s}")
-        print(f"Current time step relative to new phase: {delta_step}")
-        print(f"{hr}:{mins}:{sec} {am_pm}")
+        #print(f"Timestep: {step//steps_per_s}")
+        #print(f"Current time step relative to new phase: {delta_step}")
+        #print(f"{hr}:{mins}:{sec} {am_pm}")
 
         # Perform switching of phases based on the current time step
         # Adjusts timer settings of all stoplights based on computed green times
@@ -129,33 +129,33 @@ for step in range(sim_duration):
             else:
                 traci.trafficlight.setPhase(trafficlightID, 0)
                 traci.trafficlight.setPhaseDuration(trafficlightID, u_sorted[0])
-            print(f"Timer applied: {u_sorted[0]} s")
+            #print(f"Timer applied: {u_sorted[0]} s")
         elif delta_step == phases[1]-3:
             traci.trafficlight.setPhase(trafficlightID, 1)
             traci.trafficlight.setPhaseDuration(trafficlightID, 3)
-            print(f"Timer applied: 3 s")
+            #print(f"Timer applied: 3 s")
         elif delta_step == phases[1]:
             traci.trafficlight.setPhase(trafficlightID, 2)
             traci.trafficlight.setPhaseDuration(trafficlightID, u_sorted[3])
             n_aurora_east_fair = n_aurora_east # Save vehicle count for Aurora East (just before green time)
-            print(f"Timer applied: {u_sorted[3]} s")
+            #print(f"Timer applied: {u_sorted[3]} s")
         elif delta_step == phases[2]-3:
             traci.trafficlight.setPhase(trafficlightID, 3)
             traci.trafficlight.setPhaseDuration(trafficlightID, 3)
-            print(f"Timer applied: 3 s")
+            #print(f"Timer applied: 3 s")
         elif delta_step == phases[2]:
             traci.trafficlight.setPhase(trafficlightID, 4)
             traci.trafficlight.setPhaseDuration(trafficlightID, u_sorted[2])
             n_aurora_west_fair = n_aurora_west # Save vehicle count for Aurora West (just before green time)
-            print(f"Timer applied: {u_sorted[2]} s")
+            #print(f"Timer applied: {u_sorted[2]} s")
         elif delta_step == C-3:
             traci.trafficlight.setPhase(trafficlightID, 5)
             traci.trafficlight.setPhaseDuration(trafficlightID, 3)
-            print(f"Timer applied: 3 s")
+            #print(f"Timer applied: 3 s")
 
         phase_num = traci.trafficlight.getPhase(trafficlightID)
 
-        print(f"Current phase number: {phase_num}")
+        #print(f"Current phase number: {phase_num}")
 
         save_sim.write_results([n_katip_south, n_katip_north, n_aurora_west, n_aurora_east],
                             [ql_katip_south, ql_katip_north, ql_aurora_west, ql_aurora_east],
@@ -163,10 +163,10 @@ for step in range(sim_duration):
                             [flow_katip_south, flow_katip_north, flow_aurora_west, flow_aurora_east],
                             step//steps_per_s, u_sorted, C)
         
-        # print(sumcar)
+        # #print(sumcar)
         # Perform MPC once a control interval has completed
         if delta_step+1 == C:
-            print("Performing MPC to compute optimal green times!")
+            #print("Performing MPC to compute optimal green times!")
             # Recompute timer settings and cycle time
             u, C = do_mpc(np.array([n_katip_south, n_katip_north, n_aurora_west_fair, n_aurora_east_fair]), (step//steps_per_s)+1)
             u_sorted, phases = get_timer_settings(u, C) # Retrieves parsed timer setting information
@@ -178,13 +178,13 @@ for step in range(sim_duration):
             '''
             step_C = (step//steps_per_s)+1
         
-            print(f"u = {u_sorted}")
-            print(f"C = {C}")
-            print(f"phases = {phases}")
+            #print(f"u = {u_sorted}")
+            #print(f"C = {C}")
+            #print(f"phases = {phases}")
 
     # Step the simulation by 1 second
     traci.simulationStep()
-    print("\n")
+    #print("\n")
 
 traci.close()
 

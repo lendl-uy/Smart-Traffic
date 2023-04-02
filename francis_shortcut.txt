@@ -1,3 +1,5 @@
-conda activate CoE199 && G: && Xcopy "G:\Documents\Smart Traffic\Smart-Traffic\sumo\003_copy\" "G:\Documents\Smart Traffic\Smart-Traffic\sumo\micro" /E/H/C/I && cd G:\Documents\Smart Traffic\Smart-Traffic && python traci-mpc.py 
+First run:
+conda activate CoE199 && G: && cd G:\Documents\Smart Traffic\Smart-Traffic && python traci-mpc.py --C_min XX --C_max XX
 
-conda activate CoE199 && G: && cd G:\Documents\Smart Traffic\Smart-Traffic && python traci-mpc.py 
+Subsequent runs:
+conda activate CoE199 && G: && cd G:\Documents\Smart Traffic\Smart-Traffic && python overwrite_log.py && python traci-mpc.py --C_min XX --C_max XX

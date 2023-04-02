@@ -3,14 +3,29 @@
 
 import numpy as np
 import traffic_distribution as td
+import argparse
 
 from create_demand_mpc import create_dua_demand
 
 # Tunable parameters
 N = 5 # (TUNABLE)
 u_min_val = 15 # (TUNABLE)
-C_min = 70 # (TUNABLE)
+C_min = 50 # (TUNABLE)
 C_max = 100 # (TUNABLE)
+
+parser = argparse.ArgumentParser()
+parser.add_argument("-N", "--N", nargs="?", type=int, help="prediction horizon", default=5)
+parser.add_argument("-U", "--u_min_val", nargs="?", type=int, help="minimum green", default=15)
+parser.add_argument("-L", "--C_min", nargs="?", type=int, help="minimum cycle", default=50)
+parser.add_argument("-H", "--C_max", nargs="?", type=int, help="maximum cycle", default=100)
+args = parser.parse_args()
+
+N = args.N
+u_min_val = args.u_min_val
+C_min = args.C_min
+C_max = args.C_max
+
+
 print(f"N = {N}")
 print(f"u_min_val = {u_min_val}")
 print(f"C_min = {C_min}")
