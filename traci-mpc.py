@@ -1,12 +1,6 @@
 # Authors: Eisler Spencer Go, Jan Lendl R. Uy
 # Interfacing of SUMO simulation via TraCI
 
-# Conventions
-# KatipS: Katipunan Southbound / Katipunan North
-# KatipN: Katipunan Northbound / Katipunan South
-# AuroW: Aurora Westbound / Aurora East
-# AuroE: Aurora Eastbound / Aurora West
-
 import os
 import sys
 import time
@@ -39,152 +33,153 @@ traci.start(sumoCmd)
 junctionID='cluster9883633497_cluster_25353129_33471551_cluster_26272655_288063291_29500569_5064338396_#2more'
 trafficlightID='cluster9883633497_cluster_25353129_33471551_cluster_26272655_288063291_29500569_5064338396_#2more'
 
-#traci.junction.subscribeContext(junctionID, tc.CMD_GET_VEHICLE_VARIABLE, 42, [tc.VAR_SPEED, tc.VAR_WAITING_TIME])
-
-# Actual simulation
-# Entire simulation spans from 6AM to 8PM traffic (14 hrs/50400 secs)
-
 step_len = 0.5
 steps_per_s = int(1/step_len)
 sim_duration = int(50400/step_len) # Fixed
 
-# Record start time of simulation for optimization purposes
-start = time.time()
-
-# Obtain initial timer settings and cycle time
-u, C = do_mpc()
-u_sorted, phases = get_timer_settings(u, C) # Retrieves parsed timer setting information
-step_C = 0
-
 allcar={}
 stopped_vehs = {}
-
-#ql_sampling_time = 2
-
-print(f"u = {u_sorted}")
-print(f"C = {C}")
-print(f"phases = {phases}")
 
 n_aurora_west = 0
 n_aurora_east = 0
 
 sumcar = 0
-for step in range(sim_duration):
 
-    #dummy_delta_step = step-step_C
+# Actual simulation
+# Entire simulation spans from 6AM to 8PM traffic (14 hrs/50400 secs)
+# 1 step corresponds to 0.5 seconds
+
+def main():
+
+    # Record start time of simulation for optimization purposes
+    start = time.time()
+
+    # Obtain initial timer settings and cycle time
+    u, C = do_mpc()
+    u_sorted, phases = get_timer_settings(u, C) # Retrieves parsed timer setting information
+    step_C = 0
+
+    print(f"u = {u_sorted}")
+    print(f"C = {C}")
+    print(f"phases = {phases}")
+
+    for step in range(sim_duration+1):
+
+        #dummy_delta_step = step-step_C
+        
+        # Get the average queue time of all incoming roads
+        qt_katip_south, qt_katip_north, qt_aurora_west, qt_aurora_east = perf.get_avg_wait()
+        
+        # Get the average flow rate of all incoming roads
+        traci.junction.subscribeContext(junctionID, tc.CMD_GET_VEHICLE_VARIABLE, 60)
+
+        #totalcarflow = perf.get_car_flow("all")
     
-    # Get the average queue time of all incoming roads
-    qt_katip_south, qt_katip_north, qt_aurora_west, qt_aurora_east = perf.get_avg_wait()
-      
-    # Get the average flow rate of all incoming roads
-    traci.junction.subscribeContext(junctionID, tc.CMD_GET_VEHICLE_VARIABLE, 60)
+        # "Snapshot" of vehicles that are stationary (for queue length)
+        # Ensures that recorded stationary vehicles belong to the queue
+        new_stopped_vehs = perf.get_queue_length(stopped_vehs, 1, step)
+    
+        # Obtain average queueing time and flow rate of all incoming roads
+        if step > 0:
+            flow_katip_south = perf.get_flow_rate("KatipS")
+            flow_katip_north = perf.get_flow_rate("KatipN")
+            flow_aurora_west = perf.get_flow_rate("AuroraW")
+            flow_aurora_east = perf.get_flow_rate("AuroraE")
+            ql_katip_south, ql_katip_north, ql_aurora_west, ql_aurora_east, new_stopped_vehs = perf.get_queue_length(new_stopped_vehs, 0, step)
 
-    #totalcarflow = perf.get_car_flow("all")
-   
-    if step > 0:
-        flow_katip_south = perf.get_flow_rate("KatipS")
-        flow_katip_north = perf.get_flow_rate("KatipN")
-        flow_aurora_west = perf.get_flow_rate("AuroraW")
-        flow_aurora_east = perf.get_flow_rate("AuroraE")
+        # Record traffic data for each time step except zeroth second
+        if step == 0:
+            traci.simulationStep()
+            continue
 
-    # "Snapshot" of vehicles that are stationary (for queue length)
-    # Ensures that recorded stationary vehicles belong to the queue
-    new_stopped_vehs = perf.get_queue_length(stopped_vehs, 1, step)
+        if step > sim_duration:
+            print("The simulation has ended!")
+            break
 
-    # Obtain average queueing time of all incoming roads
-    if step > 0:
-        ql_katip_south, ql_katip_north, ql_aurora_west, ql_aurora_east, new_stopped_vehs = perf.get_queue_length(new_stopped_vehs, 0, step)
+        if step%steps_per_s == 0:
 
-    # Obtain cumulative number of vehicles inserted in the simulation since time 0
-    spawned_katip_south, spawned_katip_north, spawned_aurora_west, spawned_aurora_east = perf.get_spawned_vehs()
+            actual_time_step = step//steps_per_s
 
-    # Obtain vehicle count in all incoming roads
-    n_katip_south, n_katip_north, n_aurora_west, n_aurora_east = perf.get_vehicle_count("all")
+            delta_step = actual_time_step-step_C
 
-    # Record traffic data for each time step except zeroth second
-    if step == 0:
-        traci.simulationStep()
-        continue
+            hr, mins, sec, am_pm = perf.convert_to_real_time(actual_time_step)
+            print(f"Timestep: {actual_time_step}")
+            print(f"Current time step relative to new phase: {delta_step}")
+            print(f"{hr}:{mins}:{sec} {am_pm}")
 
-    if step >= sim_duration:
-        print("The simulation has ended!")
-        break
-
-    if step%steps_per_s == 1:
-
-        actual_time_step = step//steps_per_s
-
-        delta_step = actual_time_step-step_C
-
-        hr, mins, sec, am_pm = perf.convert_to_real_time(actual_time_step)
-        print(f"Timestep: {actual_time_step}")
-        print(f"Current time step relative to new phase: {delta_step}")
-        print(f"{hr}:{mins}:{sec} {am_pm}")
-
-        # Perform switching of phases based on the current time step
-        # Adjusts timer settings of all stoplights based on computed green times
-        if delta_step == 0:
-            # Handle skipping of phases
-            if (u_sorted[0] == u_sorted[1] == 0) and (u_sorted[3]>0):
+            # Perform switching of phases based on the current time step
+            # Adjusts timer settings of all stoplights based on computed green times
+            if delta_step == 0:
+                # Handle skipping of phases
+                if (u_sorted[0] == u_sorted[1] == 0) and (u_sorted[3]>0):
+                    traci.trafficlight.setPhase(trafficlightID, 2)
+                    traci.trafficlight.setPhaseDuration(trafficlightID, u_sorted[3])
+                else:
+                    traci.trafficlight.setPhase(trafficlightID, 0)
+                    traci.trafficlight.setPhaseDuration(trafficlightID, u_sorted[0])
+                print(f"Timer applied: {u_sorted[0]} s")
+            elif delta_step == phases[1]-3:
+                traci.trafficlight.setPhase(trafficlightID, 1)
+                traci.trafficlight.setPhaseDuration(trafficlightID, 3)
+                print(f"Timer applied: 3 s")
+            elif delta_step == phases[1]:
                 traci.trafficlight.setPhase(trafficlightID, 2)
                 traci.trafficlight.setPhaseDuration(trafficlightID, u_sorted[3])
-            else:
-                traci.trafficlight.setPhase(trafficlightID, 0)
-                traci.trafficlight.setPhaseDuration(trafficlightID, u_sorted[0])
-            print(f"Timer applied: {u_sorted[0]} s")
-        elif delta_step == phases[1]-3:
-            traci.trafficlight.setPhase(trafficlightID, 1)
-            traci.trafficlight.setPhaseDuration(trafficlightID, 3)
-            print(f"Timer applied: 3 s")
-        elif delta_step == phases[1]:
-            traci.trafficlight.setPhase(trafficlightID, 2)
-            traci.trafficlight.setPhaseDuration(trafficlightID, u_sorted[3])
-            n_aurora_east_fair = n_aurora_east # Save vehicle count for Aurora East (just before green time)
-            print(f"Timer applied: {u_sorted[3]} s")
-        elif delta_step == phases[2]-3:
-            traci.trafficlight.setPhase(trafficlightID, 3)
-            traci.trafficlight.setPhaseDuration(trafficlightID, 3)
-            print(f"Timer applied: 3 s")
-        elif delta_step == phases[2]:
-            traci.trafficlight.setPhase(trafficlightID, 4)
-            traci.trafficlight.setPhaseDuration(trafficlightID, u_sorted[2])
-            n_aurora_west_fair = n_aurora_west # Save vehicle count for Aurora West (just before green time)
-            print(f"Timer applied: {u_sorted[2]} s")
-        elif delta_step == C-3:
-            traci.trafficlight.setPhase(trafficlightID, 5)
-            traci.trafficlight.setPhaseDuration(trafficlightID, 3)
-            print(f"Timer applied: 3 s")
+                n_aurora_east_fair = n_aurora_east # Save vehicle count for Aurora East (just before green time)
+                print(f"Timer applied: {u_sorted[3]} s")
+            elif delta_step == phases[2]-3:
+                traci.trafficlight.setPhase(trafficlightID, 3)
+                traci.trafficlight.setPhaseDuration(trafficlightID, 3)
+                print(f"Timer applied: 3 s")
+            elif delta_step == phases[2]:
+                traci.trafficlight.setPhase(trafficlightID, 4)
+                traci.trafficlight.setPhaseDuration(trafficlightID, u_sorted[2])
+                n_aurora_west_fair = n_aurora_west # Save vehicle count for Aurora West (just before green time)
+                print(f"Timer applied: {u_sorted[2]} s")
+            elif delta_step == C-3:
+                traci.trafficlight.setPhase(trafficlightID, 5)
+                traci.trafficlight.setPhaseDuration(trafficlightID, 3)
+                print(f"Timer applied: 3 s")
 
-        phase_num = traci.trafficlight.getPhase(trafficlightID)
+            phase_num = traci.trafficlight.getPhase(trafficlightID)
 
-        print(f"Current phase number: {phase_num}")
+            print(f"Current phase number: {phase_num}")
 
-        save_sim.write_results([n_katip_south, n_katip_north, n_aurora_west, n_aurora_east],
-                            [ql_katip_south, ql_katip_north, ql_aurora_west, ql_aurora_east],
-                            [qt_katip_south, qt_katip_north, qt_aurora_west, qt_aurora_east], 
-                            [flow_katip_south, flow_katip_north, flow_aurora_west, flow_aurora_east],
-                            [spawned_katip_south, spawned_katip_north, spawned_aurora_west, spawned_aurora_east],
-                            actual_time_step, u_sorted, C)
+            # Obtain cumulative number of vehicles inserted in the simulation since time 0
+            spawned_katip_south, spawned_katip_north, spawned_aurora_west, spawned_aurora_east = perf.get_spawned_vehs()
 
-        # Perform MPC once a control interval has completed
-        if delta_step+1 == C:
+            # Obtain vehicle count in all incoming roads
+            n_katip_south, n_katip_north, n_aurora_west, n_aurora_east = perf.get_vehicle_count("all")
 
-            print("Performing MPC to compute optimal green times!")
-            # Recompute timer settings and cycle time
-            u, C = do_mpc(np.array([n_katip_south, n_katip_north, n_aurora_west_fair, n_aurora_east_fair]), actual_time_step+1)
-            u_sorted, phases = get_timer_settings(u, C) # Retrieves parsed timer setting information
+            save_sim.write_results([n_katip_south, n_katip_north, n_aurora_west, n_aurora_east],
+                                [ql_katip_south, ql_katip_north, ql_aurora_west, ql_aurora_east],
+                                [qt_katip_south, qt_katip_north, qt_aurora_west, qt_aurora_east], 
+                                [flow_katip_south, flow_katip_north, flow_aurora_west, flow_aurora_east],
+                                [spawned_katip_south, spawned_katip_north, spawned_aurora_west, spawned_aurora_east],
+                                actual_time_step, u_sorted, C)
 
-            step_C = (step//steps_per_s)+1
-        
-            print(f"u = {u_sorted}")
-            print(f"C = {C}")
-            print(f"phases = {phases}")
+            # Perform MPC once a control interval has completed
+            if delta_step+1 == C:
 
-    # Step the simulation by 1 second
-    traci.simulationStep()
-    print("\n")
+                print("Performing MPC to compute optimal green times!")
+                # Recompute timer settings and cycle time
+                u, C = do_mpc(np.array([n_katip_south, n_katip_north, n_aurora_west_fair, n_aurora_east_fair]), actual_time_step+1)
+                u_sorted, phases = get_timer_settings(u, C) # Retrieves parsed timer setting information
 
-# Record start time of simulation for profiling purposes
-print(f"Runtime of simulation: {time.time()-start}")
+                step_C = actual_time_step+1
+            
+                print(f"u = {u_sorted}")
+                print(f"C = {C}")
+                print(f"phases = {phases}")
 
-traci.close()
+        # Step the simulation by 1 second
+        traci.simulationStep()
+        print("\n")
+
+    # Record start time of simulation for profiling purposes
+    print(f"Runtime of simulation: {time.time()-start}")
+
+    traci.close()
+
+if __name__ == "__main__":
+    main()

@@ -8,22 +8,24 @@ from create_demand_mpc import create_dua_demand
 
 # Tunable parameters
 N = 5 # (TUNABLE)
-u_min_val = 25 # (TUNABLE)
+u_min_val = 15 # (TUNABLE)
 C_min = 50 # (TUNABLE)
-C_max = 240 # (TUNABLE)
+C_max = 78 # (TUNABLE)
+#C = 154
 print(f"N = {N}")
 print(f"u_min_val = {u_min_val}")
 print(f"C_min = {C_min}")
 print(f"C_max = {C_max}")
+
 # Traffic model variables (s)
-T = 100 # Control interval (must divide 3600 w/out decimal)
+T = C_max # Control interval (must divide 3600 w/out decimal)
 L = 9  # Lost time (3 phases * 3s)
 
 # Saturation flow rate (veh/hr -> veh/s)
 S_1 = 841*(1/3600) # Saturation flow
 S_2 = 1510*(1/3600) # Saturation flow
 S_3 = 2017*(1/3600) # Saturation flow
-S_4 = 3191*(1/3600) # Saturation flow
+S_4 = 3200*(1/3600) # Saturation flow
 
 # Demand values from 6 AM to 8 PM (veh/hr)
 d_1 = np.array([1147., 1636., 1465., 1408., 1277., 995., 1046., 
@@ -45,6 +47,9 @@ d_3_out = np.array([243., 243., 284., 259., 281., 228., 233.,
 d_4_out = np.array([44., 48., 53., 54., 98., 32., 66., 40., 
                     68., 48., 62., 93., 68., 54.])
 
+# Proportionality constants of Aurora East green times
+
+
 # Traffic model matrices
 
 # x is the state variable (vehicle count)
@@ -60,6 +65,13 @@ umin = np.tile(umin, (N,1))
 #umax = np.tile(umax, (N,1))
 
 # B contains the road link properties
+'''
+B = np.array([[S_1/C,0,0,0],
+              [0,S_2/C,0,0],
+              [0,0,S_3/C,0],
+              [0,0,0,S_4/C]
+              ])
+'''
 B = np.array([[S_1,0,0,0],
               [0,S_2,0,0],
               [0,0,S_3,0],
@@ -70,9 +82,9 @@ B = -T*B
 # D is the demand matrix
 # Demand based on DUArouter-generated flow definitions
 try:
-    d_1p, d_2p, d_3p, d_4p = create_dua_demand(T, 50400, "sumo\\micro\\003\\tripinfo_003.xml")
+    d_1p, d_2p, d_3p, d_4p, d_4cons = create_dua_demand(T, 50400, "sumo\\micro\\003\\tripinfo_003.xml")
 except:
-    print(f"Error in creatind dua demand!")
+    print(f"Error in creating dua demand!")
 
 #D = np.tile(d, (N,1))
 #D = T*D

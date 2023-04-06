@@ -13,8 +13,6 @@
 
     <output>
         <output-prefix value="003/"/>
-        <summary-output value="../summary_003.xml"/>
-        <tripinfo-output value="../tripinfo_003.xml"/>
     </output>
 
     <time>
@@ -28,12 +26,16 @@
         <no-internal-links value="False"/>
         <time-to-teleport value="300"/>
         <time-to-teleport.highways value="0"/>
-        <eager-insert value="False"/>
+        <eager-insert value="true"/>
+        <threads value="12"/>
+        <max-depart-delay value="120"/>
+        <max-num-teleports value="0"/>
+        <scale value="1.01"/>
     </processing>
 
     <report>
         <verbose value="true"/>
-        <no-warnings value="False"/>
+        <no-warnings value="true"/>
         <log value="../iteration_003.sumo.log"/>
         <no-step-log value="true"/>
     </report>

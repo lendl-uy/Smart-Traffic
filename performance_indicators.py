@@ -5,6 +5,12 @@ Created on Sat Mar 11 11:09:29 2023
 
 @author: franc
 """
+
+# Conventions
+# KatipS: Katipunan Southbound / Katipunan North
+# KatipN: Katipunan Northbound / Katipunan South
+# AuroW: Aurora Westbound / Aurora East
+# AuroE: Aurora Eastbound / Aurora West
 	 
 import traci
 import traci.constants as tc

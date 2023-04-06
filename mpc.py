@@ -30,7 +30,7 @@ def do_mpc(x_curr=np.array([0,0,0,0]), step=0):
 
     # x: vehicle count
     # u: green time
-    x = m.addMVar(shape=(N+1,4), lb=xmin, vtype=GRB.INTEGER, name="x")
+    x = m.addMVar(shape=(N+1,4), lb=xmin, vtype=GRB.CONTINUOUS, name="x")
     u = m.addMVar(shape=(N,4), lb=umin, vtype=GRB.INTEGER, name="u")
 
     # C: cycle time
@@ -51,12 +51,22 @@ def do_mpc(x_curr=np.array([0,0,0,0]), step=0):
         else:
             d = np.concatenate((d, [[0.0, 0.0, 0.0, 0.0]]))
     D = d
-    #print(f"D = {D}")
+
+    # Obtain the proportionality constant between Aurora East to West and Aurora East to Katipunan South
+    #d_4multiplier = np.array(d_4cons[t_step:t_step+N])/2
+
+    # Pad zeros if there are insufficient entries
+    #if d_4multiplier.size < N:
+        #temp = d_4multiplier
+        #remaining_entries = int(N-temp.size)
+        #d_4multiplier = np.append(temp, np.zeros(remaining_entries, dtype=float))
+    #d_4multiplier = (np.rint(d_4multiplier)).astype(int)
+
 
     # u_41 and u_43 divides sum of green times in Aurora Blvd. East
     # Aurora Blvd. East has two phases, to Katipunan Ave. South and Aurora Blvd. West
-    u_41 = m.addVar(vtype=GRB.INTEGER, lb=5.0, name="u_41")
-    u_43 = m.addVar(vtype=GRB.INTEGER, lb=5.0, name="u_43")
+    u_41 = m.addVar(vtype=GRB.INTEGER, lb=u_min_val, name="u_41")
+    u_43 = m.addVar(vtype=GRB.INTEGER, lb=u_min_val, name="u_43")
 
     # Intermediary variables to compute difference of x(k+ko|ko) and u(k+ko|ko)
     y = m.addMVar(shape=(N+1,4), lb=-GRB.INFINITY, vtype=GRB.CONTINUOUS, name="y") # x(k_o+k)-x(k_o)
@@ -64,6 +74,7 @@ def do_mpc(x_curr=np.array([0,0,0,0]), step=0):
 
     # Constraints
     m.addConstr(x[0, :] == x_curr) # Initial number of vehicles
+    print(f"x_curr = {x_curr}")
     for k in range(N):
 
         # Traffic model
@@ -77,8 +88,11 @@ def do_mpc(x_curr=np.array([0,0,0,0]), step=0):
         #m.addConstr(C == u[k, 0] + u_43 + 6) # Total cycle time is equal to phase 1 + phase 2 + phase 3 + lost time
         m.addConstr(C == u[k, 0] + u_41 + u[k, 2] + 9) # Total cycle time is equal to phase 1 + phase 2 + phase 3 + lost time
 
-        # TEST
-        #m.addConstr(u[k, 2] >= u_41) # Green time of Aurora East so Katipunan South >= Aurora West green time
+        # EXPERIMENTAL
+        m.addConstr(u_43 >= u_41*3) # Green time of Aurora West
+        m.addConstr(u[k, 0] >= u_41*3) # Green time of Aurora West
+        m.addConstr(u[k, 2] >= u_41*3) # Green time of Aurora West
+        #m.addConstr(u[k, 2] >= u_41) # Green time of Aurora West
 
         #m.addConstr(C*C_dummy == 1) # To achieve same effect as 1/C
         #m.addConstr(C <= 300)

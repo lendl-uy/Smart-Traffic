@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- generated on 2023-03-30 00:26:49 by Eclipse SUMO sumo Version 1.15.0
+<!-- generated on 2023-04-04 11:10:44 by Eclipse SUMO GUI Version 1.15.0
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
 
     <input>
         <net-file value="C:\Users\lendl\Documents\smart_traffic\sumo\25-3-lendl-ver.net.xml"/>
-        <route-files value="004/4-3-test-demand-vianetedit_004.rou.xml"/>
-        <additional-files value="004/../edgedata.add.xml"/>
+        <route-files value="C:\Users\lendl\Documents\smart_traffic\sumo\micro\004\4-3-test-demand-vianetedit_004.rou.xml"/>
+        <additional-files value="C:\Users\lendl\Documents\smart_traffic\sumo\micro\004\../edgedata.add.xml"/>
     </input>
 
     <output>
         <output-prefix value="004/"/>
-        <summary-output value="004/../summary_004.xml"/>
-        <tripinfo-output value="004/../tripinfo_004.xml"/>
+        <summary-output value="C:\Users\lendl\Documents\smart_traffic\sumo\micro\004\../summary_004.xml"/>
+        <tripinfo-output value="C:\Users\lendl\Documents\smart_traffic\sumo\micro\004\../tripinfo_004.xml"/>
     </output>
 
     <time>
@@ -32,7 +32,7 @@
     <report>
         <verbose value="true"/>
         <no-warnings value="False"/>
-        <log value="004/../iteration_004.sumo.log"/>
+        <log value="C:\Users\lendl\Documents\smart_traffic\sumo\micro\004\../iteration_004.sumo.log"/>
         <no-step-log value="true"/>
     </report>
 

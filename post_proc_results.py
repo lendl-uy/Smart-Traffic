@@ -290,9 +290,9 @@ def percent_improvement(post_proc_param1, post_proc_param2, param_name1, param_n
 
 def main():
 
-    fixed_time_dir = "results\\fixed_time"
-    mpc_dir_1 = "results\\test24\\"
-    mpc_dir_2 = "results\\test31\\"
+    fixed_time_dir = "results\\alt_fixed_time"
+    mpc_dir_1 = "results\\test36\\"
+    mpc_dir_2 = "results\\test106\\"
     #mpc_dir_3 = "results\\test12(extended_roads,umin=15,n=5)\\"
 
     num_hours = 14
@@ -344,13 +344,12 @@ def main():
               "Fixed-time TSC", "MPC-based TSC Current Best", "MPC-based TSC Test", "Flow Rate of Traffic in the Katipunan Ave. - Aurora Blvd. Intersection")
     
     #plot_line_1_param(sim_sec, spawned_vehs[4], "Time (s)", "Vehicle count", "Total number of vehicles spawned from 6:00 AM to 8:00 PM")
-    
 
     #plot_line_1_param(num_hours, spawned_vehs[4], "Time (s)", "Vehicle count", "Total number of vehicles spawned from 6:00 AM to 8:00 PM")
 
     plot_line_1_param(sim_sec, c_times, "Time (s)", "Cycle Time (s)", "Cycle Time of MPC-based Traffic Signal Control")
     plot_line_5_params(sim_sec, gt_katip_s, gt_katip_n, gt_aurora_w, gt_aurora_e_katip_s, gt_aurora_e_aurora_w, "Time (s)", 
-                       "Green Times (s)", "Green Time of Katipunan South ", "Green Time of Katipunan Nprth", "Green Time of Aurora West", 
+                       "Green Times (s)", "Green Time of Katipunan South ", "Green Time of Katipunan North", "Green Time of Aurora West", 
                        "Green Time of Aurora East to Katipunan South", "Green Time of Aurora East to West", "Change in Green Times of the Stoplights in the Intersection")
     
     percent_improvement(ql_fixed_time, ql_mpc_2, "Fixed-time TSC", "MPC-based TSC Test", "q_length")
