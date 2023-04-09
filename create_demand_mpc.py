@@ -63,12 +63,6 @@ def create_dua_demand(T, sim_time, directory):
         
         i += 1
 
-    for i in range(len(dua_veh_aurora_e_katip_s)):
-        if (dua_veh_aurora_e_katip_s[i] == 0):
-            dua_veh_aurora_e_prop_constants[i] = 0
-            continue
-        dua_veh_aurora_e_prop_constants[i] = dua_veh_aurora_e_aurora_w[i]/dua_veh_aurora_e_katip_s[i]
-
     print(f"Successfully read demand definitions for {T} s intervals")
 
-    return np.array(dua_veh_katip_s), np.array(dua_veh_katip_n), np.array(dua_veh_aurora_w), np.array(dua_veh_aurora_e), np.array(dua_veh_aurora_e_prop_constants)
+    return np.array(dua_veh_katip_s), np.array(dua_veh_katip_n), np.array(dua_veh_aurora_w), np.array(dua_veh_aurora_e), np.array(dua_veh_aurora_e_katip_s)

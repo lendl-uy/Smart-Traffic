@@ -63,6 +63,11 @@ def main():
     print(f"C = {C}")
     print(f"phases = {phases}")
 
+    temp_spawned_katip_s = []
+    temp_spawned_katip_n = []
+    temp_spawned_aurora_w = []
+    temp_spawned_aurora_e = []
+
     for step in range(sim_duration+1):
 
         #dummy_delta_step = step-step_C
@@ -78,6 +83,13 @@ def main():
         # "Snapshot" of vehicles that are stationary (for queue length)
         # Ensures that recorded stationary vehicles belong to the queue
         new_stopped_vehs = perf.get_queue_length(stopped_vehs, 1, step)
+
+        # Obtain cumulative number of vehicles inserted in the simulation since time 0
+        spawned_katip_south, spawned_katip_north, spawned_aurora_west, spawned_aurora_east = perf.get_spawned_vehs()
+        temp_spawned_katip_s.append(spawned_katip_south)
+        temp_spawned_katip_n.append(spawned_katip_north)
+        temp_spawned_aurora_w.append(spawned_aurora_west)
+        temp_spawned_aurora_e.append(spawned_aurora_east)
     
         # Obtain average queueing time and flow rate of all incoming roads
         if step > 0:
@@ -145,18 +157,25 @@ def main():
 
             print(f"Current phase number: {phase_num}")
 
-            # Obtain cumulative number of vehicles inserted in the simulation since time 0
-            spawned_katip_south, spawned_katip_north, spawned_aurora_west, spawned_aurora_east = perf.get_spawned_vehs()
-
             # Obtain vehicle count in all incoming roads
             n_katip_south, n_katip_north, n_aurora_west, n_aurora_east = perf.get_vehicle_count("all")
+
+            sum_spawned_katip_s = sum(temp_spawned_katip_s)
+            sum_spawned_katip_n = sum(temp_spawned_katip_n)
+            sum_spawned_aurora_w = sum(temp_spawned_aurora_w)
+            sum_spawned_aurora_e = sum(temp_spawned_aurora_e)
 
             save_sim.write_results([n_katip_south, n_katip_north, n_aurora_west, n_aurora_east],
                                 [ql_katip_south, ql_katip_north, ql_aurora_west, ql_aurora_east],
                                 [qt_katip_south, qt_katip_north, qt_aurora_west, qt_aurora_east], 
                                 [flow_katip_south, flow_katip_north, flow_aurora_west, flow_aurora_east],
-                                [spawned_katip_south, spawned_katip_north, spawned_aurora_west, spawned_aurora_east],
+                                [sum_spawned_katip_s, sum_spawned_katip_n, sum_spawned_aurora_w, sum_spawned_aurora_e],
                                 actual_time_step, u_sorted, C)
+            
+            temp_spawned_katip_s.clear()
+            temp_spawned_katip_n.clear()
+            temp_spawned_aurora_w.clear()
+            temp_spawned_aurora_e.clear()
 
             # Perform MPC once a control interval has completed
             if delta_step+1 == C:

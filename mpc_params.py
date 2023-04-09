@@ -7,10 +7,11 @@ import numpy as np
 from create_demand_mpc import create_dua_demand
 
 # Tunable parameters
-N = 5 # (TUNABLE)
-u_min_val = 15 # (TUNABLE)
+N = 10 # (TUNABLE)
+u_min_val = 11 # (TUNABLE)
 C_min = 50 # (TUNABLE)
-C_max = 78 # (TUNABLE)
+C_max = 75 # (TUNABLE)
+#error = 0.5
 #C = 154
 print(f"N = {N}")
 print(f"u_min_val = {u_min_val}")
@@ -47,8 +48,6 @@ d_3_out = np.array([243., 243., 284., 259., 281., 228., 233.,
 d_4_out = np.array([44., 48., 53., 54., 98., 32., 66., 40., 
                     68., 48., 62., 93., 68., 54.])
 
-# Proportionality constants of Aurora East green times
-
 
 # Traffic model matrices
 
@@ -81,8 +80,9 @@ B = -T*B
 
 # D is the demand matrix
 # Demand based on DUArouter-generated flow definitions
+
 try:
-    d_1p, d_2p, d_3p, d_4p, d_4cons = create_dua_demand(T, 50400, "sumo\\micro\\003\\tripinfo_003.xml")
+    d_1p, d_2p, d_3p, d_4p, d_41p = create_dua_demand(T, 50400, "sumo\\micro\\003\\tripinfo_003.xml")
 except:
     print(f"Error in creating dua demand!")
 

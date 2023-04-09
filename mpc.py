@@ -15,10 +15,11 @@ import gurobipy as gp
 from gurobipy import GRB
 
 import numpy as np
+import math
 
 from mpc_params import *
 
-def do_mpc(x_curr=np.array([0,0,0,0]), step=0):
+def do_mpc(x_curr=np.array([50,30,20,10]), step=0):
 
     # Initialize a model
     m = gp.Model("MPC")
@@ -46,23 +47,81 @@ def do_mpc(x_curr=np.array([0,0,0,0]), step=0):
     d = np.array([[d_1p[t_step], d_2p[t_step], d_3p[t_step], d_4p[t_step]]])
     for i in range(t_step+1,t_step+N):
         # Pad zeros for instances when time approaches 8PM and matrix cuts are uneven
+        #if i < len(d_1p):
         if i < d_1p.size:
             d = np.concatenate((d, [[d_1p[i], d_2p[i], d_3p[i], d_4p[i]]]))
         else:
             d = np.concatenate((d, [[0.0, 0.0, 0.0, 0.0]]))
     D = d
+    print(f"D = {D}")
 
     # Obtain the proportionality constant between Aurora East to West and Aurora East to Katipunan South
-    #d_4multiplier = np.array(d_4cons[t_step:t_step+N])/2
+    d_41 = np.array(d_41p[t_step:t_step+N])
+    d_4mult = []
+    max_multiplier = math.floor((C_max-L)/u_min_val)
 
     # Pad zeros if there are insufficient entries
-    #if d_4multiplier.size < N:
-        #temp = d_4multiplier
-        #remaining_entries = int(N-temp.size)
-        #d_4multiplier = np.append(temp, np.zeros(remaining_entries, dtype=float))
-    #d_4multiplier = (np.rint(d_4multiplier)).astype(int)
+    if d_41.size < N:
+        temp = d_41
+        remaining_entries = int(N-temp.size)
+        d_41 = np.append(temp, np.zeros(remaining_entries, dtype=float))
 
+    # Obtain multiplier for Aurora East to Katipunan South green time
+    for i in range(N):
 
+        if d_41[i] > 0.0:
+            d_4mult_entry = round(D[i,3]/d_41[i])
+        else:
+           d_4mult_entry = D[i,3]
+
+        if d_4mult_entry > math.floor(max_multiplier/2):
+            d_4mult_entry = math.floor(max_multiplier/2)
+
+        d_4mult.append(d_4mult_entry)
+
+    if sum(d_4mult) <= 0.0:
+        u_41mult = 1
+    else:
+        u_41mult = int(sum(d_4mult)/len(d_4mult)+0.5)
+
+    # Obtain constraints for green times to speed up GUROBI convergence
+    # Compute constraints in terms of demand OR current vehicle count
+    if x_curr[0] < x_curr[1]:
+        x_total = np.sum(x_curr[1:])
+    else:
+        x_total = x_curr[0]+np.sum(x_curr[2:])
+
+    d_sum = np.sum(D[0:,1:], axis=0)
+    d_total = np.sum(d_sum)
+    max_multiplier = math.floor((C_max-L)/u_min_val)
+
+    if sum(x_curr) <= 0.0:
+        u_2mult = max_multiplier*(d_sum[0]/d_total)
+        u_3mult = max_multiplier*(d_sum[1]/d_total)
+        u_4mult = max_multiplier*(d_sum[2]/d_total)
+    else:
+        if x_curr[0] < x_curr[1]:
+            u_2mult = max_multiplier*(x_curr[1]/x_total)
+        else:
+            u_2mult = max_multiplier*(x_curr[0]/x_total)
+        u_3mult = max_multiplier*(x_curr[2]/x_total)
+        u_4mult = max_multiplier*(x_curr[3]/x_total)
+
+    u_2max = round(u_min_val*u_2mult)
+    u_3max = round(u_min_val*u_3mult)
+    u_4max = round(u_min_val*u_4mult)
+
+    #print(f"u_2max = {u_2max}")
+    #print(f"u_3max = {u_3max}")
+    #print(f"u_4max = {u_4max}")
+
+    # Add error to the measurement of vehicles based on error constant
+    '''
+    for i in range(len(x_curr)):
+        error_delta = x_curr[i]*error/2
+        num_random = np.random.randint(x_curr[i]-error_delta, x_curr[i]+error_delta+1)
+        x_curr[i] = num_random
+    '''
     # u_41 and u_43 divides sum of green times in Aurora Blvd. East
     # Aurora Blvd. East has two phases, to Katipunan Ave. South and Aurora Blvd. West
     u_41 = m.addVar(vtype=GRB.INTEGER, lb=u_min_val, name="u_41")
@@ -89,13 +148,25 @@ def do_mpc(x_curr=np.array([0,0,0,0]), step=0):
         m.addConstr(C == u[k, 0] + u_41 + u[k, 2] + 9) # Total cycle time is equal to phase 1 + phase 2 + phase 3 + lost time
 
         # EXPERIMENTAL
-        m.addConstr(u_43 >= u_41*3) # Green time of Aurora West
-        m.addConstr(u[k, 0] >= u_41*3) # Green time of Aurora West
-        m.addConstr(u[k, 2] >= u_41*3) # Green time of Aurora West
-        #m.addConstr(u[k, 2] >= u_41) # Green time of Aurora West
+        m.addConstr(u_43 >= u_41*u_41mult) # Green time constraint of Aurora East to West
+        m.addConstr(u[k, 0] >= u_2max) # Green time constraint of Katipunan South and North
+        m.addConstr(u[k, 0] >= u[k, 2]) # Green time constraint of Katipunan South and North
+        m.addConstr(u[k, 2] >= u_3max) # Green time constraint of Aurora West
+        m.addConstr(u[k, 2] >= u_41) # Green time constraint of Aurora West
+        m.addConstr(u[k, 3] >= u_4max) # Green time constraint of Aurora East
 
-        #m.addConstr(C*C_dummy == 1) # To achieve same effect as 1/C
-        #m.addConstr(C <= 300)
+        #m.addConstr(u[k, 0] >= u_41*u_2mult) # Green time constraint of Aurora East to West
+        #m.addConstr(u[k, 2] <= u_41*u_3mult) # Green time constraint of Aurora East to West
+        #m.addConstr(u[k, 3] >= u_41*u_4mult) # Green time constraint of Aurora East to West
+        #m.addConstr(u_41 >= u_min_val) # Green time constraint of Aurora East to West
+
+        #m.addConstr(u_43 >= u_41*3) # Green time constraint of Aurora East to West
+        #m.addConstr(u[k, 0] >= u_41*3) # Green time constraint of Katipunan South and North
+        #m.addConstr(u[k, 2] <= u[k, 0]-5) # Green time constraint of Aurora West
+        #m.addConstr(u[k, 0] >= u_41*2) # Green time constraint of Katipunan South and North
+        #m.addConstr(u[k, 2] >= u_41*2) # Green time constraint of Aurora West
+
+        m.addConstr(C*C_dummy == 1) # To achieve same effect as 1/C
 
         # Intermediate variable to compute Q and R norm
         #m.addConstr(y[k, :] == x[k, :] - x[0, :])
@@ -130,7 +201,7 @@ def do_mpc(x_curr=np.array([0,0,0,0]), step=0):
     names_to_retrieve = ["C", "u_41", "u_43"]
     vals = {}
     u_res = []
-    relaxed = 0
+    #relaxed = 0
 
     # Only get values of u, x, and C
     for i in range(N):
@@ -144,14 +215,13 @@ def do_mpc(x_curr=np.array([0,0,0,0]), step=0):
         m.write("iis.ilp")
         m.feasRelaxS(1, True, True, False) # Ease model if infeasible
         m.optimize()
-        relaxed = 1
+        #relaxed = 1
         for v in m.getVars():
             if v.VarName in names_to_retrieve:
                 vals[v.VarName] = v.X
                 #print('%s %g' % (v.VarName, v.X))
                 if v.VarName[:3] == "u[0" or (v.VarName == "u_41" or v.VarName == "u_43"):
                     u_res.append(v.X)
-        #return None, None
     else:
         for v in m.getVars():
             if v.VarName in names_to_retrieve:

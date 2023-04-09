@@ -7,14 +7,14 @@ import numpy as np
 import itertools
 
 # Store filenames of all relevant traffic data in two separate lists (fixed-time and mpc)
-fixed_time_filenames = ["green_times.txt", "cycle.txt", "veh_count.txt", "q_length.txt", "q_time.txt", "flow.txt"]
-mpc_filenames = ["mpc_green_times.txt", "mpc_cycle.txt", "mpc_veh_count.txt", "mpc_q_length.txt", "mpc_q_time.txt", "mpc_flow.txt"]
+fixed_time_filenames = ["green_times.txt", "cycle.txt", "veh_count.txt", "q_length.txt", "q_time.txt", "flow.txt", "spawned.txt"]
+mpc_filenames = ["mpc_green_times.txt", "mpc_cycle.txt", "mpc_veh_count.txt", "mpc_q_length.txt", "mpc_q_time.txt", "mpc_flow.txt", "mpc_spawned.txt"]
 
 def read_fixed_time_data(filename, directory):
 
     # Store simulation results of fixed-time traffic signal control
     fixed_time_data = {"green_times" : [], "cycle" : [], "veh_count" : [], 
-                   "q_length": [], "q_time" : [], "flow" : []}
+                   "q_length": [], "q_time" : [], "flow" : [], "spawned" : []}
 
     # Store results of fixed-time traffic signal control in arrays fixed_time_data 
     for file in filename:
@@ -37,7 +37,7 @@ def read_mpc_data(filename, directory):
 
     # Store simulation results of MPC-based traffic signal control
     mpc_data = {"green_times" : [], "cycle" : [], "veh_count" : [], 
-                 "q_length": [], "q_time" : [], "flow" : []}
+                 "q_length": [], "q_time" : [], "flow" : [], "spawned" : []}
 
     # Store results of MPC-based traffic signal control in arrays mpc_data
     for file in filename:
@@ -231,9 +231,9 @@ def post_proc_spawned(data):
     spawned_katip_n = []
     spawned_aurora_w = []
     spawned_aurora_e = []
-    total_spawned_int = []
+    per_hour_spawned = []
 
-    print(f"len = {len(data)}")
+    j = 0
 
     for i in range(len(data["spawned"])):
         katip_s = data["spawned"][i][0]
@@ -245,13 +245,21 @@ def post_proc_spawned(data):
         spawned_katip_n.append(katip_n)
         spawned_aurora_w.append(aurora_w)
         spawned_aurora_e.append(aurora_e)
-        total_spawned_int.append(katip_s+katip_n+aurora_w+aurora_e)
 
-    total_spawned = int(spawned_katip_s[-1]+spawned_katip_n[-1]+spawned_aurora_w[-1]+spawned_aurora_e[-1])
+        if (i%3600 == 0) and i>0:
+            print(f"i = {i}")
+            per_hour_katip_s = sum(spawned_katip_s[j*3600:i])
+            per_hour_katip_n = sum(spawned_katip_n[j*3600:i])
+            per_hour_aurora_w = sum(spawned_aurora_w[j*3600:i])
+            per_hour_aurora_e = sum(spawned_aurora_e[j*3600:i])
+            per_hour_sum = per_hour_katip_s+per_hour_katip_n+per_hour_aurora_w+per_hour_aurora_e
+            if len(per_hour_spawned) > 0:
+                per_hour_spawned.append(per_hour_sum-sum(per_hour_spawned[0:j]))
+                j += 1
+            else:
+                per_hour_spawned.append(per_hour_sum)
 
-    #print(f"Total number of vehicles spawned in the simulation = {total_spawned}")
-
-    return spawned_katip_s, spawned_katip_n, spawned_aurora_w, spawned_aurora_e, total_spawned_int
+    return spawned_katip_s, spawned_katip_n, spawned_aurora_w, spawned_aurora_e, per_hour_spawned
 
 def percent_improvement(post_proc_param1, post_proc_param2, param_name1, param_name2, quantity):
 
@@ -291,10 +299,10 @@ def percent_improvement(post_proc_param1, post_proc_param2, param_name1, param_n
 def main():
 
     fixed_time_dir = "results\\alt_fixed_time"
-    mpc_dir_1 = "results\\test36\\"
-    mpc_dir_2 = "results\\test106\\"
+    mpc_dir_1 = "results\\test56\\"
+    mpc_dir_2 = "results\\test63\\"
     #mpc_dir_3 = "results\\test12(extended_roads,umin=15,n=5)\\"
-
+    
     num_hours = 14
 
     # Simulation time stored as an array
@@ -325,7 +333,7 @@ def main():
 
     c_times = post_proc_cycle(mpc_data_1)
 
-    #spawned_katip_n, spawned_katip_n, spawned_aurora_w, spawned_aurora_e = post_proc_spawned(num_hours, mpc_data_1)
+    #spawned_katip_n, spawned_katip_n, spawned_aurora_w, spawned_aurora_e, per_hour_spawned = post_proc_spawned(mpc_data_2)
 
     gt_katip_s, gt_katip_n, gt_aurora_w, gt_aurora_e_katip_s, gt_aurora_e_aurora_w = post_proc_u(mpc_data_1)
     '''
@@ -347,14 +355,15 @@ def main():
 
     #plot_line_1_param(num_hours, spawned_vehs[4], "Time (s)", "Vehicle count", "Total number of vehicles spawned from 6:00 AM to 8:00 PM")
 
+    #plot_line_1_param(sim_hr, per_hour_spawned, "Time (s)", "Number of Vehicles", "Hourly Traffic in the Intersection")
     plot_line_1_param(sim_sec, c_times, "Time (s)", "Cycle Time (s)", "Cycle Time of MPC-based Traffic Signal Control")
     plot_line_5_params(sim_sec, gt_katip_s, gt_katip_n, gt_aurora_w, gt_aurora_e_katip_s, gt_aurora_e_aurora_w, "Time (s)", 
                        "Green Times (s)", "Green Time of Katipunan South ", "Green Time of Katipunan North", "Green Time of Aurora West", 
                        "Green Time of Aurora East to Katipunan South", "Green Time of Aurora East to West", "Change in Green Times of the Stoplights in the Intersection")
     
-    percent_improvement(ql_fixed_time, ql_mpc_2, "Fixed-time TSC", "MPC-based TSC Test", "q_length")
-    percent_improvement(qt_fixed_time, qt_mpc_2, "Fixed-time TSC", "MPC-based TSC Test", "q_time")
-    percent_improvement(flow_fixed_time, flow_mpc_2, "Fixed-time TSC", "MPC-based TSC Test", "flow")
+    percent_improvement(ql_mpc_1, ql_mpc_2, "MPC-based TSC Current Best", "MPC-based TSC Test", "q_length")
+    percent_improvement(qt_mpc_1, qt_mpc_2, "MPC-based TSC Current Best", "MPC-based TSC Test", "q_time")
+    percent_improvement(flow_mpc_1, flow_mpc_2, "MPC-based TSC Current Best", "MPC-based TSC Test", "flow")
     
     plt.show()
 
