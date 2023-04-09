@@ -5,16 +5,17 @@ import os.path
 import matplotlib.pyplot as plt
 import numpy as np
 import itertools
+from bs4 import BeautifulSoup
 
 # Store filenames of all relevant traffic data in two separate lists (fixed-time and mpc)
-fixed_time_filenames = ["green_times.txt", "cycle.txt", "veh_count.txt", "q_length.txt", "q_time.txt", "flow.txt", "spawned.txt"]
-mpc_filenames = ["mpc_green_times.txt", "mpc_cycle.txt", "mpc_veh_count.txt", "mpc_q_length.txt", "mpc_q_time.txt", "mpc_flow.txt", "mpc_spawned.txt"]
+fixed_time_filenames = ["green_times.txt", "cycle.txt", "veh_count.txt", "q_length.txt", "q_time.txt", "flow.txt"]
+mpc_filenames = ["mpc_green_times.txt", "mpc_cycle.txt", "mpc_veh_count.txt", "mpc_q_length.txt", "mpc_q_time.txt", "mpc_flow.txt"]
 
 def read_fixed_time_data(filename, directory):
 
     # Store simulation results of fixed-time traffic signal control
     fixed_time_data = {"green_times" : [], "cycle" : [], "veh_count" : [], 
-                   "q_length": [], "q_time" : [], "flow" : [], "spawned" : []}
+                   "q_length": [], "q_time" : [], "flow" : []}
 
     # Store results of fixed-time traffic signal control in arrays fixed_time_data 
     for file in filename:
@@ -37,7 +38,7 @@ def read_mpc_data(filename, directory):
 
     # Store simulation results of MPC-based traffic signal control
     mpc_data = {"green_times" : [], "cycle" : [], "veh_count" : [], 
-                 "q_length": [], "q_time" : [], "flow" : [], "spawned" : []}
+                 "q_length": [], "q_time" : [], "flow" : []}
 
     # Store results of MPC-based traffic signal control in arrays mpc_data
     for file in filename:
@@ -225,41 +226,40 @@ def post_proc_u(data):
     return u_katip_s, u_katip_n, u_aurora_w, u_aurora_e_katip_s, u_aurora_e_aurora_w
 
 # Post process average queue length into per hour data
-def post_proc_spawned(data):
+def post_proc_demand(step_size, hrs, directory):
 
-    spawned_katip_s = []
-    spawned_katip_n = []
-    spawned_aurora_w = []
-    spawned_aurora_e = []
-    per_hour_spawned = []
+    # Reading data from the xml file
+    with open(directory, "r") as f:
+        data = f.read()
 
-    j = 0
+    soup = BeautifulSoup(data, "xml")
+    print("Successfully parsed the summary file of inserted vehicles")
 
-    for i in range(len(data["spawned"])):
-        katip_s = data["spawned"][i][0]
-        katip_n = data["spawned"][i][1]
-        aurora_w = data["spawned"][i][2]
-        aurora_e = data["spawned"][i][3]
+    f.close()
 
-        spawned_katip_s.append(katip_s)
-        spawned_katip_n.append(katip_n)
-        spawned_aurora_w.append(aurora_w)
-        spawned_aurora_e.append(aurora_e)
+    hourly_demand = [0.0]
 
-        if (i%3600 == 0) and i>0:
-            print(f"i = {i}")
-            per_hour_katip_s = sum(spawned_katip_s[j*3600:i])
-            per_hour_katip_n = sum(spawned_katip_n[j*3600:i])
-            per_hour_aurora_w = sum(spawned_aurora_w[j*3600:i])
-            per_hour_aurora_e = sum(spawned_aurora_e[j*3600:i])
-            per_hour_sum = per_hour_katip_s+per_hour_katip_n+per_hour_aurora_w+per_hour_aurora_e
-            if len(per_hour_spawned) > 0:
-                per_hour_spawned.append(per_hour_sum-sum(per_hour_spawned[0:j]))
-                j += 1
-            else:
-                per_hour_spawned.append(per_hour_sum)
+    steps = soup.find_all("step")
 
-    return spawned_katip_s, spawned_katip_n, spawned_aurora_w, spawned_aurora_e, per_hour_spawned
+    steps_per_s = int(1/step_size)
+    #total_steps = (hrs+1)*3600*steps_per_s
+
+    j = 1
+
+    for i in range(len(steps)):
+
+        time = float(steps[i]['time'])
+        if time%3600.0 != 0 or time == 0:
+            continue
+
+        inserted_vehs = float(steps[i]["inserted"])
+        if len(hourly_demand) > 1:
+            hourly_demand.append(inserted_vehs-sum(hourly_demand[:j]))
+        else:
+            hourly_demand.append(inserted_vehs)
+        j += 1
+
+    return hourly_demand
 
 def percent_improvement(post_proc_param1, post_proc_param2, param_name1, param_name2, quantity):
 
@@ -302,13 +302,18 @@ def main():
     mpc_dir_1 = "results\\test56\\"
     mpc_dir_2 = "results\\test63\\"
     #mpc_dir_3 = "results\\test12(extended_roads,umin=15,n=5)\\"
-    
+
     num_hours = 14
 
     # Simulation time stored as an array
     sim_hr = ["6:00", "7:00", "8:00", "9:00", "10:00", "11:00", "12:00", 
             "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00"]
     sim_sec = np.arange(1,50401,1)
+
+
+    # Actual hourly traffic demand from MMDA data
+    demand_actual = [0, 8491, 9618, 10305, 7898, 7271, 6654, 6585, 
+                            8381, 8106, 8871, 9462, 10776, 9620, 8499]
 
     # Obtain values of traffic data from simulations
     fixed_time_data = read_fixed_time_data(fixed_time_filenames, fixed_time_dir)
@@ -333,9 +338,11 @@ def main():
 
     c_times = post_proc_cycle(mpc_data_1)
 
-    #spawned_katip_n, spawned_katip_n, spawned_aurora_w, spawned_aurora_e, per_hour_spawned = post_proc_spawned(mpc_data_2)
+    demand_fixed_time = post_proc_demand(0.5, 14, "results\\summary_003_fixed_time.xml")
+    demand_mpc = post_proc_demand(0.5, 14, "results\\summary_003_mpc.xml")
 
     gt_katip_s, gt_katip_n, gt_aurora_w, gt_aurora_e_katip_s, gt_aurora_e_aurora_w = post_proc_u(mpc_data_1)
+
     '''
     plot_line_2_params(sim_hr, ql_fixed_time, ql_mpc_1, "Time of Day (hr:min)", "Average Queue Length (m)", 
               "Fixed-time TSC", "MPC-based TSC Test 1", "Average Queue Length in the Katipunan Ave. - Aurora Blvd. Intersection")
@@ -344,26 +351,27 @@ def main():
     plot_line_2_params(sim_hr, flow_fixed_time, flow_mpc_1, "Time of Day (hr:min)", "Flow Rate (veh/hr)", 
               "Fixed-time TSC", "MPC-based TSC Test 1", "Flow Rate of Traffic in the Katipunan Ave. - Aurora Blvd. Intersection")
     '''
+
     plot_line_3_params(sim_hr, ql_fixed_time, ql_mpc_1, ql_mpc_2, "Time of Day (hr:min)", "Average Queue Length (m)", 
               "Fixed-time TSC", "MPC-based TSC Current Best", "MPC-based TSC Test", "Average Queue Length in the Katipunan Ave. - Aurora Blvd. Intersection")
     plot_line_3_params(sim_hr, qt_fixed_time, qt_mpc_1, qt_mpc_2, "Time of Day (hr:min)", "Average Queue Time (s)", 
               "Fixed-time TSC", "MPC-based TSC Current Best", "MPC-based TSC Test", "Average Queue Time in the Katipunan Ave. - Aurora Blvd. Intersection")
     plot_line_3_params(sim_hr, flow_fixed_time, flow_mpc_1, flow_mpc_2, "Time of Day (hr:min)", "Flow Rate (veh/hr)", 
               "Fixed-time TSC", "MPC-based TSC Current Best", "MPC-based TSC Test", "Flow Rate of Traffic in the Katipunan Ave. - Aurora Blvd. Intersection")
-    
-    #plot_line_1_param(sim_sec, spawned_vehs[4], "Time (s)", "Vehicle count", "Total number of vehicles spawned from 6:00 AM to 8:00 PM")
 
-    #plot_line_1_param(num_hours, spawned_vehs[4], "Time (s)", "Vehicle count", "Total number of vehicles spawned from 6:00 AM to 8:00 PM")
+    plot_line_2_params(sim_hr, demand_fixed_time, demand_actual, "Time of Day (hr:min)", "Number of Vehicles", "Simulator traffic demand", "Actual demand", 
+                       "Hourly Traffic in the Intersection for Fixed-time TSC Simulation")
+    plot_line_2_params(sim_hr, demand_mpc, demand_actual, "Time of Day (hr:min)", "Number of Vehicles", "Simulator traffic demand", "Actual demand", 
+                       "Hourly Traffic in the Intersection for MPC-based TSC Simulation")
 
-    #plot_line_1_param(sim_hr, per_hour_spawned, "Time (s)", "Number of Vehicles", "Hourly Traffic in the Intersection")
     plot_line_1_param(sim_sec, c_times, "Time (s)", "Cycle Time (s)", "Cycle Time of MPC-based Traffic Signal Control")
     plot_line_5_params(sim_sec, gt_katip_s, gt_katip_n, gt_aurora_w, gt_aurora_e_katip_s, gt_aurora_e_aurora_w, "Time (s)", 
                        "Green Times (s)", "Green Time of Katipunan South ", "Green Time of Katipunan North", "Green Time of Aurora West", 
                        "Green Time of Aurora East to Katipunan South", "Green Time of Aurora East to West", "Change in Green Times of the Stoplights in the Intersection")
     
-    percent_improvement(ql_mpc_1, ql_mpc_2, "MPC-based TSC Current Best", "MPC-based TSC Test", "q_length")
-    percent_improvement(qt_mpc_1, qt_mpc_2, "MPC-based TSC Current Best", "MPC-based TSC Test", "q_time")
-    percent_improvement(flow_mpc_1, flow_mpc_2, "MPC-based TSC Current Best", "MPC-based TSC Test", "flow")
+    #percent_improvement(ql_mpc_1, ql_mpc_2, "MPC-based TSC Current Best", "MPC-based TSC Test", "q_length")
+    #percent_improvement(qt_mpc_1, qt_mpc_2, "MPC-based TSC Current Best", "MPC-based TSC Test", "q_time")
+    #percent_improvement(flow_mpc_1, flow_mpc_2, "MPC-based TSC Current Best", "MPC-based TSC Test", "flow")
     
     plt.show()
 

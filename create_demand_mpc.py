@@ -18,8 +18,6 @@ def create_dua_demand(T, sim_time, directory):
     dua_veh_aurora_e = zeros_array.tolist()
 
     dua_veh_aurora_e_katip_s = zeros_array.tolist()
-    dua_veh_aurora_e_aurora_w = zeros_array.tolist()
-    dua_veh_aurora_e_prop_constants = zeros_array.tolist()
 
     # Reading data from the xml file
     with open(directory, "r") as f:
@@ -58,8 +56,6 @@ def create_dua_demand(T, sim_time, directory):
             dua_veh_aurora_e[j] += 1
             if arrival_lane in katip_south_arrival_lanes:
                 dua_veh_aurora_e_katip_s[j] += 1
-            elif arrival_lane in aurora_west_arrival_lanes:
-                dua_veh_aurora_e_aurora_w[j] += 1
         
         i += 1
 
