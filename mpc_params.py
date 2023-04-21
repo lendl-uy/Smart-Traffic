@@ -7,16 +7,21 @@ import numpy as np
 from create_demand_mpc import create_dua_demand
 
 # Tunable parameters
-N = 10 # (TUNABLE)
-u_min_val = 11 # (TUNABLE)
+N = 5 # (TUNABLE)
+u_min_val = 25 # (TUNABLE)
 C_min = 50 # (TUNABLE)
-C_max = 75 # (TUNABLE)
+C_max = 100 # (TUNABLE)
 #error = 0.5
-#C = 154
+#C = 200
+#C_max = C
 print(f"N = {N}")
 print(f"u_min_val = {u_min_val}")
+#print(f"C = {C}")
 print(f"C_min = {C_min}")
 print(f"C_max = {C_max}")
+
+# Variable to store number of model relaxation
+num_relaxation = 0
 
 # Traffic model variables (s)
 T = C_max # Control interval (must divide 3600 w/out decimal)

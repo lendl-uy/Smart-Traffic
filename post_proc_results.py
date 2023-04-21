@@ -72,8 +72,8 @@ def plot_line_1_param(x, y, xlabel, ylabel, title):
 def plot_line_2_params(x, y1, y2, xlabel, ylabel, y1_label, y2_label, title):
 
     plt.figure()
-    plt.plot(x, y1, "g", label=y1_label)
-    plt.plot(x, y2, "r", label=y2_label)
+    plt.plot(x, y1, "g-", label=y1_label)
+    plt.plot(x, y2, "r-", label=y2_label)
     plt.title(title)
     plt.xlabel(xlabel)
     plt.ylabel(ylabel)
@@ -298,9 +298,9 @@ def percent_improvement(post_proc_param1, post_proc_param2, param_name1, param_n
 
 def main():
 
-    fixed_time_dir = "results\\alt_fixed_time"
-    mpc_dir_1 = "results\\test56\\"
-    mpc_dir_2 = "results\\test63\\"
+    fixed_time_dir = "results\\fixed_time"
+    mpc_dir_1 = "results\\cumulative_average\\test108\\"
+    mpc_dir_2 = "results\\test131\\"
     #mpc_dir_3 = "results\\test12(extended_roads,umin=15,n=5)\\"
 
     num_hours = 14
@@ -309,7 +309,6 @@ def main():
     sim_hr = ["6:00", "7:00", "8:00", "9:00", "10:00", "11:00", "12:00", 
             "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00"]
     sim_sec = np.arange(1,50401,1)
-
 
     # Actual hourly traffic demand from MMDA data
     demand_actual = [0, 8491, 9618, 10305, 7898, 7271, 6654, 6585, 
@@ -336,43 +335,81 @@ def main():
     flow_mpc_2 = post_proc_flow(num_hours, mpc_data_2)
     #flow_mpc_3 = post_proc_flow(num_hours, mpc_data_3)
 
-    c_times = post_proc_cycle(mpc_data_1)
+    c_fixed_time = post_proc_cycle(fixed_time_data)
+    c_mpc_2 = post_proc_cycle(mpc_data_2)
 
     demand_fixed_time = post_proc_demand(0.5, 14, "results\\summary_003_fixed_time.xml")
     demand_mpc = post_proc_demand(0.5, 14, "results\\summary_003_mpc.xml")
 
-    gt_katip_s, gt_katip_n, gt_aurora_w, gt_aurora_e_katip_s, gt_aurora_e_aurora_w = post_proc_u(mpc_data_1)
+    gtf_katip_s, gtf_katip_n, gtf_aurora_w, gtf_aurora_e_katip_s, gtf_aurora_e_aurora_w = post_proc_u(fixed_time_data)
+    gt_katip_s, gt_katip_n, gt_aurora_w, gt_aurora_e_katip_s, gt_aurora_e_aurora_w = post_proc_u(mpc_data_2)
 
+    plot_line_2_params(sim_hr, ql_fixed_time, ql_mpc_2, "Time of Day (hr:min)", "Average Queue Length (m)", 
+              "Fixed-time TSC", "MPC-based TSC", "Average Queue Length in the Katipunan Ave. - Aurora Blvd. Intersection")
+    plot_line_2_params(sim_hr, qt_fixed_time, qt_mpc_2, "Time of Day (hr:min)", "Average Queue Time (s)", 
+              "Fixed-time TSC", "MPC-based TSC", "Average Queue Time in the Katipunan Ave. - Aurora Blvd. Intersection")
+    plot_line_2_params(sim_hr, flow_fixed_time, flow_mpc_2, "Time of Day (hr:min)", "Flow Rate (veh/hr)", 
+              "Fixed-time TSC", "MPC-based TSC", "Flow Rate of Traffic in the Katipunan Ave. - Aurora Blvd. Intersection")
+    
     '''
-    plot_line_2_params(sim_hr, ql_fixed_time, ql_mpc_1, "Time of Day (hr:min)", "Average Queue Length (m)", 
-              "Fixed-time TSC", "MPC-based TSC Test 1", "Average Queue Length in the Katipunan Ave. - Aurora Blvd. Intersection")
-    plot_line_2_params(sim_hr, qt_fixed_time, qt_mpc_1, "Time of Day (hr:min)", "Average Queue Time (s)", 
-              "Fixed-time TSC", "MPC-based TSC Test 1", "Average Queue Time in the Katipunan Ave. - Aurora Blvd. Intersection")
-    plot_line_2_params(sim_hr, flow_fixed_time, flow_mpc_1, "Time of Day (hr:min)", "Flow Rate (veh/hr)", 
-              "Fixed-time TSC", "MPC-based TSC Test 1", "Flow Rate of Traffic in the Katipunan Ave. - Aurora Blvd. Intersection")
-    '''
-
     plot_line_3_params(sim_hr, ql_fixed_time, ql_mpc_1, ql_mpc_2, "Time of Day (hr:min)", "Average Queue Length (m)", 
               "Fixed-time TSC", "MPC-based TSC Current Best", "MPC-based TSC Test", "Average Queue Length in the Katipunan Ave. - Aurora Blvd. Intersection")
     plot_line_3_params(sim_hr, qt_fixed_time, qt_mpc_1, qt_mpc_2, "Time of Day (hr:min)", "Average Queue Time (s)", 
               "Fixed-time TSC", "MPC-based TSC Current Best", "MPC-based TSC Test", "Average Queue Time in the Katipunan Ave. - Aurora Blvd. Intersection")
     plot_line_3_params(sim_hr, flow_fixed_time, flow_mpc_1, flow_mpc_2, "Time of Day (hr:min)", "Flow Rate (veh/hr)", 
               "Fixed-time TSC", "MPC-based TSC Current Best", "MPC-based TSC Test", "Flow Rate of Traffic in the Katipunan Ave. - Aurora Blvd. Intersection")
+    '''
 
-    plot_line_2_params(sim_hr, demand_fixed_time, demand_actual, "Time of Day (hr:min)", "Number of Vehicles", "Simulator traffic demand", "Actual demand", 
+    plot_line_2_params(sim_hr, demand_fixed_time, demand_actual, "Time of Day (hr:min)", "Number of Vehicles", "Simulator-generated demand", "Actual demand", 
                        "Hourly Traffic in the Intersection for Fixed-time TSC Simulation")
-    plot_line_2_params(sim_hr, demand_mpc, demand_actual, "Time of Day (hr:min)", "Number of Vehicles", "Simulator traffic demand", "Actual demand", 
+    plot_line_2_params(sim_hr, demand_mpc, demand_actual, "Time of Day (hr:min)", "Number of Vehicles", "Simulator-generated demand", "Actual demand", 
                        "Hourly Traffic in the Intersection for MPC-based TSC Simulation")
+    
 
-    plot_line_1_param(sim_sec, c_times, "Time (s)", "Cycle Time (s)", "Cycle Time of MPC-based Traffic Signal Control")
+    plot_line_1_param(sim_sec, c_mpc_2, "Time (s)", "Cycle Time (s)", "Cycle Time of the MPC-based Traffic Signal Control")
     plot_line_5_params(sim_sec, gt_katip_s, gt_katip_n, gt_aurora_w, gt_aurora_e_katip_s, gt_aurora_e_aurora_w, "Time (s)", 
                        "Green Times (s)", "Green Time of Katipunan South ", "Green Time of Katipunan North", "Green Time of Aurora West", 
-                       "Green Time of Aurora East to Katipunan South", "Green Time of Aurora East to West", "Change in Green Times of the Stoplights in the Intersection")
+                       "Green Time of Aurora East to Katipunan South", "Green Time of Aurora East to West", "Green Times of the Stoplights in Fixed-time TSC")
     
-    #percent_improvement(ql_mpc_1, ql_mpc_2, "MPC-based TSC Current Best", "MPC-based TSC Test", "q_length")
-    #percent_improvement(qt_mpc_1, qt_mpc_2, "MPC-based TSC Current Best", "MPC-based TSC Test", "q_time")
-    #percent_improvement(flow_mpc_1, flow_mpc_2, "MPC-based TSC Current Best", "MPC-based TSC Test", "flow")
+    percent_improvement(ql_fixed_time, ql_mpc_2, "MPC-based TSC Current Best", "MPC-based TSC Test", "q_length")
+    percent_improvement(qt_fixed_time, qt_mpc_2, "MPC-based TSC Current Best", "MPC-based TSC Test", "q_time")
+    percent_improvement(flow_fixed_time, flow_mpc_2, "MPC-based TSC Current Best", "MPC-based TSC Test", "flow")
+
+    '''
+    fig, ax1 = plt.subplots()
+
+    ax2 = ax1.twinx()
+    ax1.plot(sim_hr, ql_fixed_time, "g")
+    ax1.plot(sim_hr, ql_mpc_2, "r")
+    ax2.bar(sim_hr, demand_mpc, "m")
+
+    ax1.set_xlabel("Time of Day (hr:min)")
+    ax1.set_ylabel("Average Queue Length (m)")
+    ax2.set_ylabel("Number of vehicles (veh)")
+
+    plt.title("Average Queue Length in the Katipunan Ave. - Aurora Blvd. Intersection")
+    plt.legend()
+    plt.gcf().autofmt_xdate()
     
+    plt.figure()
+    plt.plot(sim_sec, gtf_katip_s, "g", label="Green Time of Katipunan South and North (Fixed-time)")
+    plt.plot(sim_sec, gtf_aurora_w, "m", label="Green Time of Aurora West (Fixed-time)")
+    plt.plot(sim_sec, gtf_aurora_e_katip_s, "c", label="Green Time of Aurora East to Katipunan South (Fixed-time)")
+    plt.plot(sim_sec, gtf_aurora_e_aurora_w, "k", label="Green Time of Aurora East to West (Fixed-time)")
+
+    plt.plot(sim_sec, gt_katip_s, "g--", label="Green Time of Katipunan South and North (MPC-based)")
+    plt.plot(sim_sec, gt_aurora_w, "m--", label="Green Time of Aurora West (MPC-based)")
+    plt.plot(sim_sec, gt_aurora_e_katip_s, "c--", label="Green Time of Aurora East to Katipunan South (MPC-based)")
+    plt.plot(sim_sec, gt_aurora_e_aurora_w, "k--", label="Green Time of Aurora East to West (MPC-based)")
+
+    plt.title("Green Times of the Stoplights in the Intersection")
+    plt.xlabel("Time (s)")
+    plt.ylabel("Green Times (s)")
+    plt.xlim(0)
+    plt.ylim(0)
+    plt.legend()
+    plt.gcf().autofmt_xdate()
+    '''
     plt.show()
 
 if __name__ == "__main__":

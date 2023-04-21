@@ -19,7 +19,7 @@ import math
 
 from mpc_params import *
 
-def do_mpc(x_curr=np.array([50,30,20,10]), step=0):
+def do_mpc(x_curr=np.array([0,0,0,0]), step=0):
 
     # Initialize a model
     m = gp.Model("MPC")
@@ -53,7 +53,7 @@ def do_mpc(x_curr=np.array([50,30,20,10]), step=0):
         else:
             d = np.concatenate((d, [[0.0, 0.0, 0.0, 0.0]]))
     D = d
-    print(f"D = {D}")
+    #print(f"D = {D}")
 
     # Obtain the proportionality constant between Aurora East to West and Aurora East to Katipunan South
     d_41 = np.array(d_41p[t_step:t_step+N])
@@ -150,7 +150,22 @@ def do_mpc(x_curr=np.array([50,30,20,10]), step=0):
         # EXPERIMENTAL
         m.addConstr(u_43 >= u_41*u_41mult) # Green time constraint of Aurora East to West
         m.addConstr(u[k, 0] >= u_2max) # Green time constraint of Katipunan South and North
-        m.addConstr(u[k, 0] >= u[k, 2]) # Green time constraint of Katipunan South and North
+
+        if (x_curr[1] >= x_curr[2]) or (x_curr[0] >= x_curr[2]):
+            m.addConstr(u[k, 0] >= u[k, 2]) # Green time constraint of Katipunan South and North
+        elif (x_curr[2] > x_curr[1]) or (x_curr[2] > x_curr[0]):
+            m.addConstr(u[k, 2] >= u[k, 0]) # Green time constraint of Aurora West
+
+        if (x_curr[1] >= x_curr[3]) or (x_curr[0] >= x_curr[3]):
+            m.addConstr(u[k, 0] >= u[k, 3]) # Green time constraint of Katipunan South and North
+        elif (x_curr[3] > x_curr[1]) or (x_curr[3] > x_curr[0]):
+            m.addConstr(u[k, 3] >= u[k, 0]) # Green time constraint of Aurora East
+
+        if (x_curr[2] >= x_curr[3]):
+            m.addConstr(u[k, 2] >= u[k, 3]) # Green time constraint of Aurora West
+        elif (x_curr[3] > x_curr[2]):
+            m.addConstr(u[k, 3] >= u[k, 2]) # Green time constraint of Aurora East
+        
         m.addConstr(u[k, 2] >= u_3max) # Green time constraint of Aurora West
         m.addConstr(u[k, 2] >= u_41) # Green time constraint of Aurora West
         m.addConstr(u[k, 3] >= u_4max) # Green time constraint of Aurora East
@@ -201,7 +216,9 @@ def do_mpc(x_curr=np.array([50,30,20,10]), step=0):
     names_to_retrieve = ["C", "u_41", "u_43"]
     vals = {}
     u_res = []
-    #relaxed = 0
+    relaxed = 0
+
+    x_trajectory = []
 
     # Only get values of u, x, and C
     for i in range(N):
@@ -209,19 +226,24 @@ def do_mpc(x_curr=np.array([50,30,20,10]), step=0):
             names_to_retrieve.append(f"u[{i},{j}]")
             names_to_retrieve.append(f"x[{i},{j}]")
 
+    for j in range(4):
+        names_to_retrieve.append(f"x[{N},{j}]")
+
     if m.Status == GRB.INFEASIBLE:
         print("Model is infeasible!")
         m.computeIIS() # Check for constraints leading to infeasibility
         m.write("iis.ilp")
         m.feasRelaxS(1, True, True, False) # Ease model if infeasible
         m.optimize()
-        #relaxed = 1
+        relaxed += 1
         for v in m.getVars():
             if v.VarName in names_to_retrieve:
                 vals[v.VarName] = v.X
                 #print('%s %g' % (v.VarName, v.X))
                 if v.VarName[:3] == "u[0" or (v.VarName == "u_41" or v.VarName == "u_43"):
                     u_res.append(v.X)
+                elif v.VarName[:1] == "x":
+                    x_trajectory.append(int(v.X+0.5))
     else:
         for v in m.getVars():
             if v.VarName in names_to_retrieve:
@@ -229,6 +251,8 @@ def do_mpc(x_curr=np.array([50,30,20,10]), step=0):
                 #print('%s %g' % (v.VarName, v.X))
                 if v.VarName[:3] == "u[0" or (v.VarName == "u_41" or v.VarName == "u_43"):
                     u_res.append(v.X)
+                elif v.VarName[:1] == "x":
+                    x_trajectory.append(int(v.X+0.5))
 
     # Post-processing of data
     additive = []
@@ -256,7 +280,7 @@ def do_mpc(x_curr=np.array([50,30,20,10]), step=0):
     #print(f"Q = {Q}")
     #print(f"R = {R}")
 
-    return u_res, proc_C
+    return u_res, proc_C, x_trajectory, relaxed
 
 def get_timer_settings(u, C):
   
@@ -281,9 +305,11 @@ def get_timer_settings(u, C):
     return u_sorted, phases
   
 def main():
-    u, C = do_mpc()
+    u, C, trajectory = do_mpc()
     print(f"u[0,:] = {u}")
     print(f"C = {C}")
+    print(f"trajectory = {trajectory}")
+    print(f"len trajectory = {len(trajectory)}")
     get_timer_settings(u, C)
 
 if __name__ == "__main__":

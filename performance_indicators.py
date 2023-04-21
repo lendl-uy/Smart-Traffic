@@ -464,28 +464,3 @@ def get_avg_wait():
     #print(f"Average waiting time in Aurora East: {avgwt_aurora_e} s")
 
     return avgwt_katip_s, avgwt_katip_n, avgwt_aurora_w, avgwt_aurora_e
-
-def get_spawned_vehs():
-
-    for veh_id in traci.simulation.getDepartedIDList():
-        lane_id = traci.vehicle.getLaneID(veh_id)
-        if lane_id in katip_south_edges:
-            spawned_katip_s.append(1)
-        elif lane_id in katip_north_edges:
-            spawned_katip_n.append(1)
-        elif lane_id in aurora_west_edges:
-            spawned_aurora_w.append(1)
-        else:
-            spawned_aurora_e.append(1)
-
-    total_spawned_katip_s = sum(spawned_katip_s)
-    total_spawned_katip_n = sum(spawned_katip_n)
-    total_spawned_aurora_w = sum(spawned_aurora_w)
-    total_spawned_aurora_e = sum(spawned_aurora_e)
-
-    #print(f"Total vehicles spawned in Katipunan South: {total_spawned_katip_s}")
-    #print(f"Total vehicles spawned in Katipunan North: {total_spawned_katip_n}")
-    #print(f"Total vehicles spawned in Aurora West: {total_spawned_aurora_w}")
-    #print(f"Total vehicles spawned in Aurora East: {total_spawned_aurora_e}")
-
-    return total_spawned_katip_s, total_spawned_katip_n, total_spawned_aurora_w, total_spawned_aurora_e

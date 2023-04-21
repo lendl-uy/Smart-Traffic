@@ -54,9 +54,13 @@ def main():
     # Record start time of simulation for optimization purposes
     start = time.time()
 
+    # Initialize a variable that stores number of times the model was relaxed
+    num_relaxation = 0
+
     # Obtain initial timer settings and cycle time
-    u, C = do_mpc()
+    u, C, trajectory, relaxed = do_mpc()
     u_sorted, phases = get_timer_settings(u, C) # Retrieves parsed timer setting information
+    num_relaxation += relaxed
     step_C = 0
 
     print(f"u = {u_sorted}")
@@ -165,7 +169,7 @@ def main():
             sum_spawned_aurora_w = sum(temp_spawned_aurora_w)
             sum_spawned_aurora_e = sum(temp_spawned_aurora_e)
 
-            save_sim.write_results([n_katip_south, n_katip_north, n_aurora_west, n_aurora_east],
+            save_sim.write_results_per_sec([n_katip_south, n_katip_north, n_aurora_west, n_aurora_east],
                                 [ql_katip_south, ql_katip_north, ql_aurora_west, ql_aurora_east],
                                 [qt_katip_south, qt_katip_north, qt_aurora_west, qt_aurora_east], 
                                 [flow_katip_south, flow_katip_north, flow_aurora_west, flow_aurora_east],
@@ -182,8 +186,9 @@ def main():
 
                 print("Performing MPC to compute optimal green times!")
                 # Recompute timer settings and cycle time
-                u, C = do_mpc(np.array([n_katip_south, n_katip_north, n_aurora_west_fair, n_aurora_east_fair]), actual_time_step+1)
+                u, C, trajectory, relaxed = do_mpc(np.array([n_katip_south, n_katip_north, n_aurora_west_fair, n_aurora_east_fair]), actual_time_step+1)
                 u_sorted, phases = get_timer_settings(u, C) # Retrieves parsed timer setting information
+                num_relaxation += relaxed
 
                 step_C = actual_time_step+1
             
@@ -191,12 +196,15 @@ def main():
                 print(f"C = {C}")
                 print(f"phases = {phases}")
 
+                save_sim.write_results_per_cycle(actual_time_step, [n_katip_south, n_katip_north, n_aurora_west_fair, n_aurora_east_fair], trajectory)
+
         # Step the simulation by 1 second
         traci.simulationStep()
         print("\n")
 
     # Record start time of simulation for profiling purposes
     print(f"Runtime of simulation: {time.time()-start}")
+    print(f"Number of times that model was relaxed: {num_relaxation}")
 
     traci.close()
 

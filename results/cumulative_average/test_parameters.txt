@@ -1,0 +1,114 @@
+test 13: cmin = 50, cmax = 100, n=5, umin=15
+test 14: cmin = 50, cmax = 100, n=5, umin=11 
+test 15: cmin = 50, cmax = 100, n=5, umin=13
+test 16: cmin = 50, cmax = 100, n=5, umin=17
+test 17: cmin = 50, cmax = 100, n=5, umin=19
+test 18: cmin = 50, cmax = 100, n=5, umin=21
+test 19: cmin = 50, cmax = 100, n=5, umin=23
+test 20: cmin = 50, cmax = 100, n=5, umin=25
+test 21: cmin = 50, cmax = 100, n=5, umin=27 
+test 22: cmin = 50, cmax = 100, n=3, umin=15 
+test 23: cmin = 50, cmax = 100, n=4, umin=15 
+test 24: cmin = 50, cmax = 100, n=6, umin=15 
+test 25: cmin = 50, cmax = 100, n=7, umin=15 
+test 26: cmin = 50, cmax = 100, n=8, umin=15
+test 27: cmin = 50, cmax = 100, n=9, umin=15 
+test 28: cmin = 50, cmax = 100, n=10, umin=15 
+test 29: cmin = 50, cmax = 100, n=11, umin=15 
+test 30: cmin = 50, cmax = 100, n=12, umin=15 
+test 31: cmin = 50, cmax = 100, n=13, umin=15 
+test 32: cmin = 50, cmax = 100, n=14, umin=15 
+test 33: cmin = 50, cmax = 100, n=15, umin=15 
+test 34: cmin = 50, cmax = 70, n=5, umin=15
+test 35: cmin = 50, cmax = 80, n=5, umin=15 
+test 36: cmin = 50, cmax = 90, n=5, umin=15 
+test 37: cmin = 50, cmax = 110, n=5, umin=15 
+test 38: cmin = 50, cmax = 120, n=5, umin=15 
+test 39: cmin = 50, cmax = 130, n=5, umin=15 
+test 40: cmin = 50, cmax = 140, n=5, umin=15 
+test 41: cmin = 50, cmax = 150, n=5, umin=15 
+test 42: cmin = 100, cmax = 120, n=5, umin=15 
+test 43: cmin = 100, cmax = 130, n=5, umin=15 
+test 44: cmin = 100, cmax = 140, n=5, umin=15 
+test 45: cmin = 100, cmax = 150, n=5, umin=15 
+test 46: cmin = 100, cmax = 160, n=5, umin=15 
+test 47: cmin = 100, cmax = 170, n=5, umin=15 
+test 48: cmin = 100, cmax = 180, n=5, umin=15 
+test 49: cmin = 100, cmax = 190, n=5, umin=15 
+test 50: cmin = 100, cmax = 200, n=5, umin=15
+
+test 51: cmin = 50, cmax = 70, n=10, umin=13 
+test 52: cmin = 50, cmax = 70, n=10, umin=16 
+test 53: cmin = 50, cmax = 75, n=10, umin=13 
+test 54: cmin = 50, cmax = 80, n=10, umin=13 
+test 55: cmin = 50, cmax = 73, n=10, umin=13 
+test 56: cmin = 50, cmax = 75, n=10, umin=11 
+test 57: cmin = 50, cmax = 73, n=10, umin=11 
+test 58: cmin = 50, cmax = 75, n=10, umin=10 
+test 59: cmin = 50, cmax = 73, n=10, umin=10 
+test 60: cmin = 50, cmax = 70, n=10, umin=10 
+test 61: cmin = 50, cmax = 70, n=10, umin=15
+
+test 68: cmin = 50, cmax = 70, n=10, umin=11
+
+test 69: cmin = 50, cmax = 70, n=5, umin=15
+test 70: cmin = 50, cmax = 80, n=5, umin=15
+test 71: cmin = 50, cmax = 90, n=5, umin=15
+test 72: cmin = 50, cmax = 100, n=5, umin=15
+
+test 73: cmin = 50, cmax = 110, n=5, umin=15 
+test 74: cmin = 50, cmax = 120, n=5, umin=15 
+test 75: cmin = 50, cmax = 130, n=5, umin=15 
+test 76: cmin = 50, cmax = 140, n=5, umin=15 
+test 77: cmin = 50, cmax = 150, n=5, umin=15 
+test 78: cmin = 100, cmax = 120, n=5, umin=15 
+test 79: cmin = 100, cmax = 130, n=5, umin=15 
+test 80: cmin = 100, cmax = 140, n=5, umin=15 
+test 81: cmin = 100, cmax = 150, n=5, umin=15 
+test 82: cmin = 100, cmax = 160, n=5, umin=15 
+test 83: cmin = 100, cmax = 170, n=5, umin=15 
+test 84: cmin = 100, cmax = 180, n=5, umin=15 
+test 85: cmin = 100, cmax = 190, n=5, umin=15 
+test 86: cmin = 100, cmax = 200, n=5, umin=15
+
+test 87: cmin = 50, cmax = 100, n=5, umin=11 
+test 88: cmin = 50, cmax = 100, n=5, umin=13
+test 89: cmin = 50, cmax = 100, n=5, umin=17
+test 90: cmin = 50, cmax = 100, n=5, umin=19
+test 91: cmin = 50, cmax = 100, n=5, umin=21
+test 92: cmin = 50, cmax = 100, n=5, umin=23
+test 93: cmin = 50, cmax = 100, n=5, umin=25
+test 94: cmin = 50, cmax = 100, n=5, umin=27
+
+test 95: cmin = 50, cmax = 100, n=3, umin=15 
+test 96: cmin = 50, cmax = 100, n=4, umin=15 
+test 97: cmin = 50, cmax = 100, n=6, umin=15 
+test 98: cmin = 50, cmax = 100, n=7, umin=15 
+test 99: cmin = 50, cmax = 100, n=8, umin=15
+test 100: cmin = 50, cmax = 100, n=9, umin=15 
+test 101: cmin = 50, cmax = 100, n=10, umin=15 
+test 102: cmin = 50, cmax = 100, n=11, umin=15 
+test 103: cmin = 50, cmax = 100, n=12, umin=15 
+test 104: cmin = 50, cmax = 100, n=13, umin=15 
+test 105: cmin = 50, cmax = 100, n=14, umin=15 
+test 106: cmin = 50, cmax = 100, n=15, umin=15
+
+test 107: cmin = 50, cmax = 75, n=10, umin=10
+test 108: cmin = 50, cmax = 75, n=10, umin=11
+
+test 109: cmin = 50, cmax = 73, n=10, umin=11
+test 110: cmin = 50, cmax = 77, n=10, umin=10
+test 111: cmin = 40, cmax = 65, n=10, umin=10
+test 112: cmin = 40, cmax = 60, n=10, umin=10
+test 113: cmin = 50, cmax = 70, n=10, umin=10
+test 114: cmin = 50, cmax = 70, n=10, umin=11
+test 115: cmin = 50, cmax = 74, n=10, umin=11
+
+test 119: c = 50, n = 5, umin = 15
+test 120: c = 60, n = 5, umin = 15
+test 121: c = 70, n = 5, umin = 15
+test 122: c = 80, n = 5, umin = 15
+test 123: c = 90, n = 5, umin = 15
+test 124: c = 100, n = 5, umin = 15
+test 125: c = 110, n = 5, umin = 15
+test 126: c = 120, n = 5, umin = 15
