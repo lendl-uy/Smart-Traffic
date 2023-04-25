@@ -150,10 +150,17 @@ def get_vehicle_count(road_name):
         # Combine both vehicle ID lists into a set, removing duplicates
         AuroraE_combined_ids = set(AuroraE_junction_ids + AuroraE_edge_ids)
 
+        # Get the vehicles in lane 4 which are supposed to turn left to Katipunan South
+        AuroraE_Lane4 = 0
+        for veh in AuroraE_combined_ids:
+            lane_id = traci.vehicle.getLaneID(veh)
+            if lane_id == "933952934#0_3":
+                AuroraE_Lane4 += 1
+
         # The length of this set gives the total number of cars in AuroraE
         AuroraE_total = len(AuroraE_combined_ids)
         #print("Vehicles in AuroraE: ", AuroraE_total)
-        return AuroraE_total
+        return AuroraE_total, AuroraE_Lane4
 
     # Obtain vehicle count in AuroraW
     elif road_name == "AuroraW":
@@ -184,9 +191,9 @@ def get_vehicle_count(road_name):
     elif road_name == "all":
         KatipS_total = get_vehicle_count("KatipS")
         KatipN_total = get_vehicle_count("KatipN")
-        AuroraE_total = get_vehicle_count("AuroraE")
+        AuroraE_total, AuroraE_Lane4 = get_vehicle_count("AuroraE")
         AuroraW_total = get_vehicle_count("AuroraW")
-        all_roads = KatipS_total, KatipN_total, AuroraW_total, AuroraE_total
+        all_roads = KatipS_total, KatipN_total, AuroraW_total, AuroraE_total, AuroraE_Lane4
         return all_roads
 
 def get_queue_length(record_stopped_vehs, record, step):
@@ -464,3 +471,28 @@ def get_avg_wait():
     #print(f"Average waiting time in Aurora East: {avgwt_aurora_e} s")
 
     return avgwt_katip_s, avgwt_katip_n, avgwt_aurora_w, avgwt_aurora_e
+
+def get_spawned_vehs():
+
+    for veh_id in traci.simulation.getDepartedIDList():
+        lane_id = traci.vehicle.getLaneID(veh_id)
+        if lane_id in katip_south_edges:
+            spawned_katip_s.append(1)
+        elif lane_id in katip_north_edges:
+            spawned_katip_n.append(1)
+        elif lane_id in aurora_west_edges:
+            spawned_aurora_w.append(1)
+        else:
+            spawned_aurora_e.append(1)
+
+    total_spawned_katip_s = sum(spawned_katip_s)
+    total_spawned_katip_n = sum(spawned_katip_n)
+    total_spawned_aurora_w = sum(spawned_aurora_w)
+    total_spawned_aurora_e = sum(spawned_aurora_e)
+
+    #print(f"Total vehicles spawned in Katipunan South: {total_spawned_katip_s}")
+    #print(f"Total vehicles spawned in Katipunan North: {total_spawned_katip_n}")
+    #print(f"Total vehicles spawned in Aurora West: {total_spawned_aurora_w}")
+    #print(f"Total vehicles spawned in Aurora East: {total_spawned_aurora_e}")
+
+    return total_spawned_katip_s, total_spawned_katip_n, total_spawned_aurora_w, total_spawned_aurora_e

@@ -36,7 +36,7 @@ def create_dua_demand(T, sim_time, directory):
     j = 0
     depart = 0.0
 
-    while depart < 50400.0:
+    for n in range(len(trips)):
 
         depart = float(trips[i]["depart"])
         departing_lane = trips[i]["departLane"]
@@ -44,7 +44,8 @@ def create_dua_demand(T, sim_time, directory):
         j = int(depart/float(T))
 
         if depart >= 50400.0:
-            break
+            i += 1
+            continue
 
         if departing_lane in katip_south_edges:
             dua_veh_katip_s[j] += 1

@@ -52,7 +52,7 @@ def do_mpc(x_curr=np.array([0,0,0,0,0]), step=0):
     # C: cycle time
     # C_dummy: to be used for division
     #C = 300
-    #C = m.addVar(vtype=GRB.INTEGER, lb=C_min, ub = C_max, name="C")
+    C = m.addVar(vtype=GRB.INTEGER, lb=C_min, ub = C_max, name="C")
     C_dummy = m.addVar(vtype=GRB.CONTINUOUS, name="C_dummy")
 
     # step: Current time step in the simulation
@@ -68,12 +68,12 @@ def do_mpc(x_curr=np.array([0,0,0,0,0]), step=0):
         else:
             d = np.concatenate((d, [[0.0, 0.0, 0.0, 0.0]]))
     D = d
-    #print(f"D = {D}")
+    print(f"D = {D}")
 
     # Obtain the proportionality constant between Aurora East to West and Aurora East to Katipunan South
     d_41 = np.array(d_41p[t_step:t_step+N])
     d_4mult = []
-    max_multiplier = math.floor((C-L)/(u_min_val))
+    max_multiplier = math.floor((C_max-L)/(u_min_val))
 
     # Pad zeros if there are insufficient entries
     if d_41.size < N:
@@ -106,30 +106,39 @@ def do_mpc(x_curr=np.array([0,0,0,0,0]), step=0):
     else:
         x_total = x_curr[0]+np.sum(x_curr[2:-1])
 
-    d_sum_katip = np.sum(D[:,:2], axis=1)
-    d_sum_aurora = np.sum(D[:,2:], axis=0)
-    d_total_katip = np.sum(d_sum_katip)
-    d_total_aurora = np.sum(d_sum_aurora)
-    d_total = d_total_katip+d_total_aurora
-    max_multiplier = math.floor((C-L)/u_min_val)
+    d_sum = np.sum(D[0:,1:], axis=0)
+    d_total = np.sum(d_sum)
+    max_multiplier = math.floor((C_max-L)/u_min_val)
 
     if sum(x_curr) <= 0.0:
-        u_2mult = max_multiplier*(d_total_katip/d_total)
-        u_3mult = max_multiplier*(d_sum_aurora[0]/d_total)
-        u_4mult = max_multiplier*(d_sum_aurora[1]/d_total)
+        u_2mult = max_multiplier*(d_sum[0]/d_total)
+        u_3mult = max_multiplier*(d_sum[1]/d_total)
+        u_4mult = max_multiplier*(d_sum[2]/d_total)
         u_41multiplier = min(u_2mult, u_3mult, u_4mult, 1)
-        pass
     else:
-        u_2mult = max_multiplier*((x_curr[0]+x_curr[1])/x_total)
+        if x_curr[0] < x_curr[1]:
+            u_2mult = max_multiplier*(x_curr[1]/x_total)
+        else:
+            u_2mult = max_multiplier*(x_curr[0]/x_total)
+
         u_3mult = max_multiplier*(x_curr[2]/x_total)
         u_4mult = max_multiplier*(x_curr[3]/x_total)
-        u_41multiplier = max_multiplier*(x_curr[4]/x_total)
 
+        u_41multiplier = max_multiplier*(x_curr[4]/x_total)
+    
     u_2max = round(u_min_val*u_2mult)
     u_3max = round(u_min_val*u_3mult)
     u_4max = round(u_min_val*u_4mult)
     u_41max = round(u_min_val*u_41multiplier)
 
+    '''
+    u_max = additive([u_2max, u_3max, u_43max, u_41max], u_min_val)
+
+    u_2max = u_max[0]
+    u_3max = u_max[1]
+    u_43max = u_max[2]
+    u_41max = u_max[3]
+    '''
     print(f"u_2max = {u_2max}")
     print(f"u_3max = {u_3max}")
     print(f"u_4max = {u_4max}")
@@ -144,8 +153,8 @@ def do_mpc(x_curr=np.array([0,0,0,0,0]), step=0):
     '''
     # u_41 and u_43 divides sum of green times in Aurora Blvd. East
     # Aurora Blvd. East has two phases, to Katipunan Ave. South and Aurora Blvd. West
-    u_41 = m.addMVar(shape=(N, 1), vtype=GRB.INTEGER, lb=u_min_val, name="u_41")
-    u_43 = m.addMVar(shape=(N, 1), vtype=GRB.INTEGER, lb=u_min_val, name="u_43")
+    u_41 = m.addMVar(shape=(N,1), vtype=GRB.INTEGER, lb=u_min_val, name="u_41")
+    u_43 = m.addMVar(shape=(N,1), vtype=GRB.INTEGER, lb=u_min_val, name="u_43")
 
     # Intermediary variables to compute difference of x(k+ko|ko) and u(k+ko|ko)
     y = m.addMVar(shape=(N+1,4), lb=-GRB.INFINITY, vtype=GRB.CONTINUOUS, name="y") # x(k_o+k)-x(k_o)
@@ -168,29 +177,13 @@ def do_mpc(x_curr=np.array([0,0,0,0,0]), step=0):
         m.addConstr(C == u[k, 0] + u_41[k, 0] + u[k, 2] + 9) # Total cycle time is equal to phase 1 + phase 2 + phase 3 + lost time
 
         # EXPERIMENTAL
-        #m.addConstr(u_43 >= u_41[k, 0]*u_41mult) # Green time constraint of Aurora East to West
-        m.addConstr(u[k, 0] >= u_2max) # Green time constraint of Katipunan South and North
-        #m.addConstr(u[k, 0] >= u[k, 2]) # Green time constraint of Katipunan South and North
-        m.addConstr(u[k, 2] >= u_3max) # Green time constraint of Aurora West
-        m.addConstr(u[k, 2] >= u_41[k, 0]) # Green time constraint of Aurora West
-        m.addConstr(u[k, 3] >= u_4max) # Green time constraint of Aurora East
-        
-        if u_2max >= u_3max:
-            m.addConstr(u[k, 0] >= u[k, 2]) # Green time constraint of Katipunan South and North
-        else:
-            m.addConstr(u[k, 2] >= u[k, 0]) # Green time constraint of Aurora West
-
-        if (u_41max <= u_min_val) or (u_2max >= u_4max) or (u_3max >= u_4max):
-            m.addConstr(u_41[k, 0] <= u_min_val*2)
-
-        '''
         #m.addConstr(u_43 >= u_41*u_41mult) # Green time constraint of Aurora East to West
         m.addConstr(u[k, 0] >= u_2max) # Green time constraint of Katipunan South and North
         m.addConstr(u[k, 2] >= u_3max) # Green time constraint of Aurora West
         #m.addConstr(u[k, 2] >= u_41) # Green time constraint of Aurora West
         m.addConstr(u_41[k, 0] >= u_41max) # Green time constraint of Aurora East to Katipunan South
         m.addConstr(u[k, 3] >= u_4max) # Green time constraint of Aurora East
-        '''
+
         '''
         if (x_curr[1] >= x_curr[2]) or (x_curr[0] >= x_curr[2]):
             m.addConstr(u[k, 0] >= u[k, 2]) # Green time constraint of Katipunan South and North
@@ -224,19 +217,23 @@ def do_mpc(x_curr=np.array([0,0,0,0,0]), step=0):
             m.addConstr(u_41[k, 0] >= u[k, 0]) # Green time constraint of Aurora East to Katipunan South
 
         '''
-        '''
         u_min_instantaneous = min(u_2max, u_3max)
         if u_41max <= u_min_instantaneous:
             if u_2max == u_min_instantaneous:
                 m.addConstr(u[k, 0] >= u_41[k, 0])
             elif u_3max == u_min_instantaneous:
                 m.addConstr(u[k, 2] >= u_41[k, 0])
-        '''
         
         #m.addConstr(u[k, 0] >= u_41*u_2mult) # Green time constraint of Aurora East to West
         #m.addConstr(u[k, 2] <= u_41*u_3mult) # Green time constraint of Aurora East to West
         #m.addConstr(u[k, 3] >= u_41*u_4mult) # Green time constraint of Aurora East to West
         #m.addConstr(u_41 >= u_min_val) # Green time constraint of Aurora East to West
+
+        #m.addConstr(u_43 >= u_41*3) # Green time constraint of Aurora East to West
+        #m.addConstr(u[k, 0] >= u_41*3) # Green time constraint of Katipunan South and North
+        #m.addConstr(u[k, 2] <= u[k, 0]-5) # Green time constraint of Aurora West
+        #m.addConstr(u[k, 0] >= u_41*2) # Green time constraint of Katipunan South and North
+        #m.addConstr(u[k, 2] >= u_41*2) # Green time constraint of Aurora West
 
         m.addConstr(C*C_dummy == 1) # To achieve same effect as 1/C
 

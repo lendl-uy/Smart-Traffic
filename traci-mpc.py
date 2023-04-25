@@ -142,6 +142,7 @@ def main():
                 traci.trafficlight.setPhase(trafficlightID, 2)
                 traci.trafficlight.setPhaseDuration(trafficlightID, u_sorted[3])
                 n_aurora_east_fair = n_aurora_east # Save vehicle count for Aurora East (just before green time)
+                n_aurora_east_lane4_fair = n_aurora_east_lane4 # Save vehicle count of Aurora East Lane 4 (just before green time)
                 print(f"Timer applied: {u_sorted[3]} s")
             elif delta_step == phases[2]-3:
                 traci.trafficlight.setPhase(trafficlightID, 3)
@@ -162,7 +163,7 @@ def main():
             print(f"Current phase number: {phase_num}")
 
             # Obtain vehicle count in all incoming roads
-            n_katip_south, n_katip_north, n_aurora_west, n_aurora_east = perf.get_vehicle_count("all")
+            n_katip_south, n_katip_north, n_aurora_west, n_aurora_east, n_aurora_east_lane4 = perf.get_vehicle_count("all")
 
             sum_spawned_katip_s = sum(temp_spawned_katip_s)
             sum_spawned_katip_n = sum(temp_spawned_katip_n)
@@ -186,9 +187,11 @@ def main():
 
                 print("Performing MPC to compute optimal green times!")
                 # Recompute timer settings and cycle time
-                u, C, trajectory, relaxed = do_mpc(np.array([n_katip_south, n_katip_north, n_aurora_west_fair, n_aurora_east_fair]), actual_time_step+1)
-                u_sorted, phases = get_timer_settings(u, C) # Retrieves parsed timer setting information
-                num_relaxation += relaxed
+                if actual_time_step+N*C < 50400:
+                    u, C, trajectory, relaxed = do_mpc(np.array([n_katip_south, n_katip_north, n_aurora_west_fair, n_aurora_east_fair, n_aurora_east_lane4_fair]), 
+                                                    actual_time_step+1)
+                    u_sorted, phases = get_timer_settings(u, C) # Retrieves parsed timer setting information
+                    num_relaxation += relaxed
 
                 step_C = actual_time_step+1
             

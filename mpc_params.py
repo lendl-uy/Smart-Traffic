@@ -8,23 +8,23 @@ from create_demand_mpc import create_dua_demand
 
 # Tunable parameters
 N = 5 # (TUNABLE)
-u_min_val = 25 # (TUNABLE)
-C_min = 50 # (TUNABLE)
-C_max = 100 # (TUNABLE)
+u_min_val = 15 # (TUNABLE)
+#C_min = 50 # (TUNABLE)
+#C_max = 75 # (TUNABLE)
 #error = 0.5
-#C = 200
+C = 170
 #C_max = C
 print(f"N = {N}")
 print(f"u_min_val = {u_min_val}")
-#print(f"C = {C}")
-print(f"C_min = {C_min}")
-print(f"C_max = {C_max}")
+print(f"C = {C}")
+#print(f"C_min = {C_min}")
+#print(f"C_max = {C_max}")
 
 # Variable to store number of model relaxation
 num_relaxation = 0
 
 # Traffic model variables (s)
-T = C_max # Control interval (must divide 3600 w/out decimal)
+T = C # Control interval (must divide 3600 w/out decimal)
 L = 9  # Lost time (3 phases * 3s)
 
 # Saturation flow rate (veh/hr -> veh/s)
@@ -61,7 +61,7 @@ d_4_out = np.array([44., 48., 53., 54., 98., 32., 66., 40.,
 xmin = np.array([0,0,0,0])
 #xmax = np.array([50,50,50,50]) # (TUNABLE)
 xref = np.array([0,0,0,0]) # (TUNABLE)
-umin = np.array([u_min_val,u_min_val,u_min_val,u_min_val]) # Cannot have a zero timer setting
+umin = np.array([0,0,0,0]) # Cannot have a zero timer setting
 
 xmin = np.tile(xmin, (N+1,1))
 #xmax = np.tile(xmax, (N+1,1))
@@ -96,7 +96,7 @@ except:
 
 # Weighting matrix W (traffic volume penalization)
 w_1 = 1/((960)**2)
-w_2 = 1/((2661)**2)
+w_2 = 1/((3312)**2)
 w_3 = 1/((3312)**2)
 w_4 = 1/((1137)**2)
 Q = np.array([[w_1,0,0,0],
@@ -107,8 +107,8 @@ Q = np.array([[w_1,0,0,0],
 
 # Weighting matrix R (control input penalization)
 r_1 = 0.05 # (TUNABLE)
-r_2 = 0.1 # (TUNABLE)
-r_3 = 0.25 # (TUNABLE)
+r_2 = 0.25 # (TUNABLE)
+r_3 = 0.05 # (TUNABLE)
 r_4 = 0.25 # (TUNABLE)
 R = np.array([[r_1,0,0,0],
               [0,r_2,0,0],

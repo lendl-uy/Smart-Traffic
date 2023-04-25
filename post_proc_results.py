@@ -300,7 +300,7 @@ def main():
 
     fixed_time_dir = "results\\fixed_time"
     mpc_dir_1 = "results\\cumulative_average\\test108\\"
-    mpc_dir_2 = "results\\test131\\"
+    mpc_dir_2 = "results\\test56\\"
     #mpc_dir_3 = "results\\test12(extended_roads,umin=15,n=5)\\"
 
     num_hours = 14
@@ -336,14 +336,16 @@ def main():
     #flow_mpc_3 = post_proc_flow(num_hours, mpc_data_3)
 
     c_fixed_time = post_proc_cycle(fixed_time_data)
+    c_mpc_1 = post_proc_cycle(mpc_data_1)
     c_mpc_2 = post_proc_cycle(mpc_data_2)
 
-    demand_fixed_time = post_proc_demand(0.5, 14, "results\\summary_003_fixed_time.xml")
-    demand_mpc = post_proc_demand(0.5, 14, "results\\summary_003_mpc.xml")
+    #demand_fixed_time = post_proc_demand(0.5, 14, "results\\summary_003_fixed_time.xml")
+    #demand_mpc = post_proc_demand(0.5, 14, "results\\summary_003_mpc.xml")
 
     gtf_katip_s, gtf_katip_n, gtf_aurora_w, gtf_aurora_e_katip_s, gtf_aurora_e_aurora_w = post_proc_u(fixed_time_data)
-    gt_katip_s, gt_katip_n, gt_aurora_w, gt_aurora_e_katip_s, gt_aurora_e_aurora_w = post_proc_u(mpc_data_2)
-
+    gt1_katip_s, gt1_katip_n, gt1_aurora_w, gt1_aurora_e_katip_s, gt1_aurora_e_aurora_w = post_proc_u(mpc_data_1)
+    gt2_katip_s, gt2_katip_n, gt2_aurora_w, gt2_aurora_e_katip_s, gt2_aurora_e_aurora_w = post_proc_u(mpc_data_2)
+    '''
     plot_line_2_params(sim_hr, ql_fixed_time, ql_mpc_2, "Time of Day (hr:min)", "Average Queue Length (m)", 
               "Fixed-time TSC", "MPC-based TSC", "Average Queue Length in the Katipunan Ave. - Aurora Blvd. Intersection")
     plot_line_2_params(sim_hr, qt_fixed_time, qt_mpc_2, "Time of Day (hr:min)", "Average Queue Time (s)", 
@@ -358,22 +360,23 @@ def main():
               "Fixed-time TSC", "MPC-based TSC Current Best", "MPC-based TSC Test", "Average Queue Time in the Katipunan Ave. - Aurora Blvd. Intersection")
     plot_line_3_params(sim_hr, flow_fixed_time, flow_mpc_1, flow_mpc_2, "Time of Day (hr:min)", "Flow Rate (veh/hr)", 
               "Fixed-time TSC", "MPC-based TSC Current Best", "MPC-based TSC Test", "Flow Rate of Traffic in the Katipunan Ave. - Aurora Blvd. Intersection")
+    
     '''
-
     plot_line_2_params(sim_hr, demand_fixed_time, demand_actual, "Time of Day (hr:min)", "Number of Vehicles", "Simulator-generated demand", "Actual demand", 
                        "Hourly Traffic in the Intersection for Fixed-time TSC Simulation")
     plot_line_2_params(sim_hr, demand_mpc, demand_actual, "Time of Day (hr:min)", "Number of Vehicles", "Simulator-generated demand", "Actual demand", 
                        "Hourly Traffic in the Intersection for MPC-based TSC Simulation")
-    
+    '''
 
     plot_line_1_param(sim_sec, c_mpc_2, "Time (s)", "Cycle Time (s)", "Cycle Time of the MPC-based Traffic Signal Control")
-    plot_line_5_params(sim_sec, gt_katip_s, gt_katip_n, gt_aurora_w, gt_aurora_e_katip_s, gt_aurora_e_aurora_w, "Time (s)", 
+    plot_line_5_params(sim_sec, gt2_katip_s, gt2_katip_n, gt2_aurora_w, gt2_aurora_e_katip_s, gt2_aurora_e_aurora_w, "Time (s)", 
                        "Green Times (s)", "Green Time of Katipunan South ", "Green Time of Katipunan North", "Green Time of Aurora West", 
-                       "Green Time of Aurora East to Katipunan South", "Green Time of Aurora East to West", "Green Times of the Stoplights in Fixed-time TSC")
+                       "Green Time of Aurora East to Katipunan South", "Green Time of Aurora East to West", "Green Times of the Stoplights in MPC-based TSC")
     
-    percent_improvement(ql_fixed_time, ql_mpc_2, "MPC-based TSC Current Best", "MPC-based TSC Test", "q_length")
-    percent_improvement(qt_fixed_time, qt_mpc_2, "MPC-based TSC Current Best", "MPC-based TSC Test", "q_time")
-    percent_improvement(flow_fixed_time, flow_mpc_2, "MPC-based TSC Current Best", "MPC-based TSC Test", "flow")
+    
+    percent_improvement(ql_mpc_1, ql_mpc_2, "MPC-based TSC Current Best", "MPC-based TSC Test", "q_length")
+    percent_improvement(qt_mpc_1, qt_mpc_2, "MPC-based TSC Current Best", "MPC-based TSC Test", "q_time")
+    percent_improvement(flow_mpc_1, flow_mpc_2, "MPC-based TSC Current Best", "MPC-based TSC Test", "flow")
 
     '''
     fig, ax1 = plt.subplots()
@@ -410,7 +413,7 @@ def main():
     plt.legend()
     plt.gcf().autofmt_xdate()
     '''
-    plt.show()
+    #plt.show()
 
 if __name__ == "__main__":
     main()
