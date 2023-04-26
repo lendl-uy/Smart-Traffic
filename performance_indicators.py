@@ -40,10 +40,18 @@ KatipS_edge_ids_persistent = []
 AuroraW_edge_ids_persistent = []
 AuroraE_edge_ids_persistent = []
 
+global KatipN_edge_ids_persistent
+global KatipS_edge_ids_persistent
+global AuroraW_edge_ids_persistent
+global AuroraE_edge_ids_persistent
+
 spawned_katip_s = []
 spawned_katip_n = []
 spawned_aurora_w = []
 spawned_aurora_e = []
+
+fifteenlen = 0
+global fifteenlen
 
 def convert_to_real_time(step):
 
@@ -333,7 +341,14 @@ def get_queue_length(record_stopped_vehs, record, step):
         Overall_avlenAe=sum(avlenAe)/len(avlenAe)
         Overall_avlenAw=sum(avlenAw)/len(avlenAw)
 
-
+        finalfifteenlen = 0
+        if step%900 == 0:
+            if step != 0:
+                finalfifteenlen = fifteenlen/900
+                print("queue length past 15 mins:", finalfifteenlen)
+            fifteenlen = (avg_ql_aurora_east+avg_ql_aurora_west+avg_ql_katip_north+avg_ql_katip_south)/4
+        else:
+            fifteenlen = fifteenlen+(avg_ql_aurora_east+avg_ql_aurora_west+avg_ql_katip_north+avg_ql_katip_south)/4
         #print(f"Average queue length in Katipunan South: {avg_ql_katip_south} m")
         #print(f"Average queue length in Katipunan North: {avg_ql_katip_north} m")
         #print(f"Average queue length in Aurora West: {avg_ql_aurora_west} m")
@@ -343,14 +358,42 @@ def get_queue_length(record_stopped_vehs, record, step):
         #print(f"Overall average queue length in Aurora West: {Overall_avlenAw} m")
         #print(f"Overall average queue length in Aurora East: {Overall_avlenAe} m")
 
-    return Overall_avlenKs, Overall_avlenKn, Overall_avlenAw, Overall_avlenAe, record_stopped_vehs
+    return Overall_avlenKs, Overall_avlenKn, Overall_avlenAw, Overall_avlenAe, record_stopped_vehs, finalfifteenlen
+
+def get_vehicle_ids(road_name):
+    if road_name == "KatipN":
+        KatipN_edge_ids_persistent += traci.edge.getLastStepVehicleIDs('1076383725.80')
+        KatipN_edge_ids_persistent = set(KatipN_edge_ids_persistent)
+        KatipN_edge_ids_persistent = list(KatipN_edge_ids_persistent)
+        return KatipN_edge_ids_persistent
+
+    elif road_name == "KatipS":
+        KatipS_edge_ids_persistent += traci.edge.getLastStepVehicleIDs('780157087#2')
+        KatipS_edge_ids_persistent = set(KatipS_edge_ids_persistent)
+        KatipS_edge_ids_persistent = list(KatipS_edge_ids_persistent)
+        return KatipS_edge_ids_persistent
+
+    elif road_name == "AuroraE":
+        AuroraE_edge_ids_persistent += traci.edge.getLastStepVehicleIDs('933952934#0')
+        AuroraE_edge_ids_persistent = set(AuroraE_edge_ids_persistent)
+        AuroraE_edge_ids_persistent = list(AuroraE_edge_ids_persistent)
+        return AuroraE_edge_ids_persistent
+
+    elif road_name == "AuroraW":
+        AuroraW_edge_ids_persistent += traci.edge.getLastStepVehicleIDs('591107291#1')
+        AuroraW_edge_ids_persistent = set(AuroraW_edge_ids_persistent)
+        AuroraW_edge_ids_persistent = list(AuroraW_edge_ids_persistent)
+        return AuroraW_edge_ids_persistent
+
+    elif road_name == "all":
+        KatipS = get_vehicle_ids("KatipS")
+        KatipN = get_vehicle_ids("KatipN")
+        AuroraW = get_vehicle_ids("AuroraW")
+        AuroraE = get_vehicle_ids("AuroraE")
+        all_road = KatipS + KatipN + AuroraW + AuroraE
+        return all_road
 
 def get_car_flow(road_name):
-    
-    global KatipN_edge_ids_persistent
-    global KatipS_edge_ids_persistent
-    global AuroraW_edge_ids_persistent
-    global AuroraE_edge_ids_persistent
 
     road_names = ["KatipN", "KatipS", "AuroraW", "AuroraE", "all"]
     # Error handling
@@ -359,33 +402,21 @@ def get_car_flow(road_name):
         return 0
 
     if road_name == "KatipN":
-        KatipN_edge_ids_persistent += traci.edge.getLastStepVehicleIDs('1076383725.80')
-        KatipN_edge_ids_persistent = set(KatipN_edge_ids_persistent)
-        KatipN_unique_vehicle_count = len(KatipN_edge_ids_persistent)
-        KatipN_edge_ids_persistent = list(KatipN_edge_ids_persistent)
+        KatipN_unique_vehicle_count = len(get_vehicle_ids("KatipN"))
         return KatipN_unique_vehicle_count
-    
+
     elif road_name == "KatipS":
-        KatipS_edge_ids_persistent += traci.edge.getLastStepVehicleIDs('780157087#2')
-        KatipS_edge_ids_persistent = set(KatipS_edge_ids_persistent)
-        KatipS_unique_vehicle_count = len(KatipS_edge_ids_persistent)
-        KatipS_edge_ids_persistent = list(KatipS_edge_ids_persistent)
+        KatipS_unique_vehicle_count = len(get_vehicle_ids("KatipS"))
         return KatipS_unique_vehicle_count
 
     elif road_name == "AuroraE":
-        AuroraE_edge_ids_persistent += traci.edge.getLastStepVehicleIDs('933952934#0')
-        AuroraE_edge_ids_persistent = set(AuroraE_edge_ids_persistent)
-        AuroraE_unique_vehicle_count = len(AuroraE_edge_ids_persistent)
-        AuroraE_edge_ids_persistent = list(AuroraE_edge_ids_persistent)
+        AuroraE_unique_vehicle_count = len(get_vehicle_ids("AuroraE"))
         return AuroraE_unique_vehicle_count
-    
+
     elif road_name == "AuroraW":
-        AuroraW_edge_ids_persistent += traci.edge.getLastStepVehicleIDs('591107291#1')
-        AuroraW_edge_ids_persistent = set(AuroraW_edge_ids_persistent)
-        AuroraW_unique_vehicle_count = len(AuroraW_edge_ids_persistent)
-        AuroraW_edge_ids_persistent = list(AuroraW_edge_ids_persistent)
+        AuroraW_unique_vehicle_count = len(get_vehicle_ids("AuroraW"))
         return AuroraW_unique_vehicle_count
-    
+
     elif road_name == "all":
         KatipS = get_car_flow("KatipS")
         KatipN = get_car_flow("KatipN")
@@ -416,7 +447,7 @@ def get_flow_rate(road_name):
 
 def get_avg_wait():
 
-    #get averagewaitingtime of current time step 
+    #get averagewaitingtime of curre7980nt time step
     global keyofkey
 
     for veh_id in traci.simulation.getDepartedIDList():

@@ -101,7 +101,21 @@ def main():
             flow_katip_north = perf.get_flow_rate("KatipN")
             flow_aurora_west = perf.get_flow_rate("AuroraW")
             flow_aurora_east = perf.get_flow_rate("AuroraE")
-            ql_katip_south, ql_katip_north, ql_aurora_west, ql_aurora_east, new_stopped_vehs = perf.get_queue_length(new_stopped_vehs, 0, step)
+            ql_katip_south, ql_katip_north, ql_aurora_west, ql_aurora_east, new_stopped_vehs, fifteen_len = perf.get_queue_length(new_stopped_vehs, 0, step)
+
+        # Obtain the 15-minute average flow rate of all incoming roads:
+        list_of_get_vehicle_ids = []
+        if step % 900 == 0:
+            current_unique_vehicle_ids = set(perf.get_vehicle_ids("all"))
+            if len(list_of_get_vehicle_ids) < 2:
+                list_of_get_vehicle_ids.append(current_unique_vehicle_ids)
+            else:
+                list_of_get_vehicle_ids.pop(0) # Pop the front of the list, the obsolete previous
+                list_of_get_vehicle_ids.append(current_unique_vehicle_ids) # Add the current
+                previous = list_of_get_vehicle_ids[0]
+                current = list_of_get_vehicle_ids[1]
+                new_unique_vehicle_ids = current.difference(previous) # Get set of the new
+                fifteen_flow_rate = len(new_unique_vehicle_ids)/900.0
 
         # Record traffic data for each time step except zeroth second
         if step == 0:
@@ -170,6 +184,7 @@ def main():
             sum_spawned_aurora_w = sum(temp_spawned_aurora_w)
             sum_spawned_aurora_e = sum(temp_spawned_aurora_e)
 
+            # TODO: Need to figure out where to put the fifteen_len variable for queue length
             save_sim.write_results_per_sec([n_katip_south, n_katip_north, n_aurora_west, n_aurora_east],
                                 [ql_katip_south, ql_katip_north, ql_aurora_west, ql_aurora_east],
                                 [qt_katip_south, qt_katip_north, qt_aurora_west, qt_aurora_east], 
