@@ -10,7 +10,7 @@ from create_demand_mpc import create_dua_demand
 N = 5 # (TUNABLE)
 u_min_val = 15 # (TUNABLE)
 #C_min = 50 # (TUNABLE)
-#C_max = 75 # (TUNABLE)
+#C_max = 154 # (TUNABLE)
 #error = 0.5
 C = 170
 #C_max = C
@@ -24,7 +24,7 @@ print(f"C = {C}")
 num_relaxation = 0
 
 # Traffic model variables (s)
-T = C # Control interval (must divide 3600 w/out decimal)
+#T = C # Control interval (must divide 3600 w/out decimal)
 L = 9  # Lost time (3 phases * 3s)
 
 # Saturation flow rate (veh/hr -> veh/s)
@@ -42,6 +42,8 @@ d_3 = np.array([1294., 1495., 1494., 1489., 1527., 1576., 1692.,
                 1802., 2149., 2443., 2479., 3283., 3464., 2960.])
 d_4 = np.array([4095., 4426., 5537., 2997., 2486., 2209., 1936., 
                 4093., 3041., 3086., 2975., 3273., 2820., 2416.])
+d_41p = np.array([280., 275., 240., 184., 345., 261., 171., 1069., 
+                  1128., 714., 671., 560., 421, 504.])
 
 # Consequence of road links unaffected by traffic signals (veh/hr)
 d_1_out = np.array([570., 851., 536., 598., 498., 533., 558., 
@@ -53,15 +55,20 @@ d_3_out = np.array([243., 243., 284., 259., 281., 228., 233.,
 d_4_out = np.array([44., 48., 53., 54., 98., 32., 66., 40., 
                     68., 48., 62., 93., 68., 54.])
 
+d_1 = (d_1-d_1_out)*(1/3600)
+d_2 = (d_2-d_2_out)*(1/3600)
+d_3 = (d_3-d_3_out)*(1/3600)
+d_4 = (d_4-d_4_out)*(1/3600)
+d_41p = d_41p*(1/3600)
 
 # Traffic model matrices
 
 # x is the state variable (vehicle count)
 # u is the control input (green time)
 xmin = np.array([0,0,0,0])
-#xmax = np.array([50,50,50,50]) # (TUNABLE)
+xmax = np.array([250,250,400,400]) # (TUNABLE)
 xref = np.array([0,0,0,0]) # (TUNABLE)
-umin = np.array([0,0,0,0]) # Cannot have a zero timer setting
+umin = np.array([u_min_val,u_min_val,u_min_val,u_min_val]) # Cannot have a zero timer setting
 
 xmin = np.tile(xmin, (N+1,1))
 #xmax = np.tile(xmax, (N+1,1))
@@ -81,16 +88,16 @@ B = np.array([[S_1,0,0,0],
               [0,0,S_3,0],
               [0,0,0,S_4]
               ])
-B = -T*B
+B = -1*B
 
 # D is the demand matrix
 # Demand based on DUArouter-generated flow definitions
-
+'''
 try:
     d_1p, d_2p, d_3p, d_4p, d_41p = create_dua_demand(T, 50400, "sumo\\micro\\003\\tripinfo_003.xml")
 except:
     print(f"Error in creating dua demand!")
-
+'''
 #D = np.tile(d, (N,1))
 #D = T*D
 
