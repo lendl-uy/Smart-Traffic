@@ -4,7 +4,7 @@
 import numpy as np
 #import traffic_distribution as td
 
-from create_demand_mpc import create_dua_demand
+from read_dua_demand import create_dua_demand
 
 # Tunable parameters
 N = 10 # (TUNABLE)

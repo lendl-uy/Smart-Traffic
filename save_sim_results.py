@@ -4,6 +4,7 @@
 # Write results of traffic simulation in separate text files
 
 import os.path
+import sys
 
 directory = "results\\"
 
@@ -12,17 +13,23 @@ f = open(os.path.join(directory, "log.txt"), "r")
 for num in f:
     last_run = int(num)
 
+f.close()
+
 new_run = str(last_run+1)
 
 filename_u = f"mpc_green_times.txt"
 filename_c = f"mpc_cycle.txt"
 filename_veh_count = f"mpc_veh_count.txt"
-filename_q_length = f"mpc_q_length.txt"
-filename_q_time = f"mpc_q_time.txt"
-filename_flow = f"mpc_flow.txt"
+filename_q_length_cumul = f"mpc_q_length.txt"
+filename_q_time_cumul = f"mpc_q_time.txt"
+filename_flow_cumul = f"mpc_flow.txt"
 filename_spawned = f"mpc_spawned.txt"
 filename_sampled = f"mpc_sampled.txt"
 filename_trajectory = f"mpc_trajectory.txt"
+
+#filename_q_length = f"mpc_q_length.txt"
+#filename_q_time = f"mpc_q_time.txt"
+#filename_flow = f"mpc_flow.txt"
 
 step_len = 0.5
 duration = 50400 # Fixed
@@ -31,17 +38,16 @@ new_directory = os.path.join(directory, "test"+new_run)
 
 try:
     os.mkdir(new_directory)
+    f_u = open(os.path.join(new_directory, filename_u), "w")
+    f_c = open(os.path.join(new_directory, filename_c), "w")
+    f_vc = open(os.path.join(new_directory, filename_veh_count), "w")
+    f_ql = open(os.path.join(new_directory, filename_q_length_cumul), "w")
+    f_qt = open(os.path.join(new_directory, filename_q_time_cumul), "w")
+    f_flow = open(os.path.join(new_directory, filename_flow_cumul), "w")
+    f_sampled = open(os.path.join(new_directory, filename_sampled), "w")
+    f_trajectory = open(os.path.join(new_directory, filename_trajectory), "w")
 except:
-    print(f"Cannot create a new directory! The directory {new_directory} already exists!")
-
-f_u = open(os.path.join(new_directory, filename_u), "w")
-f_c = open(os.path.join(new_directory, filename_c), "w")
-f_vc = open(os.path.join(new_directory, filename_veh_count), "w")
-f_ql = open(os.path.join(new_directory, filename_q_length), "w")
-f_qt = open(os.path.join(new_directory, filename_q_time), "w")
-f_flow = open(os.path.join(new_directory, filename_flow), "w")
-f_sampled = open(os.path.join(new_directory, filename_sampled), "w")
-f_trajectory = open(os.path.join(new_directory, filename_trajectory), "w")
+    sys.exit(f"Cannot create a new directory! The directory {new_directory} already exists!")
 
 def write_results_per_sec(veh_count, q_length, q_time, flow, spawned, step, u = [61, 61, 45, 39, 87], C = 154):
 
@@ -59,6 +65,7 @@ def write_results_per_sec(veh_count, q_length, q_time, flow, spawned, step, u = 
         f_flow.close()
         f_sampled.close()
         f_trajectory.close()
+
         f = open(os.path.join(directory, "log.txt"), "w")
         f.write(f"{new_run}")
         f.close()
@@ -79,6 +86,7 @@ def write_results_per_cycle(step, sampled = [0, 0, 0, 0], trajectory = [0, 0, 0,
         f_flow.close()
         f_sampled.close()
         f_trajectory.close()
+
         f = open(os.path.join(directory, "log.txt"), "w")
         f.write(f"{new_run}")
         f.close()

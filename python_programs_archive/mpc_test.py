@@ -4,7 +4,7 @@ from gurobipy import GRB
 import numpy as np
 import scipy.sparse as sp
 
-from create_demand_mpc import create_dua_demand
+from read_dua_demand import create_dua_demand
 
 # Create a new model
 m = gp.Model("MPC")

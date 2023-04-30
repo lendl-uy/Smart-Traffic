@@ -6,7 +6,7 @@
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
 
     <input>
-        <net-file value="C:\Users\lendl\Documents\smart_traffic\sumo\25-3-lendl-ver.net.xml"/>
+        <net-file value="C:\Users\Uy Family\Documents\GitHub\Smart-Traffic\sumo\25-3-lendl-ver.net.xml"/>
         <route-files value="4-3-test-demand-vianetedit_003.rou.xml"/>
         <additional-files value="../edgedata.add.xml"/>
     </input>
@@ -28,7 +28,7 @@
         <time-to-teleport value="300"/>
         <time-to-teleport.highways value="0"/>
         <eager-insert value="true"/>
-        <threads value="12"/>
+        <threads value="8"/>
         <max-depart-delay value="120"/>
         <max-num-teleports value="0"/>
         <scale value="1.01"/>
