@@ -1,0 +1,18 @@
+***Starting server on port 58383 ***
+Loading net-file from 'C:\Users\Uy Family\Documents\GitHub\Smart-Traffic\sumo\25-3-lendl-ver.net.xml' ... done (17ms).
+Loading additional-files from 'C:\Users\Uy Family\Documents\GitHub\Smart-Traffic\sumo\micro\003\../edgedata.add.xml' ... done (1ms).
+Loading done.
+Simulation started with time: 0.00.
+Simulation ended at time: 11193.00
+Reason: Too many teleports.
+Performance: 
+ Duration: 4475.80s
+ TraCI-Duration: 1901.19s
+ Real time factor: 2.50078
+ UPS: 2009.331516
+Vehicles: 
+ Inserted: 28720 (Loaded: 30474)
+ Running: 364
+ Waiting: 21
+ Teleports: 6 (Yield: 6)
+

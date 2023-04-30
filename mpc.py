@@ -33,7 +33,7 @@ def get_weighted_u_min(veh_count, D, u_min):
     d_total_aurora = np.sum(d_sum_aurora)
     d_total = d_total_katip+d_total_aurora
 
-    max_multiplier = math.floor((C-L)/(u_min))
+    max_multiplier = math.floor((C-L)/(u_min*1.25))
 
     if sum(veh_count) <= 0.0:
         u_1mult = max_multiplier*(d_total_katip/d_total)
@@ -87,7 +87,7 @@ def apply_u_additive(array, min_val):
 
     return array
 
-def do_mpc(x_curr=np.array([0,0,0,0,0]), step=0):
+def do_mpc(x_curr=np.array([16, 91, 20, 68, 14]), step=12459):
 
     # Initialize a model
     m = gp.Model("MPC")
@@ -178,9 +178,12 @@ def do_mpc(x_curr=np.array([0,0,0,0,0]), step=0):
 
         # Constraints in order to obey existing phases
         m.addConstr(u[k, 0] == u[k, 1]) # Green time of Katipunan Ave North and South must be the same
+        #m.addConstr(u[k, 2] == u[k, 3]-u[k, 4]-3) # Green time of Aurora West
+        #m.addConstr(C == u[k, 0] + u[k, 4] + u[k, 2] + 9) # Total cycle time is equal to phase 1 + phase 2 + phase 3 + lost time
 
+    
         # Skip phase 2 if Aurora East to West is less than half of u_min_val
-        if u_41min <= (u_min_val-1)/3:
+        if u_41min <= (u_min_val-1)/4:
             m.addConstr(u[0, 4] == 0)
             m.addConstr(u[0, 2] == u[0, 3]) # Phase 2 is skipped altogether
             m.addConstr(C == u[k, 0] + u[k, 2] + 6) # Total cycle time is equal to phase 1 + phase 3 + lost time
@@ -198,23 +201,20 @@ def do_mpc(x_curr=np.array([0,0,0,0,0]), step=0):
     # Set next set of green times such that based on the current vehicle count
     #m.addConstr(u[0, 3] >= u[0, 4]*u_41mult) # Green time constraint of Aurora East to West
     m.addConstr(u[0, 0] >= u_1min) # Green time constraint of Katipunan South and North
-    #m.addConstr(u[0, 2] >= u_3min) # Green time constraint of Aurora West
+    m.addConstr(u[0, 2] >= u_3min) # Green time constraint of Aurora West
     m.addConstr(u[0, 2] >= u[0, 4]) # Green time constraint of Aurora West
-    #m.addConstr(u[0, 3] >= u_43min) # Green time constraint of Aurora East
+    m.addConstr(u[0, 3] >= u_43min) # Green time constraint of Aurora East
     
     if u_1min >= u_3min:
         m.addConstr(u[0, 0] >= u[0, 2]) # Green time constraint of Katipunan South and North
     else:
         m.addConstr(u[0, 2] >= u[0, 0]) # Green time constraint of Aurora West
 
-    
-    if (u_41min < u_min_val) and (u_41min >= (u_min_val-1)/3):
+    if (u_41min < u_min_val) and (u_41min >= (u_min_val-1)/4):
         m.addConstr(u[0, 4] == u_min_val)
     
-    '''
-    if u_41min < (u_min_val-1)/2:
+    if u_41min < (u_min_val-1)/4:
         m.addConstr(u[0, 4] == 0)
-    '''
 
     # Objective function
     # Note: Transposition is automatically handled by GUROBI
@@ -288,7 +288,7 @@ def do_mpc(x_curr=np.array([0,0,0,0,0]), step=0):
     # Post-processing of data
     u_res = apply_u_additive(u_res, 0)
 
-    if u_41min <= (u_min_val-1)/3:
+    if u_41min <= (u_min_val-1)/4:
         final_C = int((u_res[0]+u_res[2]+6)+0.5) # Convert to integer
     else:
         final_C = int((u_res[0]+u_res[4]+u_res[2]+9)+0.5) # Convert to integer

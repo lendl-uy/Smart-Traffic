@@ -4,12 +4,13 @@
 import os
 import sys
 import time
+import copy
 
 import traci
 import traci.constants as tc
 import numpy as np
 
-from mpc_params import *
+#from mpc_params import *
 from mpc import *
 
 import performance_indicators as perf
@@ -35,15 +36,17 @@ trafficlightID='cluster9883633497_cluster_25353129_33471551_cluster_26272655_288
 
 step_len = 0.5
 steps_per_s = int(1/step_len)
-sim_duration = int(50400/step_len) # Fixed
+sim_duration = 50400
+sim_steps = int(50400/step_len) # Fixed
+
+meas_15min_window = 15*60 # 15 minutes -> 900 seconds
+sampling_time = int(meas_15min_window/step_len)
 
 allcar={}
 stopped_vehs = {}
 
 n_aurora_west = 0
 n_aurora_east = 0
-
-sumcar = 0
 
 # Actual simulation
 # Entire simulation spans from 6AM to 8PM traffic (14 hrs/50400 secs)
@@ -73,75 +76,71 @@ def main():
     temp_spawned_aurora_e = []
 
     list_of_ql_15_window = []
-    fifteenlen = 0
+    ql_15min = 0
+
     list_of_flow_15_window = []
+    departed_vehs = 0
 
-    for step in range(sim_duration+1):
-
-        #dummy_delta_step = step-step_C
-        
-        # Get the average queue time of all incoming roads
-        qt_katip_south, qt_katip_north, qt_aurora_west, qt_aurora_east = perf.get_avg_wait()
-        
-        # Get the average flow rate of all incoming roads
-        traci.junction.subscribeContext(junctionID, tc.CMD_GET_VEHICLE_VARIABLE, 60)
-
-        #totalcarflow = perf.get_car_flow("all")
-    
-        # "Snapshot" of vehicles that are stationary (for queue length)
-        # Ensures that recorded stationary vehicles belong to the queue
-        new_stopped_vehs = perf.get_queue_length(stopped_vehs, 1, step)
-
-        # Obtain cumulative number of vehicles inserted in the simulation since time 0
-        spawned_katip_south, spawned_katip_north, spawned_aurora_west, spawned_aurora_east = perf.get_spawned_vehs()
-        temp_spawned_katip_s.append(spawned_katip_south)
-        temp_spawned_katip_n.append(spawned_katip_north)
-        temp_spawned_aurora_w.append(spawned_aurora_west)
-        temp_spawned_aurora_e.append(spawned_aurora_east)
-    
-        # Obtain average queueing time and flow rate of all incoming roads
-        if step > 0:
-            flow_katip_south = perf.get_flow_rate("KatipS")
-            flow_katip_north = perf.get_flow_rate("KatipN")
-            flow_aurora_west = perf.get_flow_rate("AuroraW")
-            flow_aurora_east = perf.get_flow_rate("AuroraE")
-            ql_katip_south, ql_katip_north, ql_aurora_west, ql_aurora_east, new_stopped_vehs = perf.get_queue_length(new_stopped_vehs, 0, step)
-            #print("Cumulative Average Queue Length", (ql_katip_south+ ql_katip_north+ ql_aurora_west+ ql_aurora_east)/4)
-        
-        fifteeenqueuelength,fifteenlen=perf.get_queue_length_15(new_stopped_vehs, 0, step,fifteenlen) # Get the average queue length from the past 15 mins
-        if step%1800==0:
-            list_of_ql_15_window.append(fifteeenqueuelength)
-            fifteenlen=0
-            print("List of average queue lengths for 15 min windows", list_of_ql_15_window)
-
-        # Obtain the 15-minute average flow rate of all incoming roads:
-        list_of_get_vehicle_ids = []
-        if step % 1800 == 0:
-            current_unique_vehicle_ids = set(perf.get_vehicle_ids("all"))
-            if len(list_of_get_vehicle_ids) < 2:
-                list_of_get_vehicle_ids.append(current_unique_vehicle_ids)
-                fifteen_flow_rate = len(current_unique_vehicle_ids)
-            else:
-                list_of_get_vehicle_ids.pop(0) # Pop the front of the list, the obsolete previous
-                list_of_get_vehicle_ids.append(current_unique_vehicle_ids) # Add the current
-                previous = list_of_get_vehicle_ids[0]
-                current = list_of_get_vehicle_ids[1]
-                new_unique_vehicle_ids = current.difference(previous) # Get set of the new
-                fifteen_flow_rate = len(new_unique_vehicle_ids)
-            list_of_flow_15_window.append(fifteen_flow_rate)
-            #print(f"Cumulative Flow Rate", (perf.get_flow_rate("all")/4))
-            print(f"Average flow rate for the past 15 mins: {list_of_flow_15_window}")
+    for step in range(sim_steps+1):
 
         # Record traffic data for each time step except zeroth second
         if step == 0:
             traci.simulationStep()
             continue
 
-        if step > sim_duration:
-            print("The simulation has ended!")
+        if step > sim_steps:
             break
+        
+        # Get the average queue time of all incoming roads
+        qt_katip_south, qt_katip_north, qt_aurora_west, qt_aurora_east = perf.get_avg_wait()
+        
+        # Initialize the measurement of average flow rate of all incoming roads
+        traci.junction.subscribeContext(junctionID, tc.CMD_GET_VEHICLE_VARIABLE, 60)
+    
+        # "Snapshot" of vehicles that are stationary (for queue length)
+        # Ensures that recorded stationary vehicles belong to the queue
+        new_stopped_vehs = perf.get_queue_length(stopped_vehs, 1, step)
 
-        if step%steps_per_s == 0:
+        # Measure the temporary values of performance indicators for each time step
+        if step < sim_steps:
+            ql_15min_final, ql_15min, new_stopped_vehs = perf.get_queue_length(new_stopped_vehs, 0, step, ql_15min) # Get the average queue length from the past 15 mins
+            #flow_katip_south = perf.get_flow_rate("KatipS")
+            #flow_katip_north = perf.get_flow_rate("KatipN")
+            #flow_aurora_west = perf.get_flow_rate("AuroraW")
+            #flow_aurora_east = perf.get_flow_rate("AuroraE")
+            #flow_all_roads = perf.get_flow_rate("all")
+        else:
+            final_ql = perf.get_queue_length(new_stopped_vehs, 0, step, ql_15min) # Get the cumulative average queue length
+            flow_katip_south = perf.get_flow_rate("KatipS")
+            flow_katip_north = perf.get_flow_rate("KatipN")
+            flow_aurora_west = perf.get_flow_rate("AuroraW")
+            flow_aurora_east = perf.get_flow_rate("AuroraE")
+            flow_all_roads = perf.get_flow_rate("all")
+            print(f"Cumulative average queue length = {final_ql[-1]} m")
+            print(f"Cumulative average flow rate = {flow_all_roads} veh/hr")
+        
+        # Obtain the 15-minute windowed average of the performance indicators
+        if step % sampling_time == 0:
+
+            # Get the windowed average queue length
+            list_of_ql_15_window.append(ql_15min_final)
+            ql_15min = 0
+            print("List of average queue lengths for 15 min windows", list_of_ql_15_window)
+
+            # Get the windowed average flow rate
+            if step == 0:
+                current_unique_vehicle_ids = set(perf.get_vehicle_ids("all"))
+                flow_15min = len(current_unique_vehicle_ids)
+            else:
+                old_unique_vehicle_ids = copy.deepcopy(current_unique_vehicle_ids)
+                current_unique_vehicle_ids = set(perf.get_vehicle_ids("all"))
+                differential_unique_vehicle_ids = current_unique_vehicle_ids.difference(old_unique_vehicle_ids)
+                print(f"Current number of different unique vehicle ids: {len(differential_unique_vehicle_ids)}")
+                flow_15min = len(differential_unique_vehicle_ids)
+            list_of_flow_15_window.append(flow_15min)
+            print(f"Average flow rate for the past 15 mins: {list_of_flow_15_window}")    
+
+        if step % steps_per_s == 0:
 
             actual_time_step = step//steps_per_s
 
@@ -202,42 +201,36 @@ def main():
             # Obtain vehicle count in all incoming roads
             n_katip_south, n_katip_north, n_aurora_west, n_aurora_east, n_aurora_east_lane4 = perf.get_vehicle_count("all")
 
-            sum_spawned_katip_s = sum(temp_spawned_katip_s)
-            sum_spawned_katip_n = sum(temp_spawned_katip_n)
-            sum_spawned_aurora_w = sum(temp_spawned_aurora_w)
-            sum_spawned_aurora_e = sum(temp_spawned_aurora_e)
             '''
             save_sim.write_results_per_sec([n_katip_south, n_katip_north, n_aurora_west, n_aurora_east],
-                                [ql_katip_south, ql_katip_north, ql_aurora_west, ql_aurora_east],
-                                [qt_katip_south, qt_katip_north, qt_aurora_west, qt_aurora_east], 
-                                [flow_katip_south, flow_katip_north, flow_aurora_west, flow_aurora_east],
-                                [sum_spawned_katip_s, sum_spawned_katip_n, sum_spawned_aurora_w, sum_spawned_aurora_e],
-                                actual_time_step, u_sorted, C)
-            '''         
-            temp_spawned_katip_s.clear()
-            temp_spawned_katip_n.clear()
-            temp_spawned_aurora_w.clear()
-            temp_spawned_aurora_e.clear()
+                                            actual_time_step, u_sorted, C)
             
+            if step % sampling_time == 0:
+                save_sim.write_results_per_window(ql_15min_final, (qt_katip_south+qt_katip_north+qt_aurora_west+qt_aurora_east)/4, flow_15min, actual_time_step)
+            '''
             # Perform MPC once a control interval has completed
             if delta_step+1 == C:
 
                 print("Performing MPC to compute optimal green times!")
                 # Recompute timer settings and cycle time
-                if actual_time_step+N*C < 50400:
+                if actual_time_step+N*C < sim_duration:
                     u, C, trajectory, relaxed = do_mpc(np.array([n_katip_south, n_katip_north, n_aurora_west_fair, n_aurora_east_fair, n_aurora_east_lane4_fair]), 
                                                     actual_time_step+1)
                     u_sorted, phases = get_timer_settings(u, C) # Retrieves parsed timer setting information
                     num_relaxation += relaxed
 
                 step_C = actual_time_step+1
+
+                #save_sim.write_results_per_cycle(actual_time_step, [n_katip_south, n_katip_north, n_aurora_west_fair, n_aurora_east_fair], trajectory)
             
                 print(f"u = {u_sorted}")
                 print(f"C = {C}")
                 print(f"phases = {phases}")
 
-             #   save_sim.write_results_per_cycle(actual_time_step, [n_katip_south, n_katip_north, n_aurora_west_fair, n_aurora_east_fair], trajectory)
-
+        '''  
+        if step == sim_steps:
+            save_sim.write_final_results(final_ql, (qt_katip_south+qt_katip_north+qt_aurora_west+qt_aurora_east)/4, [flow_katip_south, flow_katip_north, flow_aurora_west, flow_aurora_east, flow_all_roads], actual_time_step)
+        '''
         # Step the simulation by 1 second
         traci.simulationStep()
         print("\n")
@@ -247,6 +240,7 @@ def main():
     print(f"Number of times that model was relaxed: {num_relaxation}")
 
     traci.close()
+    sys.exit("The simulation has ended!")
 
 if __name__ == "__main__":
     main()

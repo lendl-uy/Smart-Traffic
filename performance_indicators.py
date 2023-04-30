@@ -24,17 +24,18 @@ averagewaitlist={}
 global fifteenlen
 
 global keyofkey
-keyofkey=0
+keyofkey = 0
 
 averagewaitlist_katip_s = {}
 averagewaitlist_katip_n = {}
 averagewaitlist_aurora_w = {}
 averagewaitlist_aurora_e = {}
 
-avlenKs=[]
-avlenKn=[]
-avlenAe=[]
-avlenAw=[]
+cumulative_avg_ql_Ks = []
+cumulative_avg_ql_Kn = []
+cumulative_avg_ql_Ae = []
+cumulative_avg_ql_Aw = []
+cumulative_avg_ql = []
 
 '''
 global KatipN_edge_ids_persistent
@@ -48,10 +49,8 @@ KatipS_edge_ids_persistent = []
 AuroraW_edge_ids_persistent = []
 AuroraE_edge_ids_persistent = []
 
-spawned_katip_s = []
-spawned_katip_n = []
-spawned_aurora_w = []
-spawned_aurora_e = []
+fifteenflow = []
+numbercar = 0
 
 def convert_to_real_time(step):
 
@@ -243,7 +242,7 @@ def get_vehicle_count(road_name):
         all_roads = KatipS_total, KatipN_total, AuroraW_total, AuroraE_total, AuroraE_Lane4
         return all_roads
 
-def get_queue_length(record_stopped_vehs, record, step):
+def get_queue_length(record_stopped_vehs, record, step, ql_15min=0):
 
     # Obtains all the vehicle IDs in the simulation
     sim_vehicles = traci.vehicle.getIDList()
@@ -293,6 +292,7 @@ def get_queue_length(record_stopped_vehs, record, step):
     avg_ql_katip_north = 0.0
     avg_ql_aurora_west = 0.0
     avg_ql_aurora_east = 0.0
+    overall_avg_ql = 0.0
 
     # Check if nonmoving vehicle was also at stop 3 steps ago
     # Ensures that recorded stationary vehicles belong to the queue
@@ -337,217 +337,76 @@ def get_queue_length(record_stopped_vehs, record, step):
         # Obtain the average queue length of all incoming road links
         if len(ql_katip_south_lane_1) != 0:
             avg_ql_katip_south += sum(ql_katip_south_lane_1)
+            overall_avg_ql += avg_ql_katip_south
         if len(ql_katip_south_lane_2) != 0:
             avg_ql_katip_south += sum(ql_katip_south_lane_2)
+            overall_avg_ql += avg_ql_katip_south
         avg_ql_katip_south /= 2
         
-        avlenKs.append(avg_ql_katip_south)  
+        cumulative_avg_ql_Ks.append(avg_ql_katip_south)  
 
         if len(ql_katip_north_lane_1) != 0:
             avg_ql_katip_north += sum(ql_katip_north_lane_1)
+            overall_avg_ql += avg_ql_katip_north
         if len(ql_katip_north_lane_2) != 0:
             avg_ql_katip_north += sum(ql_katip_north_lane_2)
+            overall_avg_ql += avg_ql_katip_north
         avg_ql_katip_north /= 2
         
-        avlenKn.append(avg_ql_katip_north)
+        cumulative_avg_ql_Kn.append(avg_ql_katip_north)
 
         if len(ql_aurora_west_lane_1) != 0:
             avg_ql_aurora_west += sum(ql_aurora_west_lane_1)
+            overall_avg_ql += avg_ql_aurora_west
         if len(ql_aurora_west_lane_2) != 0:
             avg_ql_aurora_west += sum(ql_aurora_west_lane_2)
+            overall_avg_ql += avg_ql_aurora_west
         if len(ql_aurora_west_lane_3) != 0:
             avg_ql_aurora_west += sum(ql_aurora_west_lane_3)
+            overall_avg_ql += avg_ql_aurora_west
         if len(ql_aurora_west_lane_4) != 0:
             avg_ql_aurora_west += sum(ql_aurora_west_lane_4)
+            overall_avg_ql += avg_ql_aurora_west
         avg_ql_aurora_west /= 4
         
-        avlenAw.append(avg_ql_aurora_west)
+        cumulative_avg_ql_Aw.append(avg_ql_aurora_west)
 
         if len(ql_aurora_east_lane_1) != 0:
             avg_ql_aurora_east += sum(ql_aurora_east_lane_1)
+            overall_avg_ql += avg_ql_aurora_east
         if len(ql_aurora_east_lane_2) != 0:
             avg_ql_aurora_east += sum(ql_aurora_east_lane_2)
+            overall_avg_ql += avg_ql_aurora_east
         if len(ql_aurora_east_lane_3) != 0:
             avg_ql_aurora_east += sum(ql_aurora_east_lane_3)
+            overall_avg_ql += avg_ql_aurora_east
         if len(ql_aurora_east_lane_4) != 0:
             avg_ql_aurora_east += sum(ql_aurora_east_lane_4)
+            overall_avg_ql += avg_ql_aurora_east
         avg_ql_aurora_east /= 4
         
-        avlenAe.append(avg_ql_aurora_east)
-        
-        Overall_avlenKs=sum(avlenKs)/len(avlenKs)    
-        Overall_avlenKn=sum(avlenKn)/len(avlenKn)
-        Overall_avlenAe=sum(avlenAe)/len(avlenAe)
-        Overall_avlenAw=sum(avlenAw)/len(avlenAw)
+        cumulative_avg_ql_Ae.append(avg_ql_aurora_east)
 
-        #print(f"Average queue length in Katipunan South: {avg_ql_katip_south} m")
-        #print(f"Average queue length in Katipunan North: {avg_ql_katip_north} m")
-        #print(f"Average queue length in Aurora West: {avg_ql_aurora_west} m")
-        #print(f"Average queue length in Aurora East: {avg_ql_aurora_east} m")
-        #print(f"Overall average queue length in Katipunan South: {Overall_avlenKs} m")
-        #print(f"Overall average queue length in Katipunan North: {Overall_avlenKn} m")
-        #print(f"Overall average queue length in Aurora West: {Overall_avlenAw} m")
-        #print(f"Overall average queue length in Aurora East: {Overall_avlenAe} m")
+        overall_avg_ql /= 12
+        cumulative_avg_ql.append(overall_avg_ql)
 
-    return Overall_avlenKs, Overall_avlenKn, Overall_avlenAw, Overall_avlenAe, record_stopped_vehs
+        # Return the cumulative average queue length of all incoming roads
+        if step >= 50400/0.5: 
+            overall_avlenKs = sum(cumulative_avg_ql_Ks)/len(cumulative_avg_ql_Ks)
+            overall_avlenKn = sum(cumulative_avg_ql_Kn)/len(cumulative_avg_ql_Kn)
+            overall_avlenAe = sum(cumulative_avg_ql_Ae)/len(cumulative_avg_ql_Ae)
+            overall_avlenAw = sum(cumulative_avg_ql_Aw)/len(cumulative_avg_ql_Aw)
+            overall_avg_ql = sum(cumulative_avg_ql)/len(cumulative_avg_ql)
+            return [overall_avlenKs, overall_avlenKn, overall_avlenAe, overall_avlenAw, overall_avg_ql]
 
-def get_queue_length_15(record_stopped_vehs, record, step,fifteenlen):
-
-    # Obtains all the vehicle IDs in the simulation
-    sim_vehicles = traci.vehicle.getIDList()
-
-    # Record vehicle IDs of nonmoving vehicles to filter out 
-    # incorrectly assumed queued vehicles
-    if record == 1:
-        # Record stationary vehicles
-        to_remove = []
-        for veh in sim_vehicles:
-            if traci.vehicle.getSpeed(veh) == 0.0:
-                if veh not in record_stopped_vehs.keys():
-                    record_stopped_vehs[veh] = [1,step]
-                elif record_stopped_vehs[veh][1] == step-1:
-                    record_stopped_vehs[veh][0] = record_stopped_vehs[veh][0]+1 # Increment occurrence
-                    record_stopped_vehs[veh][1] = step # Increment occurrence
-                else:
-                    to_remove.append(veh)
-            else:
-                if veh in record_stopped_vehs.keys():
-                    to_remove.append(veh)
-        # Remove redundant records of stationary vehicles that have 
-        # already left simulation
-        for veh in record_stopped_vehs:
-            if veh not in sim_vehicles:
-                to_remove.append(veh)
-        for i in range(len(to_remove)):
-            record_stopped_vehs.pop(to_remove[i])
-        return record_stopped_vehs
-
-    # Meant to serve as filter for vehicles that stop not as an effect of stoplights
-
-    ql_katip_south_lane_1 = []
-    ql_katip_south_lane_2 = []
-    ql_katip_north_lane_1 = []
-    ql_katip_north_lane_2 = []
-    ql_aurora_west_lane_1 = []
-    ql_aurora_west_lane_2 = []
-    ql_aurora_west_lane_3 = []
-    ql_aurora_west_lane_4 = []
-    ql_aurora_east_lane_1 = []
-    ql_aurora_east_lane_2 = []
-    ql_aurora_east_lane_3 = []
-    ql_aurora_east_lane_4 = []
-
-    avg_ql_katip_south = 0.0
-    avg_ql_katip_north = 0.0
-    avg_ql_aurora_west = 0.0
-    avg_ql_aurora_east = 0.0
-
-    # Check if nonmoving vehicle was also at stop 3 steps ago
-    # Ensures that recorded stationary vehicles belong to the queue
-    if record == 0:
-
-        for veh in record_stopped_vehs.keys():
-            if record_stopped_vehs[veh][0] >= 6:
-
-                lane_id = traci.vehicle.getLaneID(veh)
-                veh_len = traci.vehicle.getLength(veh)
-
-                # Append length of all stationary vehicles in respective lsits
-                if lane_id in katip_south_edges:
-                    if lane_id in katip_south_lane_1:
-                        ql_katip_south_lane_1.append(veh_len)
-                    elif lane_id in katip_south_lane_2:
-                        ql_katip_south_lane_2.append(veh_len)
-                elif lane_id in katip_north_edges:
-                    if lane_id in katip_north_lane_1:
-                        ql_katip_north_lane_1.append(veh_len)
-                    elif lane_id in katip_north_lane_2:
-                        ql_katip_north_lane_2.append(veh_len)
-                elif lane_id in aurora_west_edges:
-                    if lane_id in aurora_west_lane_1:
-                        ql_aurora_west_lane_1.append(veh_len)
-                    elif lane_id in aurora_west_lane_2:
-                        ql_aurora_west_lane_2.append(veh_len)
-                    elif lane_id in aurora_west_lane_3:
-                        ql_aurora_west_lane_3.append(veh_len)
-                    elif lane_id in aurora_west_lane_4:
-                        ql_aurora_west_lane_4.append(veh_len)
-                elif lane_id in aurora_east_edges:
-                    if lane_id in aurora_east_lane_1:
-                        ql_aurora_east_lane_1.append(veh_len)
-                    elif lane_id in aurora_east_lane_2:
-                        ql_aurora_east_lane_2.append(veh_len)
-                    elif lane_id in aurora_east_lane_3:
-                        ql_aurora_east_lane_3.append(veh_len)
-                    elif lane_id in aurora_east_lane_4:
-                        ql_aurora_east_lane_4.append(veh_len)
-
-        # Obtain the average queue length of all incoming road links
-        if len(ql_katip_south_lane_1) != 0:
-            avg_ql_katip_south += sum(ql_katip_south_lane_1)
-        if len(ql_katip_south_lane_2) != 0:
-            avg_ql_katip_south += sum(ql_katip_south_lane_2)
-        avg_ql_katip_south /= 2
-        
-        avlenKs.append(avg_ql_katip_south)  
-
-        if len(ql_katip_north_lane_1) != 0:
-            avg_ql_katip_north += sum(ql_katip_north_lane_1)
-        if len(ql_katip_north_lane_2) != 0:
-            avg_ql_katip_north += sum(ql_katip_north_lane_2)
-        avg_ql_katip_north /= 2
-        
-        avlenKn.append(avg_ql_katip_north)
-
-        if len(ql_aurora_west_lane_1) != 0:
-            avg_ql_aurora_west += sum(ql_aurora_west_lane_1)
-        if len(ql_aurora_west_lane_2) != 0:
-            avg_ql_aurora_west += sum(ql_aurora_west_lane_2)
-        if len(ql_aurora_west_lane_3) != 0:
-            avg_ql_aurora_west += sum(ql_aurora_west_lane_3)
-        if len(ql_aurora_west_lane_4) != 0:
-            avg_ql_aurora_west += sum(ql_aurora_west_lane_4)
-        avg_ql_aurora_west /= 4
-        
-        avlenAw.append(avg_ql_aurora_west)
-
-        if len(ql_aurora_east_lane_1) != 0:
-            avg_ql_aurora_east += sum(ql_aurora_east_lane_1)
-        if len(ql_aurora_east_lane_2) != 0:
-            avg_ql_aurora_east += sum(ql_aurora_east_lane_2)
-        if len(ql_aurora_east_lane_3) != 0:
-            avg_ql_aurora_east += sum(ql_aurora_east_lane_3)
-        if len(ql_aurora_east_lane_4) != 0:
-            avg_ql_aurora_east += sum(ql_aurora_east_lane_4)
-        avg_ql_aurora_east /= 4
-        
-        avlenAe.append(avg_ql_aurora_east)
-        
-        Overall_avlenKs=sum(avlenKs)/len(avlenKs)    
-        Overall_avlenKn=sum(avlenKn)/len(avlenKn)
-        Overall_avlenAe=sum(avlenAe)/len(avlenAe)
-        Overall_avlenAw=sum(avlenAw)/len(avlenAw)
-
-        #print(f"Average queue length in Katipunan South: {avg_ql_katip_south} m")
-        #print(f"Average queue length in Katipunan North: {avg_ql_katip_north} m")
-        #print(f"Average queue length in Aurora West: {avg_ql_aurora_west} m")
-        #print(f"Average queue length in Aurora East: {avg_ql_aurora_east} m")
-        #print(f"Overall average queue length in Katipunan South: {Overall_avlenKs} m")
-        #print(f"Overall average queue length in Katipunan North: {Overall_avlenKn} m")
-        #print(f"Overall average queue length in Aurora West: {Overall_avlenAw} m")
-        #print(f"Overall average queue length in Aurora East: {Overall_avlenAe} m")
-
-        finalfifteenlen=fifteenlen/1800
-        if step%1800==0:
-            
-            print(f"Queue length from the past 15 mins: {finalfifteenlen}")
-            fifteenlen=(avg_ql_aurora_east+avg_ql_aurora_west+avg_ql_katip_north+avg_ql_katip_south)/4
-            #print(fifteenlen) 
-            
+        # Update windowed average queue length every second then reset after 15 mins
+        ql_15min_final = 0
+        if step % 1800 == 0:
+            ql_15min_final = ql_15min/1800
         else:
-            fifteenlen=fifteenlen+(avg_ql_aurora_east+avg_ql_aurora_west+avg_ql_katip_north+avg_ql_katip_south)/4 
+            ql_15min += overall_avg_ql
 
-    return finalfifteenlen, fifteenlen
+    return ql_15min_final, ql_15min, record_stopped_vehs
 
 def get_car_flow(road_name):
 
@@ -581,57 +440,6 @@ def get_car_flow(road_name):
         all_road = KatipS + KatipN + AuroraW + AuroraE
         return all_road
 
-'''
-def get_car_flow(road_name):
-    
-    global KatipN_edge_ids_persistent
-    global KatipS_edge_ids_persistent
-    global AuroraW_edge_ids_persistent
-    global AuroraE_edge_ids_persistent
-
-    road_names = ["KatipN", "KatipS", "AuroraW", "AuroraE", "all"]
-    # Error handling
-    if road_name not in road_names:
-        print("Invalid road name. Valid road names are: [KatipN, KatipS, AuroraW, AuroraE, all]")
-        return 0
-
-    if road_name == "KatipN":
-        KatipN_edge_ids_persistent += traci.edge.getLastStepVehicleIDs('1076383725.80')
-        KatipN_edge_ids_persistent = set(KatipN_edge_ids_persistent)
-        KatipN_unique_vehicle_count = len(KatipN_edge_ids_persistent)
-        KatipN_edge_ids_persistent = list(KatipN_edge_ids_persistent)
-        return KatipN_unique_vehicle_count
-    
-    elif road_name == "KatipS":
-        KatipS_edge_ids_persistent += traci.edge.getLastStepVehicleIDs('780157087#2')
-        KatipS_edge_ids_persistent = set(KatipS_edge_ids_persistent)
-        KatipS_unique_vehicle_count = len(KatipS_edge_ids_persistent)
-        KatipS_edge_ids_persistent = list(KatipS_edge_ids_persistent)
-        return KatipS_unique_vehicle_count
-
-    elif road_name == "AuroraE":
-        AuroraE_edge_ids_persistent += traci.edge.getLastStepVehicleIDs('933952934#0')
-        AuroraE_edge_ids_persistent = set(AuroraE_edge_ids_persistent)
-        AuroraE_unique_vehicle_count = len(AuroraE_edge_ids_persistent)
-        AuroraE_edge_ids_persistent = list(AuroraE_edge_ids_persistent)
-        return AuroraE_unique_vehicle_count
-    
-    elif road_name == "AuroraW":
-        AuroraW_edge_ids_persistent += traci.edge.getLastStepVehicleIDs('591107291#1')
-        AuroraW_edge_ids_persistent = set(AuroraW_edge_ids_persistent)
-        AuroraW_unique_vehicle_count = len(AuroraW_edge_ids_persistent)
-        AuroraW_edge_ids_persistent = list(AuroraW_edge_ids_persistent)
-        return AuroraW_unique_vehicle_count
-    
-    elif road_name == "all":
-        KatipS = get_car_flow("KatipS")
-        KatipN = get_car_flow("KatipN")
-        AuroraW = get_car_flow("AuroraW")
-        AuroraE = get_car_flow("AuroraE")
-        all_road = KatipS + KatipN + AuroraW + AuroraE
-        return all_road
-'''
-
 def get_flow_rate(road_name):
 
     step = traci.simulation.getTime()
@@ -643,9 +451,9 @@ def get_flow_rate(road_name):
         return 0
     
     total_flow = get_car_flow(road_name)
-    flow_rate=0
+    flow_rate = 0
 
-    if step>0:
+    if step > 0:
         flow_rate = total_flow*3600/step
 
     #print(f"Average flow rate in {road_name}: {flow_rate} veh/hr")
@@ -708,28 +516,3 @@ def get_avg_wait():
     #print(f"Average waiting time in Aurora East: {avgwt_aurora_e} s")
 
     return avgwt_katip_s, avgwt_katip_n, avgwt_aurora_w, avgwt_aurora_e
-
-def get_spawned_vehs():
-
-    for veh_id in traci.simulation.getDepartedIDList():
-        lane_id = traci.vehicle.getLaneID(veh_id)
-        if lane_id in katip_south_edges:
-            spawned_katip_s.append(1)
-        elif lane_id in katip_north_edges:
-            spawned_katip_n.append(1)
-        elif lane_id in aurora_west_edges:
-            spawned_aurora_w.append(1)
-        else:
-            spawned_aurora_e.append(1)
-
-    total_spawned_katip_s = sum(spawned_katip_s)
-    total_spawned_katip_n = sum(spawned_katip_n)
-    total_spawned_aurora_w = sum(spawned_aurora_w)
-    total_spawned_aurora_e = sum(spawned_aurora_e)
-
-    #print(f"Total vehicles spawned in Katipunan South: {total_spawned_katip_s}")
-    #print(f"Total vehicles spawned in Katipunan North: {total_spawned_katip_n}")
-    #print(f"Total vehicles spawned in Aurora West: {total_spawned_aurora_w}")
-    #print(f"Total vehicles spawned in Aurora East: {total_spawned_aurora_e}")
-
-    return total_spawned_katip_s, total_spawned_katip_n, total_spawned_aurora_w, total_spawned_aurora_e
