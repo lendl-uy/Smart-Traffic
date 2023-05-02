@@ -9,7 +9,8 @@ from bs4 import BeautifulSoup
 
 # Store filenames of all relevant traffic data in two separate lists (fixed-time and mpc)
 fixed_time_filenames = ["green_times.txt", "cycle.txt", "veh_count.txt", "q_length.txt", "q_time.txt", "flow.txt"]
-mpc_filenames = ["mpc_green_times.txt", "mpc_cycle.txt", "mpc_veh_count.txt", "mpc_q_length.txt", "mpc_q_time.txt", "mpc_flow.txt"]
+mpc_filenames = ["mpc_green_times.txt", "mpc_cycle.txt", "mpc_veh_count.txt", "mpc_q_length.txt", 
+                 "mpc_q_time.txt", "mpc_flow.txt"]
 
 def read_fixed_time_data(filename, directory):
 
@@ -142,7 +143,7 @@ def plot_bar_2_params(x, y1, y2, xlabel, ylabel, y1_label, y2_label, title):
     plt.gcf().autofmt_xdate()
 
 # Post process average queue length into per hour data
-def post_proc_ql(hrs, data):
+def post_proc_ql_cumul(hrs, data):
 
     end = 0
     ql_post_proc = [0.0]
@@ -161,7 +162,7 @@ def post_proc_ql(hrs, data):
 
 # Post process average queue time into per hour data
 
-def post_proc_qt(hrs, data):
+def post_proc_qt_cumul(hrs, data):
 
     end = 0
     qt_post_proc = [0.0]
@@ -179,7 +180,7 @@ def post_proc_qt(hrs, data):
     return qt_post_proc
 
 # Post process flow rate into per hour data
-def post_proc_flow(hrs, data):
+def post_proc_flow_cumul(hrs, data):
 
     end = 0
     flow_post_proc = [0.0]
@@ -195,6 +196,18 @@ def post_proc_flow(hrs, data):
 
     print(f"Average flow rate is: {flow_post_proc[-1]} veh/hr")
     return flow_post_proc
+
+# Post process average queue length into per hour data
+def post_proc_ql(hrs, data):
+
+    end = 0
+    ql_post_proc = [0.0]
+    for i in range(hrs):
+        temp_array = data["q_length"][end]
+        ql_post_proc.append(sum(temp_array)/float(len(temp_array)))
+
+    print(f"Average queue length is: {ql_post_proc[-1]} m")
+    return ql_post_proc
 
 # Post process cycle time
 def post_proc_cycle(data):
@@ -263,7 +276,7 @@ def post_proc_demand(step_size, hrs, directory):
 
 def percent_improvement(post_proc_param1, post_proc_param2, param_name1, param_name2, quantity):
 
-    if quantity not in ["q_length", "q_time" , "flow"]:
+    if quantity not in ["q_length_cumul", "q_time_cumul" , "flow_cumul"]:
         return
 
     param1 = post_proc_param1[-1]
@@ -272,11 +285,11 @@ def percent_improvement(post_proc_param1, post_proc_param2, param_name1, param_n
     improvement = 0
     placeholder = ""
 
-    if quantity in ["q_length", "q_time"]:
+    if quantity in ["q_length_cumul", "q_time_cumul"]:
 
-        if quantity == "q_length":
+        if quantity == "q_length_cumul":
             placeholder = "Queue length"
-        elif quantity == "q_time":
+        elif quantity == "q_time_cumul":
             placeholder = "Queue time"
 
         if param1 > param2:
@@ -300,7 +313,7 @@ def main():
 
     fixed_time_dir = "results\\fixed_time"
     mpc_dir_1 = "results\\cumulative_average\\test108\\"
-    mpc_dir_2 = "results\\test56\\"
+    mpc_dir_2 = "results\\test11\\"
     #mpc_dir_3 = "results\\test12(extended_roads,umin=15,n=5)\\"
 
     num_hours = 14
@@ -320,19 +333,19 @@ def main():
     mpc_data_2 = read_mpc_data(mpc_filenames, mpc_dir_2)
     #mpc_data_3 = read_mpc_data(mpc_filenames, mpc_dir_3)
 
-    ql_fixed_time = post_proc_ql(num_hours, fixed_time_data)
-    ql_mpc_1 = post_proc_ql(num_hours, mpc_data_1)
-    ql_mpc_2 = post_proc_ql(num_hours, mpc_data_2)
+    ql_fixed_time = post_proc_ql_cumul(num_hours, fixed_time_data)
+    ql_mpc_1 = post_proc_ql_cumul(num_hours, mpc_data_1)
+    ql_mpc_2 = post_proc_ql_cumul(num_hours, mpc_data_2)
     #ql_mpc_3 = post_proc_ql(num_hours, mpc_data_3)
 
-    qt_fixed_time = post_proc_qt(num_hours, fixed_time_data)
-    qt_mpc_1 = post_proc_qt(num_hours, mpc_data_1)
-    qt_mpc_2 = post_proc_qt(num_hours, mpc_data_2)
+    qt_fixed_time = post_proc_qt_cumul(num_hours, fixed_time_data)
+    qt_mpc_1 = post_proc_qt_cumul(num_hours, mpc_data_1)
+    qt_mpc_2 = post_proc_qt_cumul(num_hours, mpc_data_2)
     #qt_mpc_3 = post_proc_qt(num_hours, mpc_data_3)
 
-    flow_fixed_time = post_proc_flow(num_hours, fixed_time_data)
-    flow_mpc_1 = post_proc_flow(num_hours, mpc_data_1)
-    flow_mpc_2 = post_proc_flow(num_hours, mpc_data_2)
+    flow_fixed_time = post_proc_flow_cumul(num_hours, fixed_time_data)
+    flow_mpc_1 = post_proc_flow_cumul(num_hours, mpc_data_1)
+    flow_mpc_2 = post_proc_flow_cumul(num_hours, mpc_data_2)
     #flow_mpc_3 = post_proc_flow(num_hours, mpc_data_3)
 
     c_fixed_time = post_proc_cycle(fixed_time_data)
@@ -413,7 +426,7 @@ def main():
     plt.legend()
     plt.gcf().autofmt_xdate()
     '''
-    #plt.show()
+    plt.show()
 
 if __name__ == "__main__":
     main()

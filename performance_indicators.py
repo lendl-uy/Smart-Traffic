@@ -52,6 +52,13 @@ AuroraE_edge_ids_persistent = []
 fifteenflow = []
 numbercar = 0
 
+veh_count_katip_s = 0
+veh_count_katip_n = 0
+veh_count_aurora_w = 0
+veh_count_aurora_e = 0
+
+ql_15min = 0
+
 def convert_to_real_time(step):
 
     hr = step//3600
@@ -242,7 +249,13 @@ def get_vehicle_count(road_name):
         all_roads = KatipS_total, KatipN_total, AuroraW_total, AuroraE_total, AuroraE_Lane4
         return all_roads
 
-def get_queue_length(record_stopped_vehs, record, step, ql_15min=0):
+def sample_queue_length(record_stopped_vehs, record, step, ql_15min=0):
+
+    global cumulative_avg_ql_Ks
+    global cumulative_avg_ql_Kn
+    global cumulative_avg_ql_Ae
+    global cumulative_avg_ql_Aw
+    global cumulative_avg_ql
 
     # Obtains all the vehicle IDs in the simulation
     sim_vehicles = traci.vehicle.getIDList()
@@ -390,80 +403,40 @@ def get_queue_length(record_stopped_vehs, record, step, ql_15min=0):
         overall_avg_ql /= 12
         cumulative_avg_ql.append(overall_avg_ql)
 
-        # Return the cumulative average queue length of all incoming roads
-        if step >= 50400/0.5: 
-            overall_avlenKs = sum(cumulative_avg_ql_Ks)/len(cumulative_avg_ql_Ks)
-            overall_avlenKn = sum(cumulative_avg_ql_Kn)/len(cumulative_avg_ql_Kn)
-            overall_avlenAe = sum(cumulative_avg_ql_Ae)/len(cumulative_avg_ql_Ae)
-            overall_avlenAw = sum(cumulative_avg_ql_Aw)/len(cumulative_avg_ql_Aw)
-            overall_avg_ql = sum(cumulative_avg_ql)/len(cumulative_avg_ql)
-            return [overall_avlenKs, overall_avlenKn, overall_avlenAe, overall_avlenAw, overall_avg_ql]
-
-        # Update windowed average queue length every second then reset after 15 mins
-        ql_15min_final = 0
-        if step % 1800 == 0:
-            ql_15min_final = ql_15min/1800
-        else:
+        # Update windowed average queue length every second
+        if step % 1800 != 0:
             ql_15min += overall_avg_ql
 
-    return ql_15min_final, ql_15min, record_stopped_vehs
-
-def get_car_flow(road_name):
-
-    road_names = ["KatipN", "KatipS", "AuroraW", "AuroraE", "all"]
-    # Error handling
-    if road_name not in road_names:
-        print("Invalid road name. Valid road names are: [KatipN, KatipS, AuroraW, AuroraE, all]")
-        return 0
-
-    if road_name == "KatipN":
-        KatipN_unique_vehicle_count = len(get_vehicle_ids("KatipN"))
-        return KatipN_unique_vehicle_count
-
-    elif road_name == "KatipS":
-        KatipS_unique_vehicle_count = len(get_vehicle_ids("KatipS"))
-        return KatipS_unique_vehicle_count
-
-    elif road_name == "AuroraE":
-        AuroraE_unique_vehicle_count = len(get_vehicle_ids("AuroraE"))
-        return AuroraE_unique_vehicle_count
-
-    elif road_name == "AuroraW":
-        AuroraW_unique_vehicle_count = len(get_vehicle_ids("AuroraW"))
-        return AuroraW_unique_vehicle_count
-
-    elif road_name == "all":
-        KatipS = get_car_flow("KatipS")
-        KatipN = get_car_flow("KatipN")
-        AuroraW = get_car_flow("AuroraW")
-        AuroraE = get_car_flow("AuroraE")
-        all_road = KatipS + KatipN + AuroraW + AuroraE
-        return all_road
-
-def get_flow_rate(road_name):
-
-    step = traci.simulation.getTime()
-    road_names = ["KatipN", "KatipS", "AuroraW", "AuroraE", "all"]
-
-    # Error handling
-    if road_name not in road_names:
-        print("Invalid road name. Valid road names are: [KatipN, KatipS, AuroraW, AuroraE, all]")
-        return 0
+        return ql_15min, record_stopped_vehs
     
-    total_flow = get_car_flow(road_name)
-    flow_rate = 0
+def get_windowed_queue_length(ql_15min):
 
-    if step > 0:
-        flow_rate = total_flow*3600/step
+    # Compute the windowed average queue length measured after 15 mins
+    ql_15min_final = ql_15min/1800
 
-    #print(f"Average flow rate in {road_name}: {flow_rate} veh/hr")
+    # Reset the running windowed average queue length to zero
+    ql_15min = 0
 
-    return flow_rate
+    return ql_15min_final, ql_15min
 
-def get_avg_wait():
+def get_cumulative_queue_length():
 
-    #get averagewaitingtime of current time step 
+    # Return the cumulative average queue length of all incoming roads
+    overall_avlenKs = sum(cumulative_avg_ql_Ks)/len(cumulative_avg_ql_Ks)
+    overall_avlenKn = sum(cumulative_avg_ql_Kn)/len(cumulative_avg_ql_Kn)
+    overall_avlenAe = sum(cumulative_avg_ql_Ae)/len(cumulative_avg_ql_Ae)
+    overall_avlenAw = sum(cumulative_avg_ql_Aw)/len(cumulative_avg_ql_Aw)
+    overall_avg_ql = sum(cumulative_avg_ql)/len(cumulative_avg_ql)
+    
+    return [overall_avlenKs, overall_avlenKn, overall_avlenAe, overall_avlenAw, overall_avg_ql]
+
+def sample_queue_time(step):
+
     global keyofkey
+    global averagewaitlist_katip_s
+    global averagewaitlist_katip_n
+    global averagewaitlist_aurora_w
+    global averagewaitlist_aurora_e
 
     for veh_id in traci.simulation.getDepartedIDList():
         traci.vehicle.subscribe(veh_id, [tc.VAR_ACCUMULATED_WAITING_TIME])
@@ -473,6 +446,7 @@ def get_avg_wait():
         keyofkey=list(traci.vehicle.getAllSubscriptionResults()[(list(traci.vehicle.getAllSubscriptionResults().keys())[0])].keys())[0]
       
     #append new vehicle id with waiting time or update waiting time 
+    cumulaveragetime=0
     if keyofkey!=0:
       
         for i in range(len(traci.vehicle.getAllSubscriptionResults())):
@@ -489,6 +463,48 @@ def get_avg_wait():
                 averagewaitlist_aurora_w[veh_id] = averagewaitlist[veh_id]
             elif lane_id in aurora_east_edges:
                 averagewaitlist_aurora_e[veh_id] = averagewaitlist[veh_id]
+
+    #print(f"Average waiting time in Katipunan South: {avgwt_katip_s} s")
+    #print(f"Average waiting time in Katipunan North: {avgwt_katip_n} s")
+    #print(f"Average waiting time in Aurora West: {avgwt_aurora_w} s")
+    #print(f"Average waiting time in Aurora East: {avgwt_aurora_e} s")
+
+def update_windowed_queue_time(arrived_veh_ids, departed_vehs):
+
+    #queuetime15
+    for veh_id in traci.simulation.getDepartedIDList():
+        traci.vehicle.subscribe(veh_id, [tc.VAR_ACCUMULATED_WAITING_TIME])
+
+    for veh_id in traci.simulation.getArrivedIDList():
+        arrived_veh_ids.append(veh_id)
+        
+    #keyofkey is needed to fix formatting of output
+    keyofkey=0
+    if len(list(traci.vehicle.getAllSubscriptionResults().keys()))>0:
+        keyofkey=list(traci.vehicle.getAllSubscriptionResults()[(list(traci.vehicle.getAllSubscriptionResults().keys())[0])].keys())[0]
+        
+    #append new vehicle id with waiting time or update waiting time 
+    if keyofkey!=0:
+        
+        for i in range(len(traci.vehicle.getAllSubscriptionResults())):
+            averagewaitlist[list(traci.vehicle.getAllSubscriptionResults().keys())[i]]=traci.vehicle.getAllSubscriptionResults()[list(traci.vehicle.getAllSubscriptionResults().keys())[i]][keyofkey]
+        tempawl=averagewaitlist
+
+    return tempawl, arrived_veh_ids
+
+def get_windowed_queue_time(temp_list_queue_times, departed_vehs_qt, arrived_veh_ids):
+
+    qt_15min = sum(temp_list_queue_times.values())/len(temp_list_queue_times)
+    departed_vehs_qt = 0
+
+    for i in range(len(arrived_veh_ids)):
+        temp_list_queue_times.pop(arrived_veh_ids[i],None)
+
+    return qt_15min, departed_vehs_qt
+
+def get_cumulative_queue_time():
+
+    cumulaveragetime=sum(averagewaitlist.values()) / float(len(averagewaitlist))
 
     if len(averagewaitlist_katip_s)>0:
         avgwt_katip_s = sum(averagewaitlist_katip_s.values()) / float(len(averagewaitlist_katip_s))
@@ -510,9 +526,46 @@ def get_avg_wait():
     else:
         avgwt_aurora_e = 0.0
 
-    #print(f"Average waiting time in Katipunan South: {avgwt_katip_s} s")
-    #print(f"Average waiting time in Katipunan North: {avgwt_katip_n} s")
-    #print(f"Average waiting time in Aurora West: {avgwt_aurora_w} s")
-    #print(f"Average waiting time in Aurora East: {avgwt_aurora_e} s")
+    return [avgwt_katip_s, avgwt_katip_n, avgwt_aurora_w, avgwt_aurora_e, cumulaveragetime]
 
-    return avgwt_katip_s, avgwt_katip_n, avgwt_aurora_w, avgwt_aurora_e
+def sample_flow_rate(step):
+
+    global veh_count_katip_s
+    global veh_count_katip_n
+    global veh_count_aurora_w
+    global veh_count_aurora_e
+
+    for veh_id in traci.simulation.getDepartedIDList():
+        lane_id = traci.vehicle.getLaneID(veh_id)    
+          
+        if lane_id in katip_south_edges:
+            veh_count_katip_s += 1
+        elif lane_id in katip_north_edges:
+            veh_count_katip_n += 1
+        elif lane_id in aurora_west_edges:
+            veh_count_aurora_w += 1
+        elif lane_id in aurora_east_edges:
+            veh_count_aurora_e += 1
+
+def update_windowed_flow_rate(departed_vehs):
+    
+    departed_vehs += traci.simulation.getDepartedNumber() #int of number of inserted vehicles in network
+
+    return departed_vehs
+
+def get_windowed_flow_rate(departed_vehs_flow):
+    
+    flow_15min = (departed_vehs_flow/(1800*4))*3600
+    departed_vehs_flow = 0
+
+    return flow_15min, departed_vehs_flow
+
+def get_cumulative_flow_rate():
+
+    flow_rate_katip_s = (veh_count_katip_s/(50400/0.5))*3600
+    flow_rate_katip_n = (veh_count_katip_n/(50400/0.5))*3600
+    flow_rate_aurora_w = (veh_count_aurora_w/(50400/0.5))*3600
+    flow_rate_aurora_e = (veh_count_aurora_e/(50400/0.5))*3600
+    flow_rate_all = ((veh_count_katip_s+ veh_count_katip_n + veh_count_aurora_w + veh_count_aurora_e)/(50400/0.5*4))*3600
+
+    return [flow_rate_katip_s, flow_rate_katip_n, flow_rate_aurora_w, flow_rate_aurora_e, flow_rate_all]

@@ -1,45 +1,85 @@
-m.addConstr(u_43 >= u_41*u_41mult) # Green time constraint of Aurora East to West
+if sum(x_curr) <= 0.0:
+    u_2mult = max_multiplier*(d_sum[0]/d_total)
+    u_3mult = max_multiplier*(d_sum[1]/d_total)
+    u_4mult = max_multiplier*(d_sum[2]/d_total)
+    u_41multiplier = min(u_2mult, u_3mult, u_4mult, 1)
+else:
+    if x_curr[0] < x_curr[1]:
+        u_2mult = max_multiplier*(x_curr[1]/x_total)
+    else:
+        u_2mult = max_multiplier*(x_curr[0]/x_total)
+    u_3mult = max_multiplier*(x_curr[2]/x_total)
+    u_4mult = max_multiplier*(x_curr[3]/x_total)
+    u_41multiplier = max_multiplier*(x_curr[4]/x_total)
+
+u_2max = round(u_min_val*u_2mult)
+u_3max = round(u_min_val*u_3mult)
+u_4max = round(u_min_val*u_4mult)
+u_41max = round(u_min_val*u_41multiplier)
+
+m.addConstr(u[k, 0] == u[k, 1]) # Green time of Katipunan Ave North and South must be the same
+m.addConstr(u[k, 3] == u_41[k, 0]+u_43[k, 0]) # Aurora East has 2 green times/phases
+m.addConstr(u[k, 2] == u_43[k, 0]-u_41[k, 0]-3) # Green time of Aurora West
+m.addConstr(C == u[k, 0] + u_41[k, 0] + u[k, 2] + 9) # Total cycle time is equal to phase 1 + phase 2 + phase 3 + lost time
+
+# EXPERIMENTAL
+#m.addConstr(u_43 >= u_41[k, 0]*u_41mult) # Green time constraint of Aurora East to West
 m.addConstr(u[k, 0] >= u_2max) # Green time constraint of Katipunan South and North
+m.addConstr(u[k, 2] >= u_3max) # Green time constraint of Aurora West
+m.addConstr(u[k, 2] >= u_41[k, 0]) # Green time constraint of Aurora West
+m.addConstr(u[k, 3] >= u_4max) # Green time constraint of Aurora East
 
-if (x_curr[1] >= x_curr[2]) or (x_curr[0] >= x_curr[2]):
-  m.addConstr(u[k, 0] >= u[k, 2]) # Green time constraint of Katipunan South and North
-elif (x_curr[2] > x_curr[1]) or (x_curr[2] > x_curr[0]):
-  m.addConstr(u[k, 2] >= u[k, 0]) # Green time constraint of Aurora West
+if u_2max >= u_3max:
+    m.addConstr(u[k, 0] >= u[k, 2]) # Green time constraint of Katipunan South and North
+else:
+    m.addConstr(u[k, 2] >= u[k, 0]) # Green time constraint of Aurora West
 
-if (x_curr[1] >= x_curr[3]) or (x_curr[0] >= x_curr[3]):
-  m.addConstr(u[k, 0] >= u[k, 3]) # Green time constraint of Katipunan South and North
-elif (x_curr[3] > x_curr[1]) or (x_curr[3] > x_curr[0]):
-  m.addConstr(u[k, 3] >= u[k, 0]) # Green time constraint of Aurora East
+if (u_41max <= u_min_val) or (u_2max >= u_4max) or (u_3max >= u_4max):
+    m.addConstr(u_41[k, 0] <= u_min_val*1.5)
 
-if (x_curr[2] >= x_curr[3]):
-  m.addConstr(u[k, 2] >= u[k, 3]) # Green time constraint of Aurora West
-elif (x_curr[3] > x_curr[2]):
-  m.addConstr(u[k, 3] >= u[k, 2]) # Green time constraint of Aurora East
+ITO MUNA
+test 28: c = 80, umin = 15, n = 5
+test 29: c = 75, umin = 15, n = 5
+test 30: c = 75, umin = 11, n = 10
 
-test 1: cmin = 50, cmax = 75, n = 10, umin = 11
-test 2: cmin = 50, cmax = 120, n = 10, umin = 11
+test 1: c = 70, umin = 15, n = 5
+test 2: c = 80, umin = 15, n = 5
+test 3: c = 90, umin = 15, n = 5
+test 4: c = 100, umin = 15, n = 5
+test 5: c = 110, umin = 15, n = 5
+test 6: c = 120, umin = 15, n = 5
+test 7: c = 130, umin = 15, n = 5
+test 8: c = 140, umin = 15, n = 5
+test 9: c = 150, umin = 15, n = 5
+test 10: c = 160, umin = 15, n = 5
+test 11: c = 170, umin = 15, n = 5
 
-test 3: cmin = 50, cmax = 70, n = 5, umin = 15, relaxation = 201
-test 4: cmin = 50, cmax = 80, n = 5, umin = 15, relaxation = 179
-test 5: cmin = 50, cmax = 90, n = 5, umin = 15, relaxation = 103
-test 6: cmin = 50, cmax = 100, n = 5, umin = 15, relaxation = 100
-test 7: cmin = 50, cmax = 110, n = 5, umin = 15, relaxation = 99
-test 8: cmin = 50, cmax = 120, n = 5, umin = 15, relaxation = 33
-test 9: cmin = 50, cmax = 130, n = 5, umin = 15, relaxation = 82
-test 10: cmin = 50, cmax = 140, n = 5, umin = 15, relaxation = 55
-test 11: cmin = 50, cmax = 150, n = 5, umin = 15, relaxation = 25
-test 12: cmin = 50, cmax = 160, n = 5, umin = 15, relaxation = 77
-test 13: cmin = 50, cmax = 170, n = 5, umin = 15, relaxation = 59
+test 12: c = 180, umin = 15, n = 5
+test 13: c = 190, umin = 15, n = 5
+test 14: c = 200, umin = 15, n = 5
+test 15: c = 154, umin = 15, n = 3
+test 16: c = 154, umin = 15, n = 4
+test 17: c = 154, umin = 15, n = 6
+test 18: c = 154, umin = 15, n = 7
+test 19: c = 154, umin = 15, n = 8
+test 20: c = 154, umin = 15, n = 9
+test 21: c = 154, umin = 15, n = 10
+test 22: c = 154, umin = 15, n = 11
 
-test 14: cmin = 50, cmax = 180, n = 5, umin = 15, relaxation = 
-test 15: cmin = 50, cmax = 190, n = 5, umin = 15, relaxation = 
-test 16: cmin = 50, cmax = 200, n = 5, umin = 15, relaxation = 
+test 12: c = 154, umin = 10, n = 5
+test 13: c = 154, umin = 13, n = 5
+test 14: c = 154, umin = 16, n = 5
+test 15: c = 154, umin = 19, n = 5
+test 16: c = 154, umin = 22, n = 5
+test 17: c = 154, umin = 25, n = 5
+test 18: c = 154, umin = 28, n = 5
+test 19: c = 154, umin = 31, n = 5
+test 20: c = 154, umin = 34, n = 5
+test 21: c = 154, umin = 37, n = 5
+test 22: c = 154, umin = 40, n = 5
 
-test 17: cmin = 50, cmax = 100, n = 5, umin = 11, relaxation = 
-test 18: cmin = 50, cmax = 100, n = 5, umin = 13, relaxation = 
-test 19: cmin = 50, cmax = 100, n = 5, umin = 17, relaxation = 
-test 20: cmin = 50, cmax = 100, n = 5, umin = 19, relaxation = 
-test 21: cmin = 50, cmax = 100, n = 5, umin = 21, relaxation = 
-test 22: cmin = 50, cmax = 100, n = 5, umin = 23, relaxation = 
-test 23: cmin = 50, cmax = 100, n = 5, umin = 25, relaxation = 
-test 24: cmin = 50, cmax = 100, n = 5, umin = 27, relaxation = 
+test 79: c = 154, umin = 15, n = 12
+test 80: c = 154, umin = 15, n = 13
+test 81: c = 154, umin = 15, n = 14
+test 82: c = 154, umin = 15, n = 15
+test 83: c = 154, umin = 15, n = 5

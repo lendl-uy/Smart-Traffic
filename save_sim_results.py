@@ -27,6 +27,10 @@ filename_sampled = f"mpc_sampled.txt"
 filename_trajectory = f"mpc_trajectory.txt"
 filename_final_results = f"mpc_final.txt"
 
+filename_q_length = f"mpc_q_length.txt"
+#filename_q_time = f"mpc_q_time.txt"
+filename_flow = f"mpc_flow.txt"
+
 step_len = 0.5
 sim_duration = 50400 # Fixed
 
@@ -66,7 +70,7 @@ def write_results_per_sec(veh_count, step, u = [61, 61, 45, 39, 87], C = 154):
 def write_results_per_cycle(step, trajectory = [0, 0, 0, 0]):
 
     f_trajectory.write(f"{step}")
-    for i in range(0, len(trajectory), 4):
+    for i in range(0, len(trajectory), 5):
         f_trajectory.write(f" {trajectory[i]} {trajectory[i+1]} {trajectory[i+2]} {trajectory[i+3]}")
     f_trajectory.write(f"\n")
 

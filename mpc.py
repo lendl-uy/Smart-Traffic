@@ -87,7 +87,7 @@ def apply_u_additive(array, min_val):
 
     return array
 
-def do_mpc(x_curr=np.array([16, 91, 20, 68, 14]), step=12459):
+def do_mpc(x_curr=np.array([0,0,0,0,0]), step=0):
 
     # Initialize a model
     m = gp.Model("MPC")
@@ -97,8 +97,6 @@ def do_mpc(x_curr=np.array([16, 91, 20, 68, 14]), step=12459):
     # 2nd line: Discard previous solutions to not affect new MPC run
     # 3rd line: Set maximum runtime of MPC to 2 seconds
     m.Params.LogToConsole = 0
-    m.reset(0)
-    m.setParam('TimeLimit', 2)
 
     # INITIALIZATION OF GUROBI DECISION VARIABLES
 
@@ -180,7 +178,6 @@ def do_mpc(x_curr=np.array([16, 91, 20, 68, 14]), step=12459):
         m.addConstr(u[k, 0] == u[k, 1]) # Green time of Katipunan Ave North and South must be the same
         #m.addConstr(u[k, 2] == u[k, 3]-u[k, 4]-3) # Green time of Aurora West
         #m.addConstr(C == u[k, 0] + u[k, 4] + u[k, 2] + 9) # Total cycle time is equal to phase 1 + phase 2 + phase 3 + lost time
-
     
         # Skip phase 2 if Aurora East to West is less than half of u_min_val
         if u_41min <= (u_min_val-1)/4:
@@ -209,7 +206,10 @@ def do_mpc(x_curr=np.array([16, 91, 20, 68, 14]), step=12459):
         m.addConstr(u[0, 0] >= u[0, 2]) # Green time constraint of Katipunan South and North
     else:
         m.addConstr(u[0, 2] >= u[0, 0]) # Green time constraint of Aurora West
-
+    '''
+    if (u_41min < u_min_val):
+        m.addConstr(u[0, 4] == u_min_val)
+    '''
     if (u_41min < u_min_val) and (u_41min >= (u_min_val-1)/4):
         m.addConstr(u[0, 4] == u_min_val)
     
@@ -232,6 +232,8 @@ def do_mpc(x_curr=np.array([16, 91, 20, 68, 14]), step=12459):
     m.write("mpc.lp")
 
     # Run MPC
+    m.reset(0)
+    m.setParam('TimeLimit', 2)
     m.optimize()
 
     # Obtain the results of the optimization
