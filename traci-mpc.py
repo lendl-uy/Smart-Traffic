@@ -4,7 +4,6 @@
 import os
 import sys
 import time
-import copy
 
 import traci
 import traci.constants as tc

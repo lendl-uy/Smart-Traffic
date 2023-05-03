@@ -37,11 +37,6 @@ else:
 if (u_41max <= u_min_val) or (u_2max >= u_4max) or (u_3max >= u_4max):
     m.addConstr(u_41[k, 0] <= u_min_val*1.5)
 
-ITO MUNA
-test 28: c = 80, umin = 15, n = 5
-test 29: c = 75, umin = 15, n = 5
-test 30: c = 75, umin = 11, n = 10
-
 test 1: c = 70, umin = 15, n = 5
 test 2: c = 80, umin = 15, n = 5
 test 3: c = 90, umin = 15, n = 5
@@ -65,21 +60,28 @@ test 19: c = 154, umin = 15, n = 8
 test 20: c = 154, umin = 15, n = 9
 test 21: c = 154, umin = 15, n = 10
 test 22: c = 154, umin = 15, n = 11
+test 23: c = 154, umin = 15, n = 12
 
-test 12: c = 154, umin = 10, n = 5
-test 13: c = 154, umin = 13, n = 5
-test 14: c = 154, umin = 16, n = 5
-test 15: c = 154, umin = 19, n = 5
-test 16: c = 154, umin = 22, n = 5
-test 17: c = 154, umin = 25, n = 5
-test 18: c = 154, umin = 28, n = 5
-test 19: c = 154, umin = 31, n = 5
-test 20: c = 154, umin = 34, n = 5
-test 21: c = 154, umin = 37, n = 5
-test 22: c = 154, umin = 40, n = 5
+test 24: c = 154, umin = 15, n = 13
+test 25: c = 154, umin = 15, n = 14
+test 26: c = 154, umin = 15, n = 15
+test 27: c = 154, umin = 15, n = 5
+test 28: c = 154, umin = 10, n = 5
+test 29: c = 154, umin = 13, n = 5
+test 30: c = 154, umin = 16, n = 5
+test 31: c = 154, umin = 19, n = 5
+test 32: c = 154, umin = 22, n = 5
+test 33: c = 154, umin = 25, n = 5
+test 34: c = 154, umin = 28, n = 5
+test 35: c = 154, umin = 31, n = 5
 
-test 79: c = 154, umin = 15, n = 12
-test 80: c = 154, umin = 15, n = 13
-test 81: c = 154, umin = 15, n = 14
-test 82: c = 154, umin = 15, n = 15
-test 83: c = 154, umin = 15, n = 5
+test 36: c = 154, umin = 34, n = 5
+test 37: c = 154, umin = 37, n = 5
+test 38: c = 154, umin = 40, n = 5
+
+test 39: c = 75, umin = 11, n = 5
+test 40: c = 75, umin = 11, n = 10
+test 41: c = 80, umin = 11, n = 10
+test 42: c = 90, umin = 11, n = 10
+test 43: c = 100, umin = 11, n = 10
+

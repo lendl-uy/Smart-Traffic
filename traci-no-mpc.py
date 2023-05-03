@@ -4,7 +4,6 @@
 import os
 import sys
 import time
-import copy
 
 import traci
 import traci.constants as tc
@@ -55,9 +54,10 @@ def main():
     # Record start time of simulation for optimization purposes
     start = time.time()
 
-    step_C = 0
-
     # Initialize a variable that stores number of times the model was relaxed
+    num_relaxation = 0
+
+    step_C = 0
 
     arrived_veh_ids = []
 
@@ -65,9 +65,10 @@ def main():
     ql_15min = 0
 
     list_of_qt_15_window = [0.0]
+    departed_vehs_qt = 0
 
     list_of_flow_15_window = [0.0]
-    departed_vehs = 0
+    departed_vehs_flow = 0
 
     for step in range(sim_steps+1):
 
@@ -79,56 +80,37 @@ def main():
         if step > sim_steps:
             break
         
-        # Get the average queue time of all incoming roads
-        perf.get_queue_time(step)
-        
         # Initialize the measurement of average flow rate of all incoming roads
         traci.junction.subscribeContext(junctionID, tc.CMD_GET_VEHICLE_VARIABLE, 60)
     
         # "Snapshot" of vehicles that are stationary (for queue length)
         # Ensures that recorded stationary vehicles belong to the queue
-        new_stopped_vehs = perf.get_queue_length(stopped_vehs, 1, step)
+        new_stopped_vehs = perf.sample_queue_length(stopped_vehs, 1, step)
 
-        temp_list_queue_times = perf.get_windowed_queue_time(arrived_veh_ids, departed_vehs)
+        # Sample and update the running windowed average values of performance indicators
+        perf.sample_queue_time(step)
+        perf.sample_flow_rate(step)
+        temp_list_queue_times, arrived_veh_ids = perf.update_windowed_queue_time(arrived_veh_ids, departed_vehs_qt)
+        departed_vehs_flow = perf.update_windowed_flow_rate(departed_vehs_flow)
+        ql_15min, new_stopped_vehs = perf.sample_queue_length(new_stopped_vehs, 0, step, ql_15min) # Get the average queue length from the past 15 mins
 
-        # Measure the temporary values of performance indicators for each time step
-        if step < sim_steps:
-            ql_15min_final, ql_15min, new_stopped_vehs = perf.get_queue_length(new_stopped_vehs, 0, step, ql_15min) # Get the average queue length from the past 15 mins
-            flow_katip_south = perf.get_flow_rate("KatipS")
-            flow_katip_north = perf.get_flow_rate("KatipN")
-            flow_aurora_west = perf.get_flow_rate("AuroraW")
-            flow_aurora_east = perf.get_flow_rate("AuroraE")
-            flow_all_roads = perf.get_flow_rate("all")
-        # Obtain the final cumulative averages of the performance indicators
-        else:
-            ql_15min_final, ql_15min, final_ql = perf.get_queue_length(new_stopped_vehs, 0, step, ql_15min) # Get the cumulative average queue length
-            final_qt = perf.get_queue_time(step)
-            flow_katip_south = perf.get_flow_rate("KatipS")
-            flow_katip_north = perf.get_flow_rate("KatipN")
-            flow_aurora_west = perf.get_flow_rate("AuroraW")
-            flow_aurora_east = perf.get_flow_rate("AuroraE")
-            flow_all_roads = perf.get_flow_rate("all")
-        
         # Obtain the 15-minute windowed average of the performance indicators
         if step % sampling_time == 0:
 
             # Get the windowed average queue length
+            ql_15min_final, ql_15min = perf.get_windowed_queue_length(ql_15min)
             list_of_ql_15_window.append(ql_15min_final)
-            ql_15min = 0
             #print("List of average queue lengths for 15 min windows", list_of_ql_15_window)
 
             # Get the windowed average flow rate
-            flow_15min = (departed_vehs/1800)*3600
+            flow_15min, departed_vehs_flow = perf.get_windowed_flow_rate(departed_vehs_flow)
             list_of_flow_15_window.append(flow_15min)
-            departed_vehs = 0
             #print("List of average flow rates for 15 min windows", list_of_flow_15_window)
 
             # Get the windowed average queue time
-            qt_15min = sum(temp_list_queue_times.values())/len(temp_list_queue_times)
+            qt_15min, departed_vehs_qt = perf.get_windowed_queue_time(temp_list_queue_times, departed_vehs_qt, arrived_veh_ids)
             list_of_qt_15_window.append(qt_15min)
             #print(f"List of average queue time for 15 min windows: {list_of_qt_15_window}")
-            for i in range(len(arrived_veh_ids)):
-                temp_list_queue_times.pop(arrived_veh_ids[i],None)
 
         if step % steps_per_s == 0:
 
@@ -151,15 +133,17 @@ def main():
             save_sim.write_results_per_sec([n_katip_south, n_katip_north, n_aurora_west, n_aurora_east],
                                             actual_time_step)
             
-            # Perform MPC once a control interval has completed
-            if delta_step+1 == 154:
-                step_C = actual_time_step+1
-
             if step % sampling_time == 0:
                 save_sim.write_results_per_window(ql_15min_final, qt_15min, flow_15min, actual_time_step)
+            
+            if delta_step+1 == 154:
+                step_C = actual_time_step+1
           
         if step == sim_steps:
-            save_sim.write_final_results(final_ql, final_qt, [flow_katip_south, flow_katip_north, flow_aurora_west, flow_aurora_east, flow_all_roads], actual_time_step)
+            final_ql = perf.get_cumulative_queue_length()
+            final_qt = perf.get_cumulative_queue_time()
+            final_flow = perf.get_cumulative_flow_rate()
+            save_sim.write_final_results(final_ql, final_qt, final_flow, actual_time_step)
         
         # Step the simulation by 1 second
         traci.simulationStep()
@@ -167,6 +151,7 @@ def main():
 
     # Record start time of simulation for profiling purposes
     print(f"Runtime of simulation: {time.time()-start}")
+    print(f"Number of times that model was relaxed: {num_relaxation}")
 
     traci.close()
     sys.exit("The simulation has ended!")

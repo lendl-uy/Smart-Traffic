@@ -7,7 +7,7 @@ import numpy as np
 # Tunable parameters
 N = 10 # (TUNABLE)
 u_min_val = 11 # (TUNABLE)
-C = 75 # (TUNABLE)
+C = 100 # (TUNABLE)
 #error = 0.5
 print(f"N = {N}")
 print(f"u_min_val = {u_min_val}")
@@ -20,11 +20,11 @@ num_relaxation = 0
 L = 9  # Lost time (3 phases * 3s)
 
 # Saturation flow rate (veh/hr -> veh/s)
-S_1 = 841*(1/3600) # Saturation flow of Katipunan Ave South
-S_2 = 1510*(1/3600) # Saturation flow of Katipunan Ave North
-S_3 = 2017*(1/3600) # Saturation flow of Aurora Blvd West
-S_4 = 3200*(1/3600) # Saturation flow of Aurora Blvd East to West
-S_5 = 841*(1/3600) # Saturation flow of Aurora Blvd East to Katipunan South
+S_1 = 1189.79*(1/3600) # Saturation flow of Katipunan Ave South
+S_2 = 2095.93*(1/3600) # Saturation flow of Katipunan Ave North
+S_3 = 2081.93*(1/3600) # Saturation flow of Aurora Blvd West
+S_4 = 3242.14*(1/3600) # Saturation flow of Aurora Blvd East to West
+S_5 = 487.36*(1/3600) # Saturation flow of Aurora Blvd East to Katipunan South
 
 # Demand values from 6 AM to 8 PM (veh/hr)
 d_1 = np.array([1147., 1636., 1465., 1408., 1277., 995., 1046., 

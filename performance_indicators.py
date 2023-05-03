@@ -555,17 +555,17 @@ def update_windowed_flow_rate(departed_vehs):
 
 def get_windowed_flow_rate(departed_vehs_flow):
     
-    flow_15min = (departed_vehs_flow/(1800*4))*3600
+    flow_15min = (departed_vehs_flow/(900*4))*3600
     departed_vehs_flow = 0
 
     return flow_15min, departed_vehs_flow
 
 def get_cumulative_flow_rate():
 
-    flow_rate_katip_s = (veh_count_katip_s/(50400/0.5))*3600
-    flow_rate_katip_n = (veh_count_katip_n/(50400/0.5))*3600
-    flow_rate_aurora_w = (veh_count_aurora_w/(50400/0.5))*3600
-    flow_rate_aurora_e = (veh_count_aurora_e/(50400/0.5))*3600
-    flow_rate_all = ((veh_count_katip_s+ veh_count_katip_n + veh_count_aurora_w + veh_count_aurora_e)/(50400/0.5*4))*3600
+    flow_rate_katip_s = (veh_count_katip_s/(50400))*3600
+    flow_rate_katip_n = (veh_count_katip_n/(50400))*3600
+    flow_rate_aurora_w = (veh_count_aurora_w/(50400))*3600
+    flow_rate_aurora_e = (veh_count_aurora_e/(50400))*3600
+    flow_rate_all = ((veh_count_katip_s+ veh_count_katip_n + veh_count_aurora_w + veh_count_aurora_e)/(50400*4))*3600
 
     return [flow_rate_katip_s, flow_rate_katip_n, flow_rate_aurora_w, flow_rate_aurora_e, flow_rate_all]
