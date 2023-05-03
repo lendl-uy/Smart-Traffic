@@ -83,5 +83,6 @@ test 39: c = 75, umin = 11, n = 5
 test 40: c = 75, umin = 11, n = 10
 test 41: c = 80, umin = 11, n = 10
 test 42: c = 90, umin = 11, n = 10
-test 43: c = 100, umin = 11, n = 10
+test 43: c = 75, umin = 11, n = 12
+test 44: c = 75, umin = 11, n = 15
 

@@ -5,9 +5,9 @@ import numpy as np
 #import traffic_distribution as td
 
 # Tunable parameters
-N = 10 # (TUNABLE)
+N = 15 # (TUNABLE)
 u_min_val = 11 # (TUNABLE)
-C = 100 # (TUNABLE)
+C = 75 # (TUNABLE)
 #error = 0.5
 print(f"N = {N}")
 print(f"u_min_val = {u_min_val}")

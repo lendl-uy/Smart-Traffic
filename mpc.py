@@ -87,7 +87,7 @@ def apply_u_additive(array, min_val):
 
     return array
 
-def do_mpc(x_curr=np.array([12, 59, 20 ,81 ,22]), step=349):
+def do_mpc(x_curr=np.array([0,0,0,0,0]), step=0):
 
     # Initialize a model
     m = gp.Model("MPC")
@@ -276,7 +276,9 @@ def do_mpc(x_curr=np.array([12, 59, 20 ,81 ,22]), step=349):
 
         if m.Status == GRB.INFEASIBLE:
             print("Cannot find optimal green times!")
-            sys.exit("Exiting the program now.")
+            print("Using previously computed green times!")
+            return None, None, None, None
+            #sys.exit("Exiting the program now.")
 
         relaxed += 1
 
@@ -293,7 +295,11 @@ def do_mpc(x_curr=np.array([12, 59, 20 ,81 ,22]), step=349):
         # Retrieve the computed green times and predicted future states
         for v in m.getVars():
             if v.VarName in names_to_retrieve:
-                vals[v.VarName] = v.X
+                try:
+                    vals[v.VarName] = v.X
+                except:
+                    print("GUROBI Error")
+                    return None, None, None, None
                 #print('%s %g' % (v.VarName, v.X))
                 if v.VarName[:3] == "u[0":
                     u_res.append(v.X)

@@ -198,8 +198,9 @@ def main():
                 if actual_time_step+N*C < sim_duration:
                     u, C, trajectory, relaxed = do_mpc(np.array([n_katip_south, n_katip_north, n_aurora_west_fair, n_aurora_east_fair, n_aurora_east_lane4_fair]), 
                                                     actual_time_step+1)
-                    u_sorted, phases = get_timer_settings(u, C) # Retrieves parsed timer setting information
-                    num_relaxation += relaxed
+                    if u != None:
+                        u_sorted, phases = get_timer_settings(u, C) # Retrieves parsed timer setting information
+                        num_relaxation += relaxed
 
                 step_C = actual_time_step+1
 
