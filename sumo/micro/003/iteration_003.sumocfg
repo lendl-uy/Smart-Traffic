@@ -19,6 +19,7 @@
     <time>
         <begin value="0"/>
         <step-length value="0.5"/>
+        <end value="50400"/>
     </time>
 
     <processing>
@@ -29,9 +30,9 @@
         <time-to-teleport.highways value="0"/>
         <eager-insert value="true"/>
         <threads value="8"/>
-        <max-depart-delay value="120"/>
+        <max-depart-delay value="60"/>
         <max-num-teleports value="0"/>
-        <scale value="1.01"/>
+        <scale value="1.012"/>
     </processing>
 
     <report>

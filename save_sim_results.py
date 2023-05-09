@@ -71,7 +71,7 @@ def write_results_per_cycle(step, trajectory = [0, 0, 0, 0]):
 
     f_trajectory.write(f"{step}")
     for i in range(0, len(trajectory), 5):
-        f_trajectory.write(f" {trajectory[i]} {trajectory[i+1]} {trajectory[i+2]} {trajectory[i+3]}")
+        f_trajectory.write(f" {trajectory[i]} {trajectory[i+1]} {trajectory[i+2]} {trajectory[i+3]} {trajectory[i+4]}")
     f_trajectory.write(f"\n")
 
     if step == sim_duration:

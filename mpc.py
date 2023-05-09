@@ -89,6 +89,22 @@ def apply_u_additive(array, min_val):
 
 def do_mpc(x_curr=np.array([0,0,0,0,0]), step=0):
 
+    '''
+    global C
+
+    # EXPERIMENTAL
+    x_total = np.sum(x_curr[:-1])
+    decrement_threshold = (8609.785714/3600)*C
+    print(f"Total number of vehicles: {x_total}")
+    print(f"Cycle time decrement threshold: {decrement_threshold}")
+    if step > 0:
+        if (x_total <= decrement_threshold) and (C >= C_min+decrement_constant):
+            C -= decrement_constant
+        else:
+            if C < C_max:
+                C += 10
+    print(f"New C = {C}")
+    '''
     # Initialize a model
     m = gp.Model("MPC")
 
@@ -235,7 +251,7 @@ def do_mpc(x_curr=np.array([0,0,0,0,0]), step=0):
     m.setObjective(obj, GRB.MINIMIZE)
 
     # Check for infeasibility / unboundedness
-    m.setParam("DualReductions", 0) # Infeasible model check
+    #m.setParam("DualReductions", 0) # Infeasible model check
 
     # Save the model
     m.write("mpc.lp")
@@ -244,7 +260,11 @@ def do_mpc(x_curr=np.array([0,0,0,0,0]), step=0):
     m.reset(0)
 
     # Set maximum runtime of MPC to 2 seconds
-    m.setParam('TimeLimit', 2)
+    m.setParam('TimeLimit', 1.5)
+
+    #m.setParam("Heuristics", 0.1)
+    #m.setParam("MIPFocus", 1)
+    m.setParam("Presolve", 2)
 
     # Run MPC
     m.optimize()
@@ -275,36 +295,31 @@ def do_mpc(x_curr=np.array([0,0,0,0,0]), step=0):
         m.optimize()
 
         if m.Status == GRB.INFEASIBLE:
-            print("Cannot find optimal green times!")
-            print("Using previously computed green times!")
-            return None, None, None, None
-            #sys.exit("Exiting the program now.")
+            print(f"No solution was found even after relaxation! PLease reinspect model.")
+            sys.exit()
 
         relaxed += 1
 
-        # Retrieve the computed green times and predicted future states
-        for v in m.getVars():
-            if v.VarName in names_to_retrieve:
-                vals[v.VarName] = v.X
-                #print('%s %g' % (v.VarName, v.X))
-                if v.VarName[:3] == "u[0":
-                    u_res.append(v.X)
-                elif v.VarName[:1] == "x":
-                    x_trajectory.append(int(v.X+0.5))
     else:
-        # Retrieve the computed green times and predicted future states
-        for v in m.getVars():
-            if v.VarName in names_to_retrieve:
-                try:
-                    vals[v.VarName] = v.X
-                except:
-                    print("GUROBI Error")
-                    return None, None, None, None
-                #print('%s %g' % (v.VarName, v.X))
-                if v.VarName[:3] == "u[0":
-                    u_res.append(v.X)
-                elif v.VarName[:1] == "x":
-                    x_trajectory.append(int(v.X+0.5))
+        # Relax model if no solution was found
+        if m.solcount <= 0:
+            print("Model is feasible but not converging!")
+            m.feasRelaxS(0, True, True, False) # Ease model if infeasible
+            m.optimize()
+            # End the program if no solution has been found
+            if m.solcount <= 0:
+                print(f"No solution was found even after relaxation! PLease reinspect model.")
+                sys.exit()
+
+    # Retrieve the computed green times and predicted future states
+    for v in m.getVars():
+        if v.VarName in names_to_retrieve:
+            vals[v.VarName] = v.X
+            #print('%s %g' % (v.VarName, v.X))
+            if v.VarName[:3] == "u[0":
+                u_res.append(v.X)
+            elif v.VarName[:1] == "x":
+                x_trajectory.append(int(v.X+0.5))
     
     # Post-processing of data
     u_res = apply_u_additive(u_res, 0)
@@ -353,7 +368,7 @@ def main():
     print(f"C = {C}")
     print(f"u_sorted = {u_sorted}")
     print(f"phases = {phases}")
-    #print(f"trajectory = {trajectory}")
+    print(f"trajectory = {trajectory}")
 
 if __name__ == "__main__":
     main()

@@ -5,13 +5,18 @@ import numpy as np
 #import traffic_distribution as td
 
 # Tunable parameters
-N = 15 # (TUNABLE)
+N = 12 # (TUNABLE)
 u_min_val = 11 # (TUNABLE)
 C = 75 # (TUNABLE)
+#decrement_constant = 5
+#C_min = 50
+#C_max = 75
 #error = 0.5
 print(f"N = {N}")
 print(f"u_min_val = {u_min_val}")
 print(f"C = {C}")
+#print(f"C_min = {C_min}")
+#print(f"C_max = {C_max}")
 
 # Variable to store number of model relaxation
 num_relaxation = 0
@@ -69,13 +74,6 @@ xmin = np.tile(xmin, (N+1,1))
 umin = np.tile(umin, (N,1))
 
 # B contains the road link properties
-'''
-B = np.array([[S_1/C,0,0,0],
-              [0,S_2/C,0,0],
-              [0,0,S_3/C,0],
-              [0,0,0,S_4/C]
-              ])
-'''
 B = np.array([[S_1,0,0,0,0],
               [0,S_2,0,0,0],
               [0,0,S_3,0,0],

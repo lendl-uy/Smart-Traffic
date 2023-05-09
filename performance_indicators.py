@@ -1,10 +1,5 @@
-# -*- coding: utf-8 -*-
-"""
-Performance Indicators
-Created on Sat Mar 11 11:09:29 2023
-
-@author: franc
-"""
+# Authors: Eisler Spencer Go, Francis Mikael Magueflor, Jan Lendl R. Uy
+# Interfacing of SUMO simulation via TraCI
 
 # Conventions
 # KatipS: Katipunan Southbound / Katipunan North
@@ -14,43 +9,28 @@ Created on Sat Mar 11 11:09:29 2023
 	 
 import traci
 import traci.constants as tc
-import numpy as np
 
 from road_defs import *
 
 # Global variables
-global averagewaitlist
-averagewaitlist={}
-global fifteenlen
-
-global keyofkey
 keyofkey = 0
 
+averagewaitlist = {}
 averagewaitlist_katip_s = {}
 averagewaitlist_katip_n = {}
 averagewaitlist_aurora_w = {}
 averagewaitlist_aurora_e = {}
 
-cumulative_avg_ql_Ks = []
-cumulative_avg_ql_Kn = []
-cumulative_avg_ql_Ae = []
-cumulative_avg_ql_Aw = []
 cumulative_avg_ql = []
-
-'''
-global KatipN_edge_ids_persistent
-global KatipS_edge_ids_persistent
-global AuroraW_edge_ids_persistent
-global AuroraE_edge_ids_persistent
-'''
+cumulative_avg_ql_katip_s = []
+cumulative_avg_ql_katip_n = []
+cumulative_avg_ql_aurora_w = []
+cumulative_avg_ql_aurora_e = []
 
 KatipN_edge_ids_persistent = []
 KatipS_edge_ids_persistent = []
 AuroraW_edge_ids_persistent = []
 AuroraE_edge_ids_persistent = []
-
-fifteenflow = []
-numbercar = 0
 
 veh_count_katip_s = 0
 veh_count_katip_n = 0
@@ -251,11 +231,11 @@ def get_vehicle_count(road_name):
 
 def sample_queue_length(record_stopped_vehs, record, step, ql_15min=0):
 
-    global cumulative_avg_ql_Ks
-    global cumulative_avg_ql_Kn
-    global cumulative_avg_ql_Ae
-    global cumulative_avg_ql_Aw
     global cumulative_avg_ql
+    global cumulative_avg_ql_katip_s
+    global cumulative_avg_ql_katip_n
+    global cumulative_avg_ql_aurora_w
+    global cumulative_avg_ql_aurora_e
 
     # Obtains all the vehicle IDs in the simulation
     sim_vehicles = traci.vehicle.getIDList()
@@ -356,7 +336,7 @@ def sample_queue_length(record_stopped_vehs, record, step, ql_15min=0):
             overall_avg_ql += avg_ql_katip_south
         avg_ql_katip_south /= 2
         
-        cumulative_avg_ql_Ks.append(avg_ql_katip_south)  
+        cumulative_avg_ql_katip_s.append(avg_ql_katip_south)  
 
         if len(ql_katip_north_lane_1) != 0:
             avg_ql_katip_north += sum(ql_katip_north_lane_1)
@@ -366,7 +346,7 @@ def sample_queue_length(record_stopped_vehs, record, step, ql_15min=0):
             overall_avg_ql += avg_ql_katip_north
         avg_ql_katip_north /= 2
         
-        cumulative_avg_ql_Kn.append(avg_ql_katip_north)
+        cumulative_avg_ql_katip_n.append(avg_ql_katip_north)
 
         if len(ql_aurora_west_lane_1) != 0:
             avg_ql_aurora_west += sum(ql_aurora_west_lane_1)
@@ -382,7 +362,7 @@ def sample_queue_length(record_stopped_vehs, record, step, ql_15min=0):
             overall_avg_ql += avg_ql_aurora_west
         avg_ql_aurora_west /= 4
         
-        cumulative_avg_ql_Aw.append(avg_ql_aurora_west)
+        cumulative_avg_ql_aurora_w.append(avg_ql_aurora_west)
 
         if len(ql_aurora_east_lane_1) != 0:
             avg_ql_aurora_east += sum(ql_aurora_east_lane_1)
@@ -398,7 +378,7 @@ def sample_queue_length(record_stopped_vehs, record, step, ql_15min=0):
             overall_avg_ql += avg_ql_aurora_east
         avg_ql_aurora_east /= 4
         
-        cumulative_avg_ql_Ae.append(avg_ql_aurora_east)
+        cumulative_avg_ql_aurora_e.append(avg_ql_aurora_east)
 
         overall_avg_ql /= 12
         cumulative_avg_ql.append(overall_avg_ql)
@@ -422,17 +402,18 @@ def get_windowed_queue_length(ql_15min):
 def get_cumulative_queue_length():
 
     # Return the cumulative average queue length of all incoming roads
-    overall_avlenKs = sum(cumulative_avg_ql_Ks)/len(cumulative_avg_ql_Ks)
-    overall_avlenKn = sum(cumulative_avg_ql_Kn)/len(cumulative_avg_ql_Kn)
-    overall_avlenAe = sum(cumulative_avg_ql_Ae)/len(cumulative_avg_ql_Ae)
-    overall_avlenAw = sum(cumulative_avg_ql_Aw)/len(cumulative_avg_ql_Aw)
     overall_avg_ql = sum(cumulative_avg_ql)/len(cumulative_avg_ql)
+    overall_avg_ql_katip_s = sum(cumulative_avg_ql_katip_s)/len(cumulative_avg_ql_katip_s)
+    overall_avg_ql_katip_n = sum(cumulative_avg_ql_katip_n)/len(cumulative_avg_ql_katip_n)
+    overall_avg_ql_aurora_w = sum(cumulative_avg_ql_aurora_w)/len(cumulative_avg_ql_aurora_w)
+    overall_avg_ql_aurora_e = sum(cumulative_avg_ql_aurora_e)/len(cumulative_avg_ql_aurora_e)
     
-    return [overall_avlenKs, overall_avlenKn, overall_avlenAe, overall_avlenAw, overall_avg_ql]
+    return [overall_avg_ql_katip_s, overall_avg_ql_katip_n, overall_avg_ql_aurora_w, overall_avg_ql_aurora_e, overall_avg_ql]
 
 def sample_queue_time(step):
 
     global keyofkey
+    global averagewaitlist
     global averagewaitlist_katip_s
     global averagewaitlist_katip_n
     global averagewaitlist_aurora_w
@@ -446,11 +427,11 @@ def sample_queue_time(step):
         keyofkey=list(traci.vehicle.getAllSubscriptionResults()[(list(traci.vehicle.getAllSubscriptionResults().keys())[0])].keys())[0]
       
     #append new vehicle id with waiting time or update waiting time 
-    cumulaveragetime=0
-    if keyofkey!=0:
+    cumulative_avg_qt = 0
+    if keyofkey != 0:
       
         for i in range(len(traci.vehicle.getAllSubscriptionResults())):
-            averagewaitlist[list(traci.vehicle.getAllSubscriptionResults().keys())[i]]=traci.vehicle.getAllSubscriptionResults()[list(traci.vehicle.getAllSubscriptionResults().keys())[i]][keyofkey]
+            averagewaitlist[list(traci.vehicle.getAllSubscriptionResults().keys())[i]] = traci.vehicle.getAllSubscriptionResults()[list(traci.vehicle.getAllSubscriptionResults().keys())[i]][keyofkey]
 
         for veh_id in traci.vehicle.getIDList():
             lane_id = traci.vehicle.getLaneID(veh_id)    
@@ -471,6 +452,8 @@ def sample_queue_time(step):
 
 def update_windowed_queue_time(arrived_veh_ids, departed_vehs):
 
+    global averagewaitlist
+
     #queuetime15
     for veh_id in traci.simulation.getDepartedIDList():
         traci.vehicle.subscribe(veh_id, [tc.VAR_ACCUMULATED_WAITING_TIME])
@@ -488,7 +471,7 @@ def update_windowed_queue_time(arrived_veh_ids, departed_vehs):
         
         for i in range(len(traci.vehicle.getAllSubscriptionResults())):
             averagewaitlist[list(traci.vehicle.getAllSubscriptionResults().keys())[i]]=traci.vehicle.getAllSubscriptionResults()[list(traci.vehicle.getAllSubscriptionResults().keys())[i]][keyofkey]
-        tempawl=averagewaitlist
+        tempawl = averagewaitlist
 
     return tempawl, arrived_veh_ids
 
@@ -503,6 +486,12 @@ def get_windowed_queue_time(temp_list_queue_times, departed_vehs_qt, arrived_veh
     return qt_15min, departed_vehs_qt
 
 def get_cumulative_queue_time():
+
+    global averagewaitlist
+    global averagewaitlist_katip_s
+    global averagewaitlist_katip_n
+    global averagewaitlist_aurora_w
+    global averagewaitlist_aurora_e
 
     cumulaveragetime=sum(averagewaitlist.values()) / float(len(averagewaitlist))
 

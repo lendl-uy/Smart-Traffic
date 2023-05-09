@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- generated on 2023-03-06 01:32:42 by Eclipse SUMO netedit Version 1.15.0
+-->
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/routes_file.xsd">
+ <!-- VTypes -->
+ <vType id="BUS" minGap="1.25" vClass="bus" sigma="0.25" speedDev="0.0"/>
+ <vType id="CAR" minGap="1.25" vClass="passenger" sigma="0.25" speedDev="0.0"/>
+ <vType id="MOTORCYCLE" minGap="0.25" vClass="motorcycle" sigma="0.25" speedDev="0.0"/>
+ <vType id="TAXI" minGap="1.25" vClass="taxi" sigma="0.25" speedDev="0.0"/>
+ <vType id="TRAILER" minGap="1.50" vClass="trailer" sigma="0.25" speedDev="0.0"/>
+ <vType id="TRUCK" minGap="1.50" vClass="truck" sigma="0.25" speedDev="0.0"/>
+ <!-- Routes -->
+ <route edges="933952934#0 4601641#0" id="aurora_e_aurora_w"/>
+ <route edges="933952934#0 26296778#0 26296778#2.16 26296778#2.51" id="aurora_e_katip_n"/>
+ <route edges="933952934#0 703023054 780157088 780157088.15 780157088.34" id="aurora_e_katip_s"/>
+ <route edges="591107291#0 591107291#1 609205085 1078018160 430789454#0 1078018158" id="aurora_w_aurora_e"/>
+ <route edges="591107291#0 591107291#1 26296781#0 26296781#1 780157088 780157088.15 780157088.34" id="aurora_w_katip_s"/>
+ <route edges="1076383725 1076383725.44 1076383725.80 1078018160 430789454#0 1078018158" id="katip_n_aurora_e"/>
+ <route edges="1076383725 1076383725.44 1076383725.80 4601641#0" id="katip_n_aurora_w"/>
+ <route edges="1076383725 E1 26296778#2.51" id="katip_n_u_turn"/>
+ <route edges="780157087#0 780157087#0.14 780157087#0.33 780157087#2 1078018164 1078018160 430789454#0 1078018158" id="katip_s_aurora_e"/>
+ <route edges="780157087#0 780157087#0.14 780157087#0.33 780157087#2 1078018163 4601641#0" id="katip_s_aurora_w"/>
+ <route edges="780157087#0 E3 780157088.34" id="katip_s_u_turn"/>
+ <!-- Vehicles, persons and containers (sorted by depart) -->
+</routes>

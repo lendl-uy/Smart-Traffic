@@ -9,7 +9,6 @@ import traci
 import traci.constants as tc
 import numpy as np
 
-#from mpc_params import *
 from mpc import *
 
 import performance_indicators as perf
@@ -41,18 +40,24 @@ sim_steps = int(50400/step_len) # Fixed
 meas_15min_window = 15*60 # 15 minutes -> 900 seconds
 sampling_time = int(meas_15min_window/step_len)
 
-allcar={}
-stopped_vehs = {}
-averagewaitlist={}
-
-n_aurora_west = 0
-n_aurora_east = 0
+# Global variables to be used to store temporal traffic data measurements
+stopped_vehs = {} # Store the vehicle IDs of nonmoving vehicles (for queue length)
+arrived_veh_ids = [] # Store the vehicle IDs that have already crossed intersection (for queue time)
+ql_15min = 0 # Save the running queue length for measurement of windowed average queue length
+departed_vehs_qt = 0 # Save the number of vehicles that have departed (for queue time)
+departed_vehs_flow = 0 # Save the number of vehicles that have departed (for flow rate)
 
 # Actual simulation
 # Entire simulation spans from 6AM to 8PM traffic (14 hrs/50400 secs)
 # 1 step corresponds to 0.5 seconds
 
 def main():
+
+    global stopped_vehs
+    global arrived_veh_ids
+    global ql_15min
+    global departed_vehs_qt
+    global departed_vehs_flow
 
     # Record start time of simulation for optimization purposes
     start = time.time()
@@ -69,17 +74,6 @@ def main():
     print(f"u = {u_sorted}")
     print(f"C = {C}")
     print(f"phases = {phases}")
-
-    arrived_veh_ids = []
-
-    list_of_ql_15_window = [0.0]
-    ql_15min = 0
-
-    list_of_qt_15_window = [0.0]
-    departed_vehs_qt = 0
-
-    list_of_flow_15_window = [0.0]
-    departed_vehs_flow = 0
 
     for step in range(sim_steps+1):
 
@@ -110,18 +104,12 @@ def main():
 
             # Get the windowed average queue length
             ql_15min_final, ql_15min = perf.get_windowed_queue_length(ql_15min)
-            list_of_ql_15_window.append(ql_15min_final)
-            #print("List of average queue lengths for 15 min windows", list_of_ql_15_window)
 
             # Get the windowed average flow rate
             flow_15min, departed_vehs_flow = perf.get_windowed_flow_rate(departed_vehs_flow)
-            list_of_flow_15_window.append(flow_15min)
-            #print("List of average flow rates for 15 min windows", list_of_flow_15_window)
 
             # Get the windowed average queue time
             qt_15min, departed_vehs_qt = perf.get_windowed_queue_time(temp_list_queue_times, departed_vehs_qt, arrived_veh_ids)
-            list_of_qt_15_window.append(qt_15min)
-            #print(f"List of average queue time for 15 min windows: {list_of_qt_15_window}")
 
         if step % steps_per_s == 0:
 
@@ -133,6 +121,9 @@ def main():
             print(f"Timestep: {actual_time_step}")
             print(f"Current time step relative to new phase: {delta_step}")
             print(f"{hr}:{mins}:{sec} {am_pm}")
+
+            # Obtain vehicle count in all incoming roads
+            n_katip_south, n_katip_north, n_aurora_west, n_aurora_east, n_aurora_east_lane4 = perf.get_vehicle_count("all")
 
             # Perform switching of phases based on the current time step
             # Adjusts timer settings of all stoplights based on computed green times
@@ -181,9 +172,6 @@ def main():
 
             print(f"Current phase number: {phase_num}")
 
-            # Obtain vehicle count in all incoming roads
-            n_katip_south, n_katip_north, n_aurora_west, n_aurora_east, n_aurora_east_lane4 = perf.get_vehicle_count("all")
-
             save_sim.write_results_per_sec([n_katip_south, n_katip_north, n_aurora_west, n_aurora_east],
                                             actual_time_step, u_sorted, C)
             
@@ -196,7 +184,7 @@ def main():
                 print("Performing MPC to compute optimal green times!")
                 # Recompute timer settings and cycle time
                 if actual_time_step+N*C < sim_duration:
-                    u, C, trajectory, relaxed = do_mpc(np.array([n_katip_south, n_katip_north, n_aurora_west_fair, n_aurora_east_fair, n_aurora_east_lane4_fair]), 
+                    u, C, trajectory, relaxed = do_mpc(np.array([n_katip_south, n_katip_north, n_aurora_west_fair, n_aurora_east, n_aurora_east_lane4]), 
                                                     actual_time_step+1)
                     if u != None:
                         u_sorted, phases = get_timer_settings(u, C) # Retrieves parsed timer setting information

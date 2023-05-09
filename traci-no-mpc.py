@@ -38,12 +38,12 @@ sim_steps = int(50400/step_len) # Fixed
 meas_15min_window = 15*60 # 15 minutes -> 900 seconds
 sampling_time = int(meas_15min_window/step_len)
 
-allcar={}
-stopped_vehs = {}
-averagewaitlist={}
-
-n_aurora_west = 0
-n_aurora_east = 0
+# Global variables to be used to store temporal traffic data measurements
+stopped_vehs = {} # Store the vehicle IDs of nonmoving vehicles (for queue length)
+arrived_veh_ids = [] # Store the vehicle IDs that have already crossed intersection (for queue time)
+ql_15min = 0 # Save the running queue length for measurement of windowed average queue length
+departed_vehs_qt = 0 # Save the number of vehicles that have departed (for queue time)
+departed_vehs_flow = 0 # Save the number of vehicles that have departed (for flow rate)
 
 # Actual simulation
 # Entire simulation spans from 6AM to 8PM traffic (14 hrs/50400 secs)
@@ -51,24 +51,16 @@ n_aurora_east = 0
 
 def main():
 
+    global stopped_vehs
+    global arrived_veh_ids
+    global ql_15min
+    global departed_vehs_qt
+    global departed_vehs_flow
+
     # Record start time of simulation for optimization purposes
     start = time.time()
 
-    # Initialize a variable that stores number of times the model was relaxed
-    num_relaxation = 0
-
     step_C = 0
-
-    arrived_veh_ids = []
-
-    list_of_ql_15_window = [0.0]
-    ql_15min = 0
-
-    list_of_qt_15_window = [0.0]
-    departed_vehs_qt = 0
-
-    list_of_flow_15_window = [0.0]
-    departed_vehs_flow = 0
 
     for step in range(sim_steps+1):
 
@@ -99,18 +91,12 @@ def main():
 
             # Get the windowed average queue length
             ql_15min_final, ql_15min = perf.get_windowed_queue_length(ql_15min)
-            list_of_ql_15_window.append(ql_15min_final)
-            #print("List of average queue lengths for 15 min windows", list_of_ql_15_window)
 
             # Get the windowed average flow rate
             flow_15min, departed_vehs_flow = perf.get_windowed_flow_rate(departed_vehs_flow)
-            list_of_flow_15_window.append(flow_15min)
-            #print("List of average flow rates for 15 min windows", list_of_flow_15_window)
 
             # Get the windowed average queue time
             qt_15min, departed_vehs_qt = perf.get_windowed_queue_time(temp_list_queue_times, departed_vehs_qt, arrived_veh_ids)
-            list_of_qt_15_window.append(qt_15min)
-            #print(f"List of average queue time for 15 min windows: {list_of_qt_15_window}")
 
         if step % steps_per_s == 0:
 
@@ -151,7 +137,6 @@ def main():
 
     # Record start time of simulation for profiling purposes
     print(f"Runtime of simulation: {time.time()-start}")
-    print(f"Number of times that model was relaxed: {num_relaxation}")
 
     traci.close()
     sys.exit("The simulation has ended!")
