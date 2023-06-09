@@ -5,16 +5,17 @@ import numpy as np
 #import traffic_distribution as td
 
 # Tunable parameters
-N = 12 # (TUNABLE)
-u_min_val = 11 # (TUNABLE)
-C = 75 # (TUNABLE)
+N = 10 # (TUNABLE)
+u_min_val = 15 # (TUNABLE)
+C = 130 # (TUNABLE)
 #decrement_constant = 5
 #C_min = 50
 #C_max = 75
-#error = 0.5
+#error = 0.05
 print(f"N = {N}")
 print(f"u_min_val = {u_min_val}")
 print(f"C = {C}")
+#print(f"error = {error}")
 #print(f"C_min = {C_min}")
 #print(f"C_max = {C_max}")
 
@@ -25,33 +26,38 @@ num_relaxation = 0
 L = 9  # Lost time (3 phases * 3s)
 
 # Saturation flow rate (veh/hr -> veh/s)
-S_1 = 1189.79*(1/3600) # Saturation flow of Katipunan Ave South
-S_2 = 2095.93*(1/3600) # Saturation flow of Katipunan Ave North
-S_3 = 2081.93*(1/3600) # Saturation flow of Aurora Blvd West
-S_4 = 3242.14*(1/3600) # Saturation flow of Aurora Blvd East to West
-S_5 = 487.36*(1/3600) # Saturation flow of Aurora Blvd East to Katipunan South
+S_1 = 1200*(1/3600) # Saturation flow of Katipunan Ave South
+S_2 = 1200*(1/3600) # Saturation flow of Katipunan Ave North
+S_3 = 3200*(1/3600) # Saturation flow of Aurora Blvd West
+S_4 = 3600*(1/3600) # Saturation flow of Aurora Blvd East to West
+S_5 = 600*(1/3600) # Saturation flow of Aurora Blvd East to Katipunan South
 
 # Demand values from 6 AM to 8 PM (veh/hr)
+katip_south_multiplier = 1
+katip_north_multiplier = 1
+aurora_west_multiplier = 1
+aurora_east_multiplier = 1
+
 d_1 = np.array([1147., 1636., 1465., 1408., 1277., 995., 1046., 
-                831., 1014., 1397., 1200., 1343., 1004., 894.])
+                831., 1014., 1397., 1200., 1343., 1004., 894.])*katip_south_multiplier
 d_2 = np.array([1955., 2061., 1809., 2004., 1981., 1874., 1911., 
-                1655., 1902., 1945., 2808., 2877., 2332., 2229.])
+                1655., 1902., 1945., 2808., 2877., 2332., 2229.])*katip_north_multiplier
 d_3 = np.array([1294., 1495., 1494., 1489., 1527., 1576., 1692., 
-                1802., 2149., 2443., 2479., 3283., 3464., 2960.])
+                1802., 2149., 2443., 2479., 3283., 3464., 2960.])*aurora_west_multiplier
 d_43 = np.array([4095., 4426., 5537., 2997., 2486., 2209., 1936., 
-                4093., 3041., 3086., 2975., 3273., 2820., 2416.])
+                4093., 3041., 3086., 2975., 3273., 2820., 2416.])*aurora_east_multiplier
 d_41 = np.array([280., 275., 240., 184., 345., 261., 171., 1069., 
-                  1128., 714., 671., 560., 421, 504.])
+                  1128., 714., 671., 560., 421, 504.])*aurora_east_multiplier
 
 # Consequence of road links unaffected by traffic signals (veh/hr)
 d_1_out = np.array([570., 851., 536., 598., 498., 533., 558., 
-                    344., 422., 437., 621., 743., 678., 607.])
+                    344., 422., 437., 621., 743., 678., 607.])*katip_south_multiplier
 d_2_out = np.array([296., 309., 285., 297., 326., 185., 119., 
-                    273., 261., 217., 209., 216., 174., 148.])
+                    273., 261., 217., 209., 216., 174., 148.])*katip_north_multiplier
 d_3_out = np.array([243., 243., 284., 259., 281., 228., 233., 
-                    376., 409., 363., 468., 405., 398., 338.])
+                    376., 409., 363., 468., 405., 398., 338.])*aurora_west_multiplier
 d_43_out = np.array([44., 48., 53., 54., 98., 32., 66., 40., 
-                    68., 48., 62., 93., 68., 54.])
+                    68., 48., 62., 93., 68., 54.])*aurora_east_multiplier
 
 # Subtract inflow to outflow then convert to veh/s
 d_1 = (d_1-d_1_out)*(1/3600)

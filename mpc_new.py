@@ -33,7 +33,7 @@ def get_weighted_u_min(veh_count, D, u_min):
     d_total_aurora = np.sum(d_sum_aurora)
     d_total = d_total_katip+d_total_aurora
 
-    max_multiplier = math.floor(((C-L)*0.8)/(u_min))
+    max_multiplier = math.floor(((C-L)*0.75)/(u_min))
 
     if sum(veh_count) <= 0.0:
         u_1mult = max_multiplier*(d_total_katip/d_total)
@@ -41,25 +41,15 @@ def get_weighted_u_min(veh_count, D, u_min):
         u_43mult = max_multiplier*(d_sum_aurora[1]/d_total)
         u_41mult = max_multiplier*(d_sum_aurora[2]/d_total)
     else:
-        if veh_count[1] >= veh_count[0]:
-            u_1mult = max_multiplier*((veh_count[1])/x_total)
-        else:
-            u_1mult = max_multiplier*((veh_count[0])/x_total)
+        u_1mult = max_multiplier*((veh_count[0]+veh_count[1])/x_total)
         u_3mult = max_multiplier*(veh_count[2]/x_total)
-        u_43mult = max_multiplier*(veh_count[3]/x_total)
+        u_43mult = max_multiplier*((veh_count[3])/x_total)
         u_41mult = max_multiplier*(veh_count[4]/x_total)
 
     u_1min = round(u_min*u_1mult)
     u_3min = round(u_min*u_3mult)
     u_43min = round(u_min*u_43mult)
     u_41min = round(u_min*u_41mult)
-
-    if u_1min > C//2:
-        u_1min = C//2
-    elif u_3min > C//2:
-        u_3min = C//2
-    elif u_41min > C//2:
-        u_41min = C//2
 
     return u_1min, u_3min, u_43min, u_41min
 
@@ -169,7 +159,7 @@ def do_mpc(x_curr=np.array([0,0,0,0,0]), step=0):
 
     # Get weighted minimum green times
     u_1min, u_3min, u_43min, u_41min = get_weighted_u_min(x_curr, D, u_min_val)
-
+    
     print(f"u_1min = {u_1min}")
     print(f"u_3min = {u_3min}")
     print(f"u_43min = {u_43min}")
@@ -177,12 +167,22 @@ def do_mpc(x_curr=np.array([0,0,0,0,0]), step=0):
     
     # Add error to the measurement of vehicles based on error constant
     '''
+    random_error_vals = []
+    random_error_vals_positive = []
+    for i in range(4):
+        random_error = np.random.uniform(error-error*0.2, error+error*0.2)
+        random_error_vals_positive.append(random_error)
+        random_sign = np.random.choice([-1,1])
+        random_error_vals.append(random_sign*random_error)
+    random_sign = np.random.choice([-1,1])
+    last_error = (error*5-(sum(random_error_vals_positive)))*random_sign
+    random_error_vals.append(last_error)
+    random_error_vals_positive.append(last_error*random_sign)
+    
     for i in range(len(x_curr)):
-        error_delta = x_curr[i]*error/2
-        num_random = np.random.randint(x_curr[i]-error_delta, x_curr[i]+error_delta+1)
+        num_random = x_curr[i]*(1-random_error_vals[i])
         x_curr[i] = num_random
     '''
-
     # Intermediary variables to compute difference of x(k+ko|ko) and u(k+ko|ko)
     y = m.addMVar(shape=(N+1,5), lb=-GRB.INFINITY, vtype=GRB.CONTINUOUS, name="y") # x(k_o+k)-x(k_o)
     z = m.addMVar(shape=(N,5), lb=-GRB.INFINITY, vtype=GRB.CONTINUOUS, name="z") # u(k_o+k)-u(k_o)
@@ -200,19 +200,19 @@ def do_mpc(x_curr=np.array([0,0,0,0,0]), step=0):
 
         # Constraints in order to obey existing phases
         m.addConstr(u[k, 0] == u[k, 1]) # Green time of Katipunan Ave North and South must be the same
-        m.addConstr(u[k, 2] == u[k, 3]-u[k, 4]-3) # Green time of Aurora West
-        m.addConstr(C == u[k, 0] + u[k, 4] + u[k, 2] + 9) # Total cycle time is equal to phase 1 + phase 2 + phase 3 + lost time
+        #m.addConstr(u[k, 2] == u[k, 3]-u[k, 4]-3) # Green time of Aurora West
+        #m.addConstr(C == u[k, 0] + u[k, 4] + u[k, 2] + 9) # Total cycle time is equal to phase 1 + phase 2 + phase 3 + lost time
     
         # Skip phase 2 if Aurora East to West is less than half of u_min_val
-        '''
-        if u_41min <= (u_min_val-1)/4:
+        
+        if u_41min <= (u_min_val-1)/3:
             m.addConstr(u[0, 4] == 0)
             m.addConstr(u[0, 2] == u[0, 3]) # Phase 2 is skipped altogether
             m.addConstr(C == u[k, 0] + u[k, 2] + 6) # Total cycle time is equal to phase 1 + phase 3 + lost time
         else:
             m.addConstr(u[k, 2] == u[k, 3]-u[k, 4]-3) # Green time of Aurora West
             m.addConstr(C == u[k, 0] + u[k, 4] + u[k, 2] + 9) # Total cycle time is equal to phase 1 + phase 2 + phase 3 + lost time
-        '''
+        
         # Intermediate variable to compute Q and R norm
         m.addConstr(y[k, :] == x[k, :] - xref)
         m.addConstr(z[k, :] == u[k, :] - u[0, :])
@@ -221,56 +221,45 @@ def do_mpc(x_curr=np.array([0,0,0,0,0]), step=0):
 
     # EXPERIMENTAL
     # Set next set of green times such that based on the current vehicle count
+    #m.addConstr(u[0, 3] >= u[0, 4]*u_41mult) # Green time constraint of Aurora East to West
     m.addConstr(u[0, 0] >= u_1min) # Green time constraint of Katipunan South and North
     m.addConstr(u[0, 2] >= u_3min) # Green time constraint of Aurora West
+    #m.addConstr(u[0, 2] >= u[0, 4]) # Green time constraint of Aurora West
     m.addConstr(u[0, 3] >= u_43min) # Green time constraint of Aurora East to West
-    #m.addConstr(u[0, 4] >= u_41min) # Green time constraint of Aurora East to Katipunan South
-    '''
-    if u_3min >= u_41min:
-        m.addConstr(u[0, 2] >= u[0, 4])
-    else:
-        m.addConstr(u[0, 4] >= u[0, 2])
 
-    if u_1min > u_43min:
-    #if u_1min > u_43min+u_41min:
-        if u_1min > u_3min:
-            m.addConstr(u[0, 0] >= u[0, 3])
-    else:
-        m.addConstr(u[0, 3] >= u[0, 0])
+    if u_41min > (u_min_val-1)/3:
+        m.addConstr(u[0, 4] >= u_41min) # Green time constraint of Aurora East to Katipunan South
 
-    #
-    if u_1min > u_3min:
-        if (u_41min > (u_min_val-1)/4):
-            m.addConstr(u[0, 0] >= u[0, 2]) # Green time constraint of Katipunan South and North
+    if u_1min >= u_3min:
+        m.addConstr(u[0, 0] >= u[0, 2]) # Green time constraint of Katipunan South and North
     else:
         m.addConstr(u[0, 2] >= u[0, 0]) # Green time constraint of Aurora West
 
-    if (u_41min <= u_min_val) and (u_41min > (u_min_val-1)/4):
-        m.addConstr(u[0, 4] == u_min_val)
-    #
-    
-    if u_1min >= u_3min:
-        m.addConstr(u[0, 0] >= u[0, 2]+(u_1min-u_3min)*0.75) # Green time constraint of Katipunan South and North
-    else:
-        m.addConstr(u[0, 2] >= u[0, 0]+(u_3min-u_1min)*0.75) # Green time constraint of Aurora West
-    
-    if u_3min >= u_41min:
-        m.addConstr(u[0, 2] >= u[0, 4])
-    else:
-        m.addConstr(u[0, 4] >= u[0, 2])
     '''
     if u_41min <= u_min_val:
-        m.addConstr(u[0, 4] == u_min_val)
+        m.addConstr(u[0, 4] == u_min_val) # Green time constraint of Aurora East to West
     else:
-        m.addConstr(u[0, 4] >= u_41min) # Green time constraint of Aurora East to Katipunan South
-        m.addConstr(u[0, 0] >= u[0, 4])
-        m.addConstr(u[0, 2] >= u[0, 4])
-
-    if u_1min > u_43min:
-        if u_1min > u_3min:
-            m.addConstr(u[0, 0] <= u[0, 3]*1.25) # Green time constraint of Katipunan South and North
-            #m.addConstr(u[0, 0] >= u[0, 3]) # Green time constraint of Katipunan South and North
+        m.addConstr(u[0, 4] >= u_41min) # Green time constraint of Aurora East to West
+    '''
     
+    if (u_41min <= u_min_val) and (u_41min > (u_min_val-1)/3):
+        m.addConstr(u[0, 4] == u_min_val)
+    elif u_41min > u_min_val:
+        m.addConstr(u[0, 4] >= u_41min) # Green time constraint of Aurora East to West
+
+    '''
+    if u_1min >= u_43min:
+        m.addConstr(u[0, 0] >= u[0, 3]) # Green time constraint of Katipunan South and North
+    else:
+        m.addConstr(u[0, 3] >= u[0, 0]) # Green time constraint of Aurora West
+
+    if (u_41min < u_min_val):
+        m.addConstr(u[0, 4] == u_min_val)
+
+    if u_41min < (u_min_val-1)/4:
+        m.addConstr(u[0, 4] == 0)
+    '''
+
     # Objective function
     # Note: Transposition is automatically handled by GUROBI
     obj1 = sum(y[k, :] @ Q @ y[k, :] for k in range(N+1))
@@ -325,7 +314,7 @@ def do_mpc(x_curr=np.array([0,0,0,0,0]), step=0):
         m.optimize()
 
         if m.Status == GRB.INFEASIBLE:
-            print(f"No solution was found even after relaxation! PLease reinspect model.")
+            print(f"No solution was found even after relaxation! Please reinspect model.")
             sys.exit()
 
         relaxed += 1
@@ -355,20 +344,17 @@ def do_mpc(x_curr=np.array([0,0,0,0,0]), step=0):
                 x_trajectory.append(int(v.X+0.5))
     
     # Post-processing of data
-    '''
-    if u_41min <= (u_min_val-1)/4:
+    if u_41min <= (u_min_val-1)/3:
         u_res = apply_u_additive(u_res, 0)
     else:
         u_res = apply_u_additive(u_res, u_min_val)
-    '''
-    u_res = apply_u_additive(u_res, u_min_val)
-    '''
-    if u_41min <= (u_min_val-1)/4:
+
+    #final_C = int((u_res[0]+u_res[4]+u_res[2]+9)+0.5) # Convert to integer
+    
+    if u_41min <= (u_min_val-1)/3:
         final_C = int((u_res[0]+u_res[2]+6)+0.5) # Convert to integer
     else:
         final_C = int((u_res[0]+u_res[4]+u_res[2]+9)+0.5) # Convert to integer
-    '''
-    final_C = int((u_res[0]+u_res[4]+u_res[2]+9)+0.5) # Convert to integer
     
     return u_res, final_C, x_trajectory, relaxed
 
