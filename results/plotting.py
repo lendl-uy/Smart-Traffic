@@ -209,11 +209,11 @@ plt.show()
 
 # Plot Fixed-time TSC vs MPC-based TSC for lower cycle times
 fixed_time_perf_ql = [11.67973289,13.55946825,15.9475019,18.53459987,28.7639795]
-mpc_based_perf_ql = [11.42316725,13.20130018,14.85116212,16.98508226,27.02271858]
+mpc_based_perf_ql = [11.03484458,13.23660218,15.05267055,16.68893072,27.02271858]
 fixed_time_perf_qt = [22.37023087,22.91194918,25.17958151,27.77935478,33.74459006]
-mpc_based_perf_qt = [19.78153969,20.30318602,21.8700803,23.81856295,30.09917043]
+mpc_based_perf_qt = [20.09391631,20.46026922,22.1784476,23.9712574,30.09917043]
 fixed_time_perf_flow = [8467.785714,8495.5,8523.785714,8535.357143,8595.2857143]
-mpc_based_perf_flow = [8575.928571,8618,8646,8663.571429,8687.7857143]
+mpc_based_perf_flow = [8549.7857143,8601.6428571,8631.7857143,8661.8571429,8687.7857143]
 
 cycle_times = [70, 80, 90, 100, 154]
 width = 4.5
@@ -242,15 +242,15 @@ plt.figure()
 # Width of a bar 
 cycle_times = np.array(cycle_times)
 
-plt.bar(cycle_times, fixed_time_perf_flow, width, label="Fixed-time TSC")
+plt.bar(cycle_times, fixed_time_perf_qt, width, label="Fixed-time TSC")
 #plt.bar(cycle_times, mpc_flow_error, color="r", label="MPC-based TSC")
-plt.bar(cycle_times+width, mpc_based_perf_flow, width, color="tab:orange", label="MPC-based TSC")
-plt.title("Comparison of Average Flow Rates for Similar Cycle Times")
+plt.bar(cycle_times+width, mpc_based_perf_qt, width, color="tab:orange", label="MPC-based TSC")
+plt.title("Comparison of Average Queue Times for Similar Cycle Times")
 plt.xlabel("Cycle Time (s)", fontsize=11)
-plt.ylabel("Average Flow Rates (veh/hr)", fontsize=11)
-#plt.xlim((65,163))
+plt.ylabel("Average Queue Times (s)", fontsize=11)
+plt.xlim((65,163))
 #plt.xlim((0,109.5))
-plt.ylim((0,10500))
+#plt.ylim((0,10500))
 plt.xticks([70,80,90,100,154], rotation=0)
 # First argument - A list of positions at which ticks should be placed
 # Second argument -  A list of labels to place at the given locations

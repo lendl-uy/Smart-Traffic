@@ -24,7 +24,7 @@ else:
 
 # Directory of sumo-gui and sumocfg files
 sumoBinary = "C:\\Program Files (x86)\\Eclipse\\Sumo\\bin\\sumo-gui.exe"
-sumoCmd = [sumoBinary, "-c", "C:\\Users\\Lendl\\Documents\\smart_traffic\\sumo\\003_demand_profile_4\\003\\iteration_003.sumocfg"]
+sumoCmd = [sumoBinary, "-c", "C:\\Users\\Lendl\\Documents\\smart_traffic\\sumo\\003_orig\\003\\iteration_003.sumocfg"]
 
 # Starts the simulation
 traci.start(sumoCmd)
@@ -87,7 +87,7 @@ def main():
 
         departed += traci.simulation.getDepartedNumber() # Update total departed vehicles
         loaded = traci.simulation.getLoadedNumber() # Update total departed vehicles
-        '''
+        
         if step < sim_steps:
             if departed >= total_demand[step//7200]:
                 if not demand_cleared:
@@ -97,18 +97,18 @@ def main():
                         traci.simulation.clearPending(route)
                     traci.simulation.setScale(0)
                     demand_cleared = True
-        '''
+        
         # Record traffic data for each time step except zeroth second
         if step == 0:
             traci.simulationStep()
             continue
-        '''
+        
         # Reset departed vehicle counter
         if step%7200 == 0:
             departed = 0
             traci.simulation.setScale(1)
             demand_cleared = False
-        '''
+        
         if step > sim_steps:
             break
         

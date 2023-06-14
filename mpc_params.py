@@ -6,16 +6,16 @@ import numpy as np
 
 # Tunable parameters
 N = 10 # (TUNABLE)
-u_min_val = 12 # (TUNABLE)
-C = 75 # (TUNABLE)
+u_min_val = 15 # (TUNABLE)
+C = 100 # (TUNABLE)
 #decrement_constant = 5
 #C_min = 50
 #C_max = 75
-#error = 0.05
+error = 0.1
 print(f"N = {N}")
 print(f"u_min_val = {u_min_val}")
 print(f"C = {C}")
-#print(f"error = {error}")
+print(f"error = {error}")
 #print(f"C_min = {C_min}")
 #print(f"C_max = {C_max}")
 
@@ -33,10 +33,10 @@ S_4 = 3300*(1/3600) # Saturation flow of Aurora Blvd East to West
 S_5 = 800*(1/3600) # Saturation flow of Aurora Blvd East to Katipunan South
 
 # Demand values from 6 AM to 8 PM (veh/hr)
-katip_south_multiplier = 2.41207076
-katip_north_multiplier = 1.369291589
-aurora_west_multiplier = 0.7413585258
-aurora_east_multiplier = 0.6639127561
+katip_south_multiplier = 1
+katip_north_multiplier = 1
+aurora_west_multiplier = 1
+aurora_east_multiplier = 1
 
 d_1 = np.array([1147., 1636., 1465., 1408., 1277., 995., 1046., 
                 831., 1014., 1397., 1200., 1343., 1004., 894.])*katip_south_multiplier

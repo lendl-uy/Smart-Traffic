@@ -45,6 +45,11 @@ test 42: c = 75, umin = 12, n = 10, demand profile = 4 (scale = 0.9)
 
 test 43: c = 154, umin = 15, n = 8 (current_weight = 0.7, future_weight = 0.3, updated saturation flow rates)
 
+test 44-48: c = 100, umin = 15, n = 10, error = 2%
+test 49-53: c = 100, umin = 15, n = 10, error = 5%
+test 54-58, 70-73: c = 100, umin = 15, n = 10, error = 10%
+test 59-65: c = 100, umin = 15, n = 10, error = 20%
+
 test 100: fixed-time c = 154
 test 101: fixed-time c = 70
 test 102: fixed-time c = 80

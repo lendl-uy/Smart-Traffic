@@ -225,12 +225,12 @@ def do_mpc(x_curr=np.array([0,0,0,0,0]), step=0):
     print(f"u_41min = {u_41min}")
     
     # Add error to the measurement of vehicles based on error constant
-    '''
+    
     for i in range(len(x_curr)):
         error_delta = x_curr[i]*error/2
         num_random = np.random.randint(x_curr[i]-error_delta, x_curr[i]+error_delta+1)
         x_curr[i] = num_random
-    '''
+    
     # Intermediary variables to compute difference of x(k+ko|ko) and u(k+ko|ko)
     y = m.addMVar(shape=(N+1,5), lb=-GRB.INFINITY, vtype=GRB.CONTINUOUS, name="y") # x(k_o+k)-x(k_o)
     z = m.addMVar(shape=(N,5), lb=-GRB.INFINITY, vtype=GRB.CONTINUOUS, name="z") # u(k_o+k)-u(k_o)
