@@ -110,6 +110,7 @@ plot_line_2_params(sim_hr, demand_mpc, demand_actual, "Time of Day (hr:min)", "N
 plt.show()
 '''
 
+'''
 C = 75
 k = np.arange(0,C*12,1)
 
@@ -202,5 +203,60 @@ plt.gcf().autofmt_xdate()
 
 #plt.xlim(10)
 #plt.ylim(-7, 20)
+
+plt.show()
+'''
+
+# Plot Fixed-time TSC vs MPC-based TSC for lower cycle times
+fixed_time_perf_ql = [11.67973289,13.55946825,15.9475019,18.53459987,28.7639795]
+mpc_based_perf_ql = [11.42316725,13.20130018,14.85116212,16.98508226,27.02271858]
+fixed_time_perf_qt = [22.37023087,22.91194918,25.17958151,27.77935478,33.74459006]
+mpc_based_perf_qt = [19.78153969,20.30318602,21.8700803,23.81856295,30.09917043]
+fixed_time_perf_flow = [8467.785714,8495.5,8523.785714,8535.357143,8595.2857143]
+mpc_based_perf_flow = [8575.928571,8618,8646,8663.571429,8687.7857143]
+
+cycle_times = [70, 80, 90, 100, 154]
+width = 4.5
+
+# Plot Fixed-time TSC vs MPC-based TSC for different demand profiles
+fixed_time_profile_1 = [26.57614985,13.14624454,7727.714286]
+mpc_based_profile_1 = [26.57614985,13.14624454,7727.714286]
+fixed_time_profile_2 = [26.57614985,13.14624454,7727.714286]
+mpc_based_profile_2 = [26.57614985,13.14624454,7727.714286]
+fixed_time_profile_3 = [26.57614985,13.14624454,7727.714286]
+mpc_based_profile_3 = [26.57614985,13.14624454,7727.714286]
+fixed_time_profile_4 = [26.57614985,13.14624454,7727.714286]
+mpc_based_profile_4 = [26.57614985,13.14624454,7727.714286]
+
+# Plot MPC-based TSC for varying vehicle count error
+mpc_ql_error = [29.49078067, 31.41526384, 31.52831467, 31.64088214, 31.77035617]
+mpc_qt_error = [25.88264626, 26.09637689, 26.14654485, 26.18363233, 26.20754507]
+mpc_flow_error = [2157.6250000, 2129.7321429, 2129.9285714, 2128.9107143, 2129.3178571]
+
+#cycle_times = ["No Error", "2% Error", "5% Error", "10% Error", "20% Error"]
+#cycle_times = [15, 40, 65, 90]
+#width = 9.5
+
+plt.figure()
+
+# Width of a bar 
+cycle_times = np.array(cycle_times)
+
+plt.bar(cycle_times, fixed_time_perf_flow, width, label="Fixed-time TSC")
+#plt.bar(cycle_times, mpc_flow_error, color="r", label="MPC-based TSC")
+plt.bar(cycle_times+width, mpc_based_perf_flow, width, color="tab:orange", label="MPC-based TSC")
+plt.title("Comparison of Average Flow Rates for Similar Cycle Times")
+plt.xlabel("Cycle Time (s)", fontsize=11)
+plt.ylabel("Average Flow Rates (veh/hr)", fontsize=11)
+#plt.xlim((65,163))
+#plt.xlim((0,109.5))
+plt.ylim((0,10500))
+plt.xticks([70,80,90,100,154], rotation=0)
+# First argument - A list of positions at which ticks should be placed
+# Second argument -  A list of labels to place at the given locations
+#plt.xticks(cycle_times + width / 2, ("Demand Profile 1", "Demand Profile 2", "Demand Profile 3", "Demand Profile 4"))
+plt.legend()
+#plt.legend(loc='best')
+plt.gcf().autofmt_xdate()
 
 plt.show()

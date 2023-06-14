@@ -1,0 +1,18 @@
+Loading net-file from 'C:\Users\lendl\Documents\smart_traffic\sumo\25-3-lendl-ver.net.xml' ... done (10ms).
+Loading additional-files from '005/../edgedata.add.xml' ... done (1ms).
+Loading done.
+Simulation version 1.15.0 started with time: 0.00.
+Warning: Vehicle 'f_10_1_CAR.10' performs emergency braking on lane ':J2_2_0' with decel=9.00, wished=4.50, severity=1.00, time=4182.50.
+Warning: Vehicle 'f_10_2_CAR.50' performs emergency braking on lane ':J2_2_0' with decel=9.00, wished=4.50, severity=1.00, time=9632.50.
+Warning: Vehicle 'f_10_2_CAR.59' performs emergency braking on lane ':J2_2_0' with decel=9.00, wished=4.50, severity=1.00, time=10060.50.
+Simulation ended at time: 24438.00
+Reason: Interrupted.
+Performance: 
+ Duration: 58.11s
+ Real time factor: 420.518
+ UPS: 258197.955742
+Vehicles: 
+ Inserted: 57432 (Loaded: 57964)
+ Running: 206
+ Waiting: 142
+

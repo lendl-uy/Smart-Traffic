@@ -6,8 +6,8 @@ import numpy as np
 
 # Tunable parameters
 N = 10 # (TUNABLE)
-u_min_val = 15 # (TUNABLE)
-C = 130 # (TUNABLE)
+u_min_val = 12 # (TUNABLE)
+C = 75 # (TUNABLE)
 #decrement_constant = 5
 #C_min = 50
 #C_max = 75
@@ -26,17 +26,17 @@ num_relaxation = 0
 L = 9  # Lost time (3 phases * 3s)
 
 # Saturation flow rate (veh/hr -> veh/s)
-S_1 = 1200*(1/3600) # Saturation flow of Katipunan Ave South
-S_2 = 1200*(1/3600) # Saturation flow of Katipunan Ave North
-S_3 = 3200*(1/3600) # Saturation flow of Aurora Blvd West
-S_4 = 3600*(1/3600) # Saturation flow of Aurora Blvd East to West
-S_5 = 600*(1/3600) # Saturation flow of Aurora Blvd East to Katipunan South
+S_1 = 1500*(1/3600) # Saturation flow of Katipunan Ave South
+S_2 = 1500*(1/3600) # Saturation flow of Katipunan Ave North
+S_3 = 3400*(1/3600) # Saturation flow of Aurora Blvd West
+S_4 = 3300*(1/3600) # Saturation flow of Aurora Blvd East to West
+S_5 = 800*(1/3600) # Saturation flow of Aurora Blvd East to Katipunan South
 
 # Demand values from 6 AM to 8 PM (veh/hr)
-katip_south_multiplier = 1
-katip_north_multiplier = 1
-aurora_west_multiplier = 1
-aurora_east_multiplier = 1
+katip_south_multiplier = 2.41207076
+katip_north_multiplier = 1.369291589
+aurora_west_multiplier = 0.7413585258
+aurora_east_multiplier = 0.6639127561
 
 d_1 = np.array([1147., 1636., 1465., 1408., 1277., 995., 1046., 
                 831., 1014., 1397., 1200., 1343., 1004., 894.])*katip_south_multiplier
@@ -76,7 +76,7 @@ xmax = np.array([250,250,400,400,120]) # (TUNABLE)
 umin = np.array([0,0,0,0,0]) # Cannot have a zero timer setting
 
 xmin = np.tile(xmin, (N+1,1))
-#xmax = np.tile(xmax, (N+1,1))
+xmax = np.tile(xmax, (N+1,1))
 umin = np.tile(umin, (N,1))
 
 # B contains the road link properties

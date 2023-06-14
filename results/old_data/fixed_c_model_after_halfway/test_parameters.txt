@@ -1,0 +1,480 @@
+test 1: c = 70, umin = 15, n = 10
+test 2: c = 80, umin = 15, n = 10
+test 3: c = 90, umin = 15, n = 10
+test 4: c = 100, umin = 15, n = 10
+test 5: c = 110, umin = 15, n = 10
+test 6: c = 120, umin = 15, n = 10
+test 7: c = 130, umin = 15, n = 10
+test 8: c = 140, umin = 15, n = 10
+test 9: c = 150, umin = 15, n = 10
+test 10: c = 160, umin = 15, n = 10
+test 11: c = 170, umin = 15, n = 10
+test 12: c = 180, umin = 15, n = 10
+test 13: c = 190, umin = 15, n = 10
+test 14: c = 200, umin = 15, n = 10
+test 15: c = 100, umin = 15, n = 3
+test 16: c = 100, umin = 15, n = 4
+test 17: c = 100, umin = 15, n = 5
+test 18: c = 100, umin = 15, n = 6
+test 19: c = 100, umin = 15, n = 7
+test 20: c = 100, umin = 15, n = 8
+test 21: c = 100, umin = 15, n = 9
+test 22: c = 100, umin = 15, n = 11
+test 23: c = 100, umin = 15, n = 12
+test 24: c = 100, umin = 15, n = 13
+test 25: c = 100, umin = 15, n = 14
+test 26: c = 100, umin = 15, n = 15
+test 27: c = 100, umin = 10, n = 10
+test 28: c = 100, umin = 12, n = 10
+test 29: c = 100, umin = 14, n = 10
+test 30: c = 100, umin = 16, n = 10
+test 31: c = 100, umin = 18, n = 10
+test 32: c = 100, umin = 20, n = 10
+test 33: c = 100, umin = 22, n = 10
+test 34: c = 100, umin = 24, n = 10
+test 35: c = 100, umin = 26, n = 10
+test 36: c = 100, umin = 28, n = 10
+test 37: c = 100, umin = 30, n = 10
+
+test 38: c = 75, umin = 9, n = 9
+test 39: c = 75, umin = 10, n = 9
+test 40: c = 75, umin = 11, n = 9
+test 41: c = 154, umin = 9, n = 9
+test 42: c = 154, umin = 10, n = 9
+test 43: c = 154, umin = 11, n = 9
+
+test 44: c = 75, umin = 12, n = 9
+test 45: c = 75, umin = 13, n = 9
+test 46: c = 75, umin = 14, n = 9
+test 47: c = 154, umin = 12, n = 9
+test 48: c = 154, umin = 13, n = 9
+test 49: c = 154, umin = 14, n = 9
+
+test 50: c = 75, umin = 12, n = 9 (new model)
+test 51: c = 154, umin = 12, n = 9 (new model)
+test 52: c = 75, umin = 11, n = 12 (previous demand)
+
+test 53: c = 74, umin = 12, n = 9
+test 54: c = 73, umin = 12, n = 9
+test 55: c = 72, umin = 12, n = 9
+test 56: c = 154, umin = 16, n = 9
+test 57: c = 154, umin = 18, n = 9
+test 58: c = 154, umin = 20, n = 9
+
+test 59: fixed-time, c = 70
+test 60: fixed-time, c = 80
+test 61: fixed-time, c = 90
+test 62: fixed-time, c = 100
+
+test 63-67: c = 100, umin = 15, n = 10, error = 2%
+test 68-72: c = 100, umin = 15, n = 10, error = 5%
+test 73-77: c = 100, umin = 15, n = 10, error = 10%
+test 78-82: c = 100, umin = 15, n = 10, error = 20%
+
+test 83: c = 75, umin = 12, n = 9, demand profile = 1
+test 84: fixed-time, c= 75, demand profile = 1
+test 87: c = 75, umin = 12, n = 9, demand profile = 3
+test 88: fixed-time, c= 75, demand profile = 3
+test 89: c = 75, umin = 12, n = 9, demand profile = 2
+test 90: fixed-time, c= 75, demand profile = 2
+test 91: c = 75, umin = 12, n = 9, demand profile = 5
+test 92: fixed-time, c= 75, demand profile = 5
+test 93: c = 75, umin = 12, n = 9, demand profile = 4
+test 94: fixed-time, c= 75, demand profile = 4
+
+test 105: c = 70, umin = 12, n = 9
+test 106: c = 80, umin = 12, n = 9
+test 107: c = 90, umin = 12, n = 9
+test 108: c = 100, umin = 12, n = 9
+test 109: c = 154, umin = 11, n = 9
+
+test 112: c = 90, umin = 15, n = 10
+test 113: c = 100, umin = 15, n = 10
+test 114: c = 154, umin = 15, n = 10
+test 115: c = 110, umin = 15, n = 10
+test 116: c = 120, umin = 15, n = 10
+test 117: c = 130, umin = 15, n = 10
+test 118: c = 140, umin = 15, n = 10
+test 119: c = 150, umin = 15, n = 10
+test 120: c = 160, umin = 15, n = 10
+test 121: c = 170, umin = 15, n = 10
+test 122: c = 180, umin = 15, n = 10
+test 123: c = 190, umin = 15, n = 10
+test 124: c = 200, umin = 15, n = 10
+
+test 130: fixed-time c = 154, scale = 1.005
+test 131: c = 75, umin = 12, n = 9, scale = 1.005
+test 132: c = 154, umin = 12, n = 9, scale = 1.005
+
+test 125: c = 75, umin = 12, n = 9, demand profile = 1
+test 126: c = 75, umin = 12, n = 9, demand profile = 2
+test 127: c = 75, umin = 12, n = 9, demand profile = 3
+test 128: c = 75, umin = 12, n = 9, demand profile = 4
+
+test 133: c = 75, umin = 12, n = 9, demand profile = 1
+test 134: c = 75, umin = 12, n = 9, demand profile = 3
+test 135: c = 75, umin = 12, n = 9, demand profile = 4
+
+test 110: c = 70, umin = 15, n = 10
+test 111: c = 80, umin = 15, n = 10
+
+test 143: fixed-time, c = 75
+test 141: c = 75, umin = 12, n = 9 (u_41 constraint and u_1>u_3 constraint only)
+test 142: c = 154, umin = 12, n = 9 (u_41 constraint and u_1>u_3 constraint only)
+test 144: c = 75, umin = 12, n = 9 (no constraints)
+test 145: c = 154, umin = 12, n = 9 (no constraints)
+test 146: c = 75, umin = 12, n = 9 (u_41 constraint)
+test 147: c = 75, umin = 13, n = 9 (u_41 constraint)
+
+test 148: fixed-time, c = 70
+test 149: fixed-time, c = 80
+test 150: fixed-time, c = 90
+test 151: fixed-time, c = 100
+
+test 152: c = 75, umin = 11, n = 9 (u_41 constraint)
+test 153: c = 75, umin = 10, n = 9 (u_41 constraint)
+test 154: c = 75, umin = 12, n = 8 (u_41 constraint)
+test 155: c = 75, umin = 12, n = 10 (u_41 constraint)
+
+test 156: c = 75, umin = 12, n = 10 (u_41min < u_min_val and u_3min >= u_41min)
+test 158: c = 75, umin = 12, n = 10 (u_41min < u_min_val, u[0, 2] >= u[0, 4], and u[0, 0] >= u[0, 4])
+
+test 159: c = 70, umin = 12, n = 10 (u_41min < u_min_val, u[0, 2] >= u[0, 4], and u[0, 0] >= u[0, 4])
+test 160: c = 80, umin = 12, n = 10 (u_41min < u_min_val, u[0, 2] >= u[0, 4], and u[0, 0] >= u[0, 4])
+test 161: c = 90, umin = 12, n = 10 (u_41min < u_min_val, u[0, 2] >= u[0, 4], and u[0, 0] >= u[0, 4])
+test 162: c = 100, umin = 12, n = 10 (u_41min < u_min_val, u[0, 2] >= u[0, 4], and u[0, 0] >= u[0, 4])
+test 163: c = 154, umin = 18, n = 9 (u_41min < u_min_val, u[0, 2] >= u[0, 4], and u[0, 0] >= u[0, 4])
+
+test 164: c = 75, umin = 12, n = 10, demand profile = 1
+test 165: c = 75, umin = 12, n = 10, demand profile = 2
+test 166: c = 75, umin = 12, n = 10, demand profile = 3
+test 167: c = 75, umin = 12, n = 10, demand profile = 4
+
+test 168: c = 70, umin = 12, n = 10 (u_41min < u_min_val, u[0, 2] >= u[0, 4], u_1min > u_43min, and u[0, 0] >= u[0, 4])
+test 169: c = 80, umin = 12, n = 10
+test 170: c = 90, umin = 12, n = 10
+test 171: c = 100, umin = 12, n = 10
+test 172: c = 154, umin = 18, n = 9
+test 173: c = 75, umin = 12, n = 10 (0.8 umin)
+test 174: c = 75, umin = 12, n = 10 (1 umin)
+
+test 175: c = 70, umin = 12, n = 10 (u_41min < u_min_val, u[0, 2] >= u[0, 4], u_1min > u_43min, and u[0, 0] >= u[0, 4], 0.8 umin)
+test 176: c = 80, umin = 12, n = 10
+test 177: c = 90, umin = 12, n = 10
+test 178: c = 100, umin = 12, n = 10
+test 179: c = 154, umin = 18, n = 9
+test 180: c = 75, umin = 12, n = 10
+
+test 181: c = 75, umin = 12, n = 10, demand profile = 1
+test 182: c = 75, umin = 12, n = 10, demand profile = 2
+test 183: c = 75, umin = 12, n = 10, demand profile = 3
+test 184: c = 75, umin = 12, n = 10, demand profile = 4
+
+test 185: c = 75, umin = 5, n = 10, demand profile = 1
+test 186: c = 75, umin = 5, n = 10
+
+test 187: c = 70, umin = 12, n = 10 (u_41min < u_min_val, u[0, 2] >= u[0, 4], u_1min > u_43min, and u[0, 0] >= u[0, 4], 0.8 umin)
+test 188: c = 80, umin = 12, n = 10
+test 189: c = 90, umin = 12, n = 10
+test 190: c = 100, umin = 12, n = 10
+test 191: c = 154, umin = 18, n = 9
+
+test 192: c = 75, umin = 12, n = 10, demand profile = 1 (0.97)
+test 193: c = 75, umin = 12, n = 10, demand profile = 2
+test 194: c = 75, umin = 12, n = 10, demand profile = 3
+test 195: c = 75, umin = 12, n = 10, demand profile = 4
+
+test 196: fixed-time, c = 75, demand profile = 2
+test 197: fixed-time, c = 75, demand profile = 4
+test 198: fixed-time, c = 154
+test 199: c = 75, umin = 12, n = 10
+200 80
+201 90
+202 100
+
+test 204: c = 75, umin = 12, n = 10
+    if u_41min <= u_min_val:
+        m.addConstr(u[0, 4] == u_min_val)
+    else:
+        m.addConstr(u[0, 4] >= u_41min) # Green time constraint of Aurora East to Katipunan South
+        m.addConstr(u[0, 0] >= u[0, 4])
+        m.addConstr(u[0, 2] >= u[0, 4])
+
+    if u_1min > u_43min:
+        if u_1min > u_3min:
+            m.addConstr(u[0, 0] >= u[0, 3]) # Green time constraint of Katipunan South and North
+test 205: c = 70, umin = 12, n = 10
+test 206: c = 80, umin = 12, n = 10
+test 207: c = 90, umin = 12, n = 10
+test 208: c = 100, umin = 12, n = 10
+test 210: c = 75, umin = 12, n = 10 demand profile = 1
+test 212: c = 75, umin = 12, n = 10 demand profile = 3
+
+test 211: c = 75, umin = 12, n = 10 demand profile = 2 (scale = 0.95)
+test 209: c = 154, umin = 18, n = 9# RESIMULATE? 8:22 PM
+test 213: c = 75, umin = 12, n = 10 demand profile = 4 (scale = 0.98)
+
+test 214: c = 70, umin = 15, n = 10
+test 215: c = 80, umin = 15, n = 10
+test 216: c = 90, umin = 15, n = 10
+test 217: c = 100, umin = 15, n = 10
+test 218: c = 110, umin = 15, n = 10
+test 219: c = 120, umin = 15, n = 10
+test 220: c = 130, umin = 15, n = 10
+
+test 221: c = 140, umin = 15, n = 10
+test 222: c = 150, umin = 15, n = 10
+test 223: c = 160, umin = 15, n = 10
+test 224: c = 170, umin = 15, n = 10
+test 225: c = 180, umin = 15, n = 10
+test 226: c = 190, umin = 15, n = 10
+test 227: c = 200, umin = 15, n = 10
+test 228: c = 100, umin = 15, n = 3
+test 229: c = 100, umin = 15, n = 4
+
+test 230: c = 100, umin = 15, n = 5
+test 231: c = 100, umin = 15, n = 6
+test 232: c = 100, umin = 15, n = 7
+test 233: c = 100, umin = 15, n = 8
+test 234: c = 100, umin = 15, n = 9
+test 235: c = 100, umin = 15, n = 10
+test 236: c = 100, umin = 15, n = 11
+test 237: c = 100, umin = 15, n = 12
+test 238: c = 100, umin = 15, n = 13
+test 239: c = 100, umin = 15, n = 14
+
+test 249: c = 154, umin = 18, n = 8
+test 250: c = 75, umin = 12, n = 10
+test 251: c = 75, umin = 12, n = 10, demand profile = 1
+test 252: c = 75, umin = 12, n = 10, demand profile = 2
+test 253: c = 75, umin = 12, n = 10, demand profile = 3
+test 254: c = 75, umin = 12, n = 10, demand profile = 4
+
+test 255: fixed-time c = 154
+test 256: fixed-time c = 70
+test 257: fixed-time c = 80
+test 258: fixed-time c = 90
+test 259: fixed-time c = 100
+
+test 260: c = 70, umin = 12, n = 10
+test 261: c = 80, umin = 13, n = 10
+test 262: c = 90, umin = 14, n = 10
+test 263: c = 100, umin = 15, n = 10
+test 264: c = 154, umin = 20, n = 9
+
+test 265: c = 154, umin = 15, n = 8
+
+    if (u_43min > u_1min) or (u_3min > u_1min):
+        m.addConstr(u[0, 3] >= u[0, 0])
+    else:
+        if u_1min > u_41min:
+            m.addConstr(u[0, 0] >= u[0, 3])
+
+    if u_3min > u_41min*1.25:
+        m.addConstr(u[0, 2] >= u[0, 4])
+    else:
+        m.addConstr(u[0, 4] >= u[0, 2])
+
+    if (u_41min <= u_min_val) and (u_3min > u_41min*1.5):
+        m.addConstr(u[0, 4] == u_min_val)
+    else:
+        m.addConstr(u[0, 4] >= u_41min)
+
+test 266: c = 154, umin = 15, n = 8
+
+    if (u_43min > u_1min) or (u_3min > u_1min):
+        m.addConstr(u[0, 3] >= u[0, 0])
+    else:
+        if u_1min > u_41min:
+            m.addConstr(u[0, 0] >= u[0, 3])
+
+    if u_3min > u_41min*1.25:
+        m.addConstr(u[0, 2] >= u[0, 4])
+    else:
+        m.addConstr(u[0, 4] >= u[0, 2])
+
+    if (u_41min <= u_min_val) and (u_3min > u_41min*1.25):
+        m.addConstr(u[0, 4] == u_min_val)
+    else:
+        m.addConstr(u[0, 4] >= u_41min)
+
+test 267: c = 154, umin = 15, n = 8
+
+    if (u_43min > u_1min) or (u_3min > u_1min) or (u_41min > u_1min):
+        m.addConstr(u[0, 3] >= u[0, 0])
+    else:
+        if u_1min >= u_43min:
+            m.addConstr(u[0, 0] >= u[0, 3])
+
+    if u_3min > u_41min*1.25:
+        m.addConstr(u[0, 2] >= u[0, 4])
+    else:
+        m.addConstr(u[0, 4] >= u[0, 2])
+
+    if (u_41min <= u_min_val) and (u_3min > u_41min*1.25):
+        m.addConstr(u[0, 4] == u_min_val)
+    else:
+        m.addConstr(u[0, 4] >= u_41min)
+
+test 268: c = 154, umin = 15, n = 8 (complicated constraints)
+test 274: c = 154, umin = 15, n = 8 (complicated constraints with demand clearing)
+
+    if (u_43min > u_1min) or (u_3min > u_1min) or (u_41min > u_1min):
+        m.addConstr(u[0, 3] >= u[0, 0])
+        u_aurora_e_max = max(u_43min, u_3min, u_41min)
+        if u_aurora_e_max == u_43min:
+            m.addConstr(u[0, 3] <= u[0, 0]*(u_43min/u_1min))
+        elif u_aurora_e_max == u_3min:
+            if u_3min > u_43min:
+                m.addConstr(u[0, 2] >= u[0, 0])
+                m.addConstr(u[0, 2] <= u[0, 0]*(u_3min/u_1min))
+            else:
+                m.addConstr(u[0, 3] <= u[0, 0]*(u_3min/u_1min))
+        else:
+            if u_41min > u_43min:
+                m.addConstr(u[0, 4] >= u[0, 0])
+                m.addConstr(u[0, 4] <= u[0, 0]*(u_41min/u_1min))
+            else:
+                m.addConstr(u[0, 3] <= u[0, 0]*(u_41min/u_1min))
+    else:
+        if u_1min >= u_43min:
+            m.addConstr(u[0, 0] >= u[0, 3])
+        else:
+            u_aurora_e_min = min(u_3min, u_41min)
+            if u_aurora_e_min == u_3min:
+                m.addConstr(u[0, 0] >= u[0, 2])
+            else:
+                m.addConstr(u[0, 0] >= u[0, 4])
+
+    if u_3min > u_41min:
+        m.addConstr(u[0, 2] >= u[0, 4])
+        m.addConstr(u[0, 2] <= u[0, 4]*(u_3min/u_41min))
+    else:
+        m.addConstr(u[0, 4] == u[0, 2])
+
+test 275: c = 154, umin = 15, n = 8
+
+    if (u_43min > u_1min) or (u_3min > u_1min) or (u_41min > u_1min):
+        m.addConstr(u[0, 3] >= u[0, 0])
+        u_aurora_e_max = max(u_43min, u_3min, u_41min)
+        if u_aurora_e_max == u_43min:
+            m.addConstr(u[0, 3] <= u[0, 0]*(u_43min/u_1min))
+        elif u_aurora_e_max == u_3min:
+            if u_3min > u_43min:
+                m.addConstr(u[0, 2] >= u[0, 0])
+                m.addConstr(u[0, 2] <= u[0, 0]*(u_3min/u_1min))
+            else:
+                m.addConstr(u[0, 3] <= u[0, 0]*(u_3min/u_1min))
+        else:
+            if u_41min > u_43min:
+                m.addConstr(u[0, 4] >= u[0, 0])
+                m.addConstr(u[0, 4] <= u[0, 0]*(u_41min/u_1min))
+            else:
+                m.addConstr(u[0, 3] <= u[0, 0]*(u_41min/u_1min))
+    else:
+        if u_1min >= u_43min:
+            m.addConstr(u[0, 0] >= u[0, 3])
+        else:
+            u_aurora_e_min = min(u_3min, u_41min)
+            if u_aurora_e_min == u_3min:
+                m.addConstr(u[0, 0] >= u[0, 2])
+            else:
+                m.addConstr(u[0, 0] >= u[0, 4])
+
+    if u_3min > u_41min:
+        m.addConstr(u[0, 2] >= u[0, 4])
+    else:
+        m.addConstr(u[0, 4] == u[0, 2])
+
+test 276: c = 154, umin = 15, n = 8 (max_multiplier scale = 1, previously 0.75)
+
+    u_aurora_e_max = max(u_3min, u_43min, u_41min)
+    u_aurora_e_min = min(u_3min, u_41min)
+    
+    if (u_43min > u_1min) or (u_3min > u_1min) or (u_41min > u_1min):
+        m.addConstr(u[0, 3] >= u[0, 0])
+        if u_aurora_e_max == u_3min:
+            if u_3min > u_43min:
+                m.addConstr(u[0, 2] >= u[0, 0])
+                m.addConstr(u[0, 2] <= u[0, 0]*(u_3min/u_1min))
+        elif u_aurora_e_max == u_41min:
+            if u_41min > u_43min:
+                m.addConstr(u[0, 4] >= u[0, 0])
+                m.addConstr(u[0, 4] <= u[0, 0]*(u_41min/u_1min))
+        else:
+            if u_aurora_e_min == u_3min:
+                m.addConstr(u[0, 0] >= u[0, 2])
+            else:
+                m.addConstr(u[0, 0] >= u[0, 4])
+    else:
+        if u_1min >= u_43min:
+            m.addConstr(u[0, 0] >= u[0, 3])
+        else:
+            if u_aurora_e_min == u_3min:
+                m.addConstr(u[0, 0] >= u[0, 2])
+            else:
+                m.addConstr(u[0, 0] >= u[0, 4])
+
+    if u_3min > u_41min:
+        m.addConstr(u[0, 2] >= u[0, 4])
+    else:
+        m.addConstr(u[0, 4] == u[0, 2])
+
+test 279: c = 154, umin = 15, n = 8 (current_weight = 0.7, future_weight = 0.3)
+test 280: c = 154, umin = 15, n = 8 (current_weight = 0.7, future_weight = 0.3, updated saturation flow rates)
+
+start here
+test 281: c = 70, umin = 12, n = 10
+test 282: c = 80, umin = 12, n = 10
+test 283: c = 90, umin = 12, n = 10
+test 284: c = 100, umin = 12, n = 10
+
+test 285: c = 75, umin = 12, n = 10, demand profile = 1 (scale = 0.97)
+test 408: c = 75, umin = 12, n = 10, demand profile = 2 (scale = 0.98 and 0.5, 0.5)
+test 410: c = 75, umin = 12, n = 10, demand profile = 3 (scale = 0.92 and 0.5, 0.5)
+test 406: c = 75, umin = 12, n = 10, demand profile = 4 (scale = 0.9)
+
+test 289: c = 75, umin = 12, n = 10
+test 290: c = 70, umin = 15, n = 10
+test 291: c = 80, umin = 15, n = 10
+test 292: c = 90, umin = 15, n = 10
+test 293: c = 100, umin = 15, n = 10
+test 294: c = 110, umin = 15, n = 10
+test 295: c = 120, umin = 15, n = 10
+test 296: c = 130, umin = 15, n = 10
+test 297: c = 140, umin = 15, n = 10
+test 298: c = 150, umin = 15, n = 10
+test 299: c = 160, umin = 15, n = 10
+test 300: c = 170, umin = 15, n = 10
+test 301: c = 180, umin = 15, n = 10
+test 302: c = 190, umin = 15, n = 10
+test 303: c = 200, umin = 15, n = 10
+test 304: c = 100, umin = 15, n = 3
+test 305: c = 100, umin = 15, n = 4
+test 306: c = 100, umin = 15, n = 5
+test 307: c = 100, umin = 15, n = 6
+test 308: c = 100, umin = 15, n = 7
+test 309: c = 100, umin = 15, n = 8
+test 310: c = 100, umin = 15, n = 9
+test 311: c = 100, umin = 15, n = 10
+test 312: c = 100, umin = 15, n = 11
+test 313: c = 100, umin = 15, n = 12
+test 314: c = 100, umin = 15, n = 13
+test 315: c = 100, umin = 15, n = 14
+test 316: c = 100, umin = 15, n = 15
+test 317: c = 100, umin = 10, n = 10
+test 318: c = 100, umin = 12, n = 10
+test 319: c = 100, umin = 14, n = 10
+test 320: c = 100, umin = 16, n = 10
+test 321: c = 100, umin = 18, n = 10
+test 322: c = 100, umin = 20, n = 10
+test 323: c = 100, umin = 22, n = 10
+test 324: c = 100, umin = 24, n = 10
+test 325: c = 100, umin = 26, n = 10
+test 326: c = 100, umin = 28, n = 10
+test 327: c = 100, umin = 30, n = 10
+
+test 400: fixed-time, c = 75, demand profile = 1
+test 401: fixed-time, c = 75, demand profile = 2
+test 402: fixed-time, c = 75, demand profile = 3
+test 403: fixed-time, c = 75, demand profile = 4

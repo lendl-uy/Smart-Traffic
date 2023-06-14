@@ -1,0 +1,19 @@
+***Starting server on port 53959 ***
+Loading net-file from 'C:\Users\Lendl\Documents\smart_traffic\sumo\25-3-lendl-ver.net.xml' ... done (11ms).
+Loading additional-files from 'C:\Users\Lendl\Documents\smart_traffic\sumo\003_demand_profile_4\003\../edgedata.add.xml' ... done (1ms).
+Loading done.
+Simulation started with time: 0.00.
+Simulation ended at time: 50400.50
+Reason: TraCI requested termination.
+Performance: 
+ Duration: 30986.04s
+ TraCI-Duration: 3453.71s
+ Real time factor: 1.62656
+ UPS: 996.643875
+Vehicles: 
+ Inserted: 131722 (Loaded: 140001)
+ Running: 332
+ Waiting: 98
+Teleports: 1 (Collisions: 1)
+Emergency Stops: 1
+

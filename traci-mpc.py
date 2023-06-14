@@ -8,6 +8,7 @@ import time
 import traci
 import traci.constants as tc
 import numpy as np
+import math
 
 from mpc import *
 
@@ -23,7 +24,7 @@ else:
 
 # Directory of sumo-gui and sumocfg files
 sumoBinary = "C:\\Program Files (x86)\\Eclipse\\Sumo\\bin\\sumo-gui.exe"
-sumoCmd = [sumoBinary, "-c", "C:\\Users\\Lendl\\Documents\\smart_traffic\\sumo\\micro\\003\\iteration_003.sumocfg"]
+sumoCmd = [sumoBinary, "-c", "C:\\Users\\Lendl\\Documents\\smart_traffic\\sumo\\003_demand_profile_4\\003\\iteration_003.sumocfg"]
 
 # Starts the simulation
 traci.start(sumoCmd)
@@ -47,6 +48,11 @@ ql_15min = 0 # Save the running queue length for measurement of windowed average
 departed_vehs_qt = 0 # Save the number of vehicles that have departed (for queue time)
 departed_vehs_flow = 0 # Save the number of vehicles that have departed (for flow rate)
 
+departed = 0 # Number of loaded vehicles
+demand_cleared = False
+#total_demand = 120537
+total_demand = [8491,9618,10305,7898,7271,6654,6585,8381,8106,8871,9462,10776,9620,8499]
+
 # Actual simulation
 # Entire simulation spans from 6AM to 8PM traffic (14 hrs/50400 secs)
 # 1 step corresponds to 0.5 seconds
@@ -58,6 +64,8 @@ def main():
     global ql_15min
     global departed_vehs_qt
     global departed_vehs_flow
+    global departed
+    global demand_cleared
 
     # Record start time of simulation for optimization purposes
     start = time.time()
@@ -77,11 +85,30 @@ def main():
 
     for step in range(sim_steps+1):
 
+        departed += traci.simulation.getDepartedNumber() # Update total departed vehicles
+        loaded = traci.simulation.getLoadedNumber() # Update total departed vehicles
+        '''
+        if step < sim_steps:
+            if departed >= total_demand[step//7200]:
+                if not demand_cleared:
+                    print(f"Clearing pending demand!")
+                    routes = traci.route.getIDList()
+                    for route in routes:
+                        traci.simulation.clearPending(route)
+                    traci.simulation.setScale(0)
+                    demand_cleared = True
+        '''
         # Record traffic data for each time step except zeroth second
         if step == 0:
             traci.simulationStep()
             continue
-
+        '''
+        # Reset departed vehicle counter
+        if step%7200 == 0:
+            departed = 0
+            traci.simulation.setScale(1)
+            demand_cleared = False
+        '''
         if step > sim_steps:
             break
         
@@ -144,12 +171,13 @@ def main():
                     traci.trafficlight.setPhase(trafficlightID, 4)
                     traci.trafficlight.setPhaseDuration(trafficlightID, u_sorted[2])
                     n_aurora_west_fair = n_aurora_west # Save vehicle count for Aurora West (just before green time)
+                    print(f"Timer applied: {u_sorted[2]} s")
                 else:
                     traci.trafficlight.setPhase(trafficlightID, 2)
                     traci.trafficlight.setPhaseDuration(trafficlightID, u_sorted[3])
+                    print(f"Timer applied: {u_sorted[3]} s")
                 n_aurora_east_fair = n_aurora_east # Save vehicle count for Aurora East (just before green time)
                 n_aurora_east_lane4_fair = n_aurora_east_lane4 # Save vehicle count of Aurora East Lane 4 (just before green time)
-                print(f"Timer applied: {u_sorted[3]} s")
             elif delta_step == phases[2]-3:
                 # Do nothing if phase 2 is skipped
                 if not phase_2_skipped(phases):
@@ -183,12 +211,31 @@ def main():
 
                 print("Performing MPC to compute optimal green times!")
                 # Recompute timer settings and cycle time
-                if actual_time_step+N*C < sim_duration:
-                    u, C, trajectory, relaxed = do_mpc(np.array([n_katip_south, n_katip_north, n_aurora_west_fair, n_aurora_east, n_aurora_east_lane4]), 
+                #if actual_time_step+N*C < sim_duration:
+
+                # Save values of u, C, and trajectory in case MPC does not find a solution
+                u_temp = u
+                C_temp = C
+                trajectory_temp = trajectory
+
+                # Perform MPC
+                try:
+                    u, C, trajectory, relaxed = do_mpc(np.array([n_katip_south, n_katip_north, n_aurora_west_fair, n_aurora_east_fair-n_aurora_east_lane4_fair, n_aurora_east_lane4_fair]), 
                                                     actual_time_step+1)
-                    if u != None:
-                        u_sorted, phases = get_timer_settings(u, C) # Retrieves parsed timer setting information
-                        num_relaxation += relaxed
+                except:
+                    u = u_temp
+                    C = C_temp
+                    trajectory = trajectory_temp
+                    
+                # Retrieve previous u, C, and trajectory values if no solution found from MPC
+                if u == None:
+                    u = u_temp
+                    C = C_temp
+                    trajectory = trajectory_temp
+
+                # Get sorted green times and phase timings
+                u_sorted, phases = get_timer_settings(u, C) # Retrieves parsed timer setting information
+                num_relaxation += relaxed
 
                 step_C = actual_time_step+1
 

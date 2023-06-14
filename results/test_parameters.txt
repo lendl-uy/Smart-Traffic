@@ -1,28 +1,27 @@
-test 1: c = 70, umin = 15, n = 10
-test 2: c = 80, umin = 15, n = 10
-test 3: c = 90, umin = 15, n = 10
-test 4: c = 100, umin = 15, n = 10
-test 5: c = 110, umin = 15, n = 10
-test 6: c = 120, umin = 15, n = 10
-test 7: c = 130, umin = 15, n = 10
-test 8: c = 140, umin = 15, n = 10
-test 9: c = 150, umin = 15, n = 10
-test 10: c = 160, umin = 15, n = 10
-
-test 11: c = 170, umin = 15, n = 10
-test 12: c = 180, umin = 15, n = 10
-test 13: c = 190, umin = 15, n = 10
-test 14: c = 200, umin = 15, n = 10
-test 15: c = 100, umin = 15, n = 3
-test 16: c = 100, umin = 15, n = 4
-test 17: c = 100, umin = 15, n = 5
-test 18: c = 100, umin = 15, n = 6
-test 19: c = 100, umin = 15, n = 7
-test 20: c = 100, umin = 15, n = 8
-test 21: c = 100, umin = 15, n = 9
+test 0: c = 70, umin = 15, n = 10
+test 1: c = 80, umin = 15, n = 10
+test 2: c = 90, umin = 15, n = 10
+test 3: c = 100, umin = 15, n = 10
+test 4: c = 110, umin = 15, n = 10
+test 5: c = 120, umin = 15, n = 10
+test 6: c = 130, umin = 15, n = 10
+test 7: c = 140, umin = 15, n = 10
+test 8: c = 150, umin = 15, n = 10
+test 9: c = 160, umin = 15, n = 10
+test 10: c = 170, umin = 15, n = 10
+test 11: c = 180, umin = 15, n = 10
+test 12: c = 190, umin = 15, n = 10
+test 13: c = 200, umin = 15, n = 10
+test 14: c = 100, umin = 15, n = 3
+test 15: c = 100, umin = 15, n = 4
+test 16: c = 100, umin = 15, n = 5
+test 17: c = 100, umin = 15, n = 6
+test 18: c = 100, umin = 15, n = 7
+test 19: c = 100, umin = 15, n = 8
+test 20: c = 100, umin = 15, n = 9
+test 21: c = 100, umin = 15, n = 10
 test 22: c = 100, umin = 15, n = 11
 test 23: c = 100, umin = 15, n = 12
-
 test 24: c = 100, umin = 15, n = 13
 test 25: c = 100, umin = 15, n = 14
 test 26: c = 100, umin = 15, n = 15
@@ -37,15 +36,22 @@ test 34: c = 100, umin = 24, n = 10
 test 35: c = 100, umin = 26, n = 10
 test 36: c = 100, umin = 28, n = 10
 test 37: c = 100, umin = 30, n = 10
+test 38: c = 75, umin = 12, n = 10
 
-test 38: c = 75, umin = 11, n = 12
-test 39: c = 75, umin = 11, n = 8
-test 40: c = 75, umin = 11, n = 10
-test 41: c = 75, umin = 10, n = 12
-test 42: c = 75, umin = 9, n = 12
-test 43: c = 75, umin = 8, n = 12
-test 44: c = 154, umin = 11, n = 12
-test 45: c = 154, umin = 11, n = 10
-test 46: c = 154, umin = 9, n = 12
+test 39: c = 75, umin = 12, n = 10, demand profile = 1 (scale = 0.97)
+test 40: c = 75, umin = 12, n = 10, demand profile = 2 (scale = 0.98 and 0.5, 0.5)
+test 41: c = 75, umin = 12, n = 10, demand profile = 3 (scale = 0.92 and 0.5, 0.5)
+test 42: c = 75, umin = 12, n = 10, demand profile = 4 (scale = 0.9)
 
-test 47: cmin = 50, cmax = 100, umin = 11, n = 12
+test 43: c = 154, umin = 15, n = 8 (current_weight = 0.7, future_weight = 0.3, updated saturation flow rates)
+
+test 100: fixed-time c = 154
+test 101: fixed-time c = 70
+test 102: fixed-time c = 80
+test 103: fixed-time c = 90
+test 104: fixed-time c = 100
+
+test 105: fixed-time, c = 75, demand profile = 1
+test 106: fixed-time, c = 75, demand profile = 2
+test 107: fixed-time, c = 75, demand profile = 3
+test 108: fixed-time, c = 75, demand profile = 4

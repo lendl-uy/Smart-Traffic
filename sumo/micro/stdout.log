@@ -1,274 +1,78 @@
 > Executing step 0
 >> Running router on C:\Users\lendl\Documents\smart_traffic\sumo\4-3-test-demand-vianetedit.rou.xml
->>> Begin time: 2023-03-30 00:10:02.682544
->>> End time: 2023-03-30 00:10:05.274529
->>> Duration: 0:00:02.591985
+>>> Begin time: 2023-05-24 18:03:17.929940
+>>> End time: 2023-05-24 18:03:20.801848
+>>> Duration: 0:00:02.871908
 <<
 >> Running simulation
->>> Begin time: 2023-03-30 00:10:05.274529
->>> End time: 2023-03-30 00:14:11.012491
->>> Duration: 0:04:05.737962
+>>> Begin time: 2023-05-24 18:03:20.802848
+>>> End time: 2023-05-24 18:39:09.238857
+>>> Duration: 0:35:48.436009
 <<
-< Step 0 ended (duration: 0:04:08.329947)
+< Step 0 ended (duration: 0:35:51.312921)
 ------------------
 
 > Executing step 1
 >> Running router on 000/4-3-test-demand-vianetedit_000.rou.alt.xml
->>> Begin time: 2023-03-30 00:14:11.013488
->>> End time: 2023-03-30 00:14:16.650828
->>> Duration: 0:00:05.637340
+>>> Begin time: 2023-05-24 18:39:09.240858
+>>> End time: 2023-05-24 18:39:15.442122
+>>> Duration: 0:00:06.201264
 <<
 >> Running simulation
->>> Begin time: 2023-03-30 00:14:16.651825
->>> End time: 2023-03-30 00:18:31.715588
->>> Duration: 0:04:15.063763
+>>> Begin time: 2023-05-24 18:39:15.443122
+>>> End time: 2023-05-24 19:16:32.987167
+>>> Duration: 0:37:17.544045
 <<
-< Step 1 ended (duration: 0:04:20.703097)
+< Step 1 ended (duration: 0:37:23.747309)
 ------------------
 
 > Executing step 2
 >> Running router on 001/4-3-test-demand-vianetedit_001.rou.alt.xml
->>> Begin time: 2023-03-30 00:18:31.719576
->>> End time: 2023-03-30 00:18:37.341647
->>> Duration: 0:00:05.622071
+>>> Begin time: 2023-05-24 19:16:32.990167
+>>> End time: 2023-05-24 19:16:38.947558
+>>> Duration: 0:00:05.957391
 <<
 >> Running simulation
->>> Begin time: 2023-03-30 00:18:37.344637
->>> End time: 2023-03-30 00:22:36.340418
->>> Duration: 0:03:58.995781
+>>> Begin time: 2023-05-24 19:16:38.948558
+>>> End time: 2023-05-24 19:52:53.699552
+>>> Duration: 0:36:14.750994
 <<
-< Step 2 ended (duration: 0:04:04.623834)
+< Step 2 ended (duration: 0:36:20.709385)
 ------------------
 
 > Executing step 3
 >> Running router on 002/4-3-test-demand-vianetedit_002.rou.alt.xml
->>> Begin time: 2023-03-30 00:22:36.345402
->>> End time: 2023-03-30 00:22:42.090115
->>> Duration: 0:00:05.744713
+>>> Begin time: 2023-05-24 19:52:53.702552
+>>> End time: 2023-05-24 19:52:59.549153
+>>> Duration: 0:00:05.846601
 <<
 >> Running simulation
->>> Begin time: 2023-03-30 00:22:42.092108
->>> End time: 2023-03-30 00:26:43.793010
->>> Duration: 0:04:01.700902
+>>> Begin time: 2023-05-24 19:52:59.550153
+>>> End time: 2023-05-24 20:28:58.187172
+>>> Duration: 0:35:58.637019
 <<
-< Step 3 ended (duration: 0:04:07.448604)
+< Step 3 ended (duration: 0:36:04.484620)
 ------------------
 
 > Executing step 4
 >> Running router on 003/4-3-test-demand-vianetedit_003.rou.alt.xml
->>> Begin time: 2023-03-30 00:26:43.796000
->>> End time: 2023-03-30 00:26:49.449668
->>> Duration: 0:00:05.653668
+>>> Begin time: 2023-05-24 20:28:58.189172
+>>> End time: 2023-05-24 20:29:04.110888
+>>> Duration: 0:00:05.921716
 <<
 >> Running simulation
->>> Begin time: 2023-03-30 00:26:49.450686
->>> End time: 2023-03-30 00:31:07.430894
->>> Duration: 0:04:17.980208
+>>> Begin time: 2023-05-24 20:29:04.111889
+>>> End time: 2023-05-24 21:05:13.039113
+>>> Duration: 0:36:08.927224
 <<
-< Step 4 ended (duration: 0:04:23.636887)
+< Step 4 ended (duration: 0:36:14.850941)
 ------------------
 
 > Executing step 5
 >> Running router on 004/4-3-test-demand-vianetedit_004.rou.alt.xml
->>> Begin time: 2023-03-30 00:31:07.437871
->>> End time: 2023-03-30 00:31:13.325511
->>> Duration: 0:00:05.887640
+>>> Begin time: 2023-05-24 21:05:13.041114
+>>> End time: 2023-05-24 21:05:19.022576
+>>> Duration: 0:00:05.981462
 <<
 >> Running simulation
->>> Begin time: 2023-03-30 00:31:13.330496
->>> End time: 2023-03-30 00:35:54.778500
->>> Duration: 0:04:41.448004
-<<
-< Step 5 ended (duration: 0:04:47.344616)
-------------------
-
-> Executing step 6
->> Running router on 005/4-3-test-demand-vianetedit_005.rou.alt.xml
->>> Begin time: 2023-03-30 00:35:54.784481
->>> End time: 2023-03-30 00:36:00.916553
->>> Duration: 0:00:06.132072
-<<
->> Running simulation
->>> Begin time: 2023-03-30 00:36:00.919542
->>> End time: 2023-03-30 00:40:38.162866
->>> Duration: 0:04:37.243324
-<<
-< Step 6 ended (duration: 0:04:43.382372)
-------------------
-
-> Executing step 7
->> Running router on 006/4-3-test-demand-vianetedit_006.rou.alt.xml
->>> Begin time: 2023-03-30 00:40:38.168845
->>> End time: 2023-03-30 00:40:44.419313
->>> Duration: 0:00:06.250468
-<<
->> Running simulation
->>> Begin time: 2023-03-30 00:40:44.424295
->>> End time: 2023-03-30 00:45:43.967105
->>> Duration: 0:04:59.542810
-<<
-< Step 7 ended (duration: 0:05:05.802246)
-------------------
-
-> Executing step 8
->> Running router on 007/4-3-test-demand-vianetedit_007.rou.alt.xml
->>> Begin time: 2023-03-30 00:45:43.974080
->>> End time: 2023-03-30 00:45:49.947767
->>> Duration: 0:00:05.973687
-<<
->> Running simulation
->>> Begin time: 2023-03-30 00:45:49.951755
->>> End time: 2023-03-30 00:51:14.920628
->>> Duration: 0:05:24.968873
-<<
-< Step 8 ended (duration: 0:05:30.948541)
-------------------
-
-> Executing step 9
->> Running router on 008/4-3-test-demand-vianetedit_008.rou.alt.xml
->>> Begin time: 2023-03-30 00:51:14.926607
->>> End time: 2023-03-30 00:51:20.994641
->>> Duration: 0:00:06.068034
-<<
->> Running simulation
->>> Begin time: 2023-03-30 00:51:20.997631
->>> End time: 2023-03-30 00:56:41.332119
->>> Duration: 0:05:20.334488
-<<
-< Step 9 ended (duration: 0:05:26.414482)
-------------------
-
-> Executing step 10
->> Running router on 009/4-3-test-demand-vianetedit_009.rou.alt.xml
->>> Begin time: 2023-03-30 00:56:41.346073
->>> End time: 2023-03-30 00:56:47.394799
->>> Duration: 0:00:06.048726
-<<
->> Running simulation
->>> Begin time: 2023-03-30 00:56:47.396792
->>> End time: 2023-03-30 01:00:46.464987
->>> Duration: 0:03:59.068195
-<<
-< Step 10 ended (duration: 0:04:05.123897)
-------------------
-
-> Executing step 11
->> Running router on 010/4-3-test-demand-vianetedit_010.rou.alt.xml
->>> Begin time: 2023-03-30 01:00:46.467977
->>> End time: 2023-03-30 01:00:51.839213
->>> Duration: 0:00:05.371236
-<<
->> Running simulation
->>> Begin time: 2023-03-30 01:00:51.842203
->>> End time: 2023-03-30 01:04:26.542764
->>> Duration: 0:03:34.700561
-<<
-< Step 11 ended (duration: 0:03:40.076780)
-------------------
-
-> Executing step 12
->> Running router on 011/4-3-test-demand-vianetedit_011.rou.alt.xml
->>> Begin time: 2023-03-30 01:04:26.547747
->>> End time: 2023-03-30 01:04:32.089919
->>> Duration: 0:00:05.542172
-<<
->> Running simulation
->>> Begin time: 2023-03-30 01:04:32.092908
->>> End time: 2023-03-30 01:08:06.868375
->>> Duration: 0:03:34.775467
-<<
-< Step 12 ended (duration: 0:03:40.321625)
-------------------
-
-> Executing step 13
->> Running router on 012/4-3-test-demand-vianetedit_012.rou.alt.xml
->>> Begin time: 2023-03-30 01:08:06.872362
->>> End time: 2023-03-30 01:08:12.400969
->>> Duration: 0:00:05.528607
-<<
->> Running simulation
->>> Begin time: 2023-03-30 01:08:12.403959
->>> End time: 2023-03-30 01:11:44.309876
->>> Duration: 0:03:31.905917
-<<
-< Step 13 ended (duration: 0:03:37.439508)
-------------------
-
-> Executing step 14
->> Running router on 013/4-3-test-demand-vianetedit_013.rou.alt.xml
->>> Begin time: 2023-03-30 01:11:44.313863
->>> End time: 2023-03-30 01:11:49.635801
->>> Duration: 0:00:05.321938
-<<
->> Running simulation
->>> Begin time: 2023-03-30 01:11:49.637795
->>> End time: 2023-03-30 01:15:26.749500
->>> Duration: 0:03:37.111705
-<<
-< Step 14 ended (duration: 0:03:42.439623)
-------------------
-
-> Executing step 15
->> Running router on 014/4-3-test-demand-vianetedit_014.rou.alt.xml
->>> Begin time: 2023-03-30 01:15:26.755479
->>> End time: 2023-03-30 01:15:32.215084
->>> Duration: 0:00:05.459605
-<<
->> Running simulation
->>> Begin time: 2023-03-30 01:15:32.216081
->>> End time: 2023-03-30 01:19:08.526911
->>> Duration: 0:03:36.310830
-<<
-< Step 15 ended (duration: 0:03:41.773425)
-------------------
-
-> Executing step 16
->> Running router on 015/4-3-test-demand-vianetedit_015.rou.alt.xml
->>> Begin time: 2023-03-30 01:19:08.531895
->>> End time: 2023-03-30 01:19:14.072611
->>> Duration: 0:00:05.540716
-<<
->> Running simulation
->>> Begin time: 2023-03-30 01:19:14.075601
->>> End time: 2023-03-30 01:22:46.761065
->>> Duration: 0:03:32.685464
-<<
-< Step 16 ended (duration: 0:03:38.230168)
-------------------
-
-> Executing step 17
->> Running router on 016/4-3-test-demand-vianetedit_016.rou.alt.xml
->>> Begin time: 2023-03-30 01:22:46.765052
->>> End time: 2023-03-30 01:22:52.087427
->>> Duration: 0:00:05.322375
-<<
->> Running simulation
->>> Begin time: 2023-03-30 01:22:52.090417
->>> End time: 2023-03-30 01:26:29.247811
->>> Duration: 0:03:37.157394
-<<
-< Step 17 ended (duration: 0:03:42.483755)
-------------------
-
-> Executing step 18
->> Running router on 017/4-3-test-demand-vianetedit_017.rou.alt.xml
->>> Begin time: 2023-03-30 01:26:29.251796
->>> End time: 2023-03-30 01:26:34.591190
->>> Duration: 0:00:05.339394
-<<
->> Running simulation
->>> Begin time: 2023-03-30 01:26:34.594179
->>> End time: 2023-03-30 01:30:13.464714
->>> Duration: 0:03:38.870535
-<<
-< Step 18 ended (duration: 0:03:44.214911)
-------------------
-
-> Executing step 19
->> Running router on 018/4-3-test-demand-vianetedit_018.rou.alt.xml
->>> Begin time: 2023-03-30 01:30:13.470695
->>> End time: 2023-03-30 01:30:18.856391
->>> Duration: 0:00:05.385696
-<<
->> Running simulation
->>> Begin time: 2023-03-30 01:30:18.857388
+>>> Begin time: 2023-05-24 21:05:19.023576

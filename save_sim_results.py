@@ -27,10 +27,6 @@ filename_sampled = f"mpc_sampled.txt"
 filename_trajectory = f"mpc_trajectory.txt"
 filename_final_results = f"mpc_final.txt"
 
-filename_q_length = f"mpc_q_length.txt"
-#filename_q_time = f"mpc_q_time.txt"
-filename_flow = f"mpc_flow.txt"
-
 step_len = 0.5
 sim_duration = 50400 # Fixed
 
@@ -119,3 +115,19 @@ def write_final_results(q_length, q_time, flow, step):
             f.close()
         except:
             print("The file has already been closed!")
+
+'''
+def write_list_final_results(q_time):
+
+    f_final_lists.write(f"Length of Katipunan South Queue Time List = {len(q_time[0])}\n")
+    f_final_lists.write(f"Katipunan South Queue Time = {q_time[0]}\n\n")
+
+    f_final_lists.write(f"Length of Katipunan North Queue Time List = {len(q_time[1])}\n")
+    f_final_lists.write(f"Katipunan North Queue Time = {q_time[1]}\n\n")
+
+    f_final_lists.write(f"Length of Aurora West Queue Time List = {len(q_time[2])}\n")
+    f_final_lists.write(f"Aurora West Queue Time = {q_time[2]}\n\n")
+
+    f_final_lists.write(f"Length of Aurora East Queue Time List = {len(q_time[3])}\n")
+    f_final_lists.write(f"Aurora East Queue Time = {q_time[3]}\n\n")
+'''

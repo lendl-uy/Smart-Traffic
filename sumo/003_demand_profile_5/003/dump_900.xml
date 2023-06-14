@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on 2023-06-14 00:33:09 by Eclipse SUMO GUI Version 1.15.0
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
+
+    <input>
+        <net-file value="C:\Users\Lendl\Documents\smart_traffic\sumo\25-3-lendl-ver.net.xml"/>
+        <route-files value="C:\Users\Lendl\Documents\smart_traffic\sumo\003_demand_profile_5\003\4-3-test-demand-vianetedit_003.rou.xml"/>
+        <additional-files value="C:\Users\Lendl\Documents\smart_traffic\sumo\003_demand_profile_5\003\../edgedata.add.xml"/>
+    </input>
+
+    <output>
+        <output-prefix value="003/"/>
+    </output>
+
+    <time>
+        <begin value="0"/>
+        <end value="50400"/>
+        <step-length value="0.5"/>
+    </time>
+
+    <processing>
+        <extrapolate-departpos value="true"/>
+        <threads value="8"/>
+        <route-steps value="300"/>
+        <no-internal-links value="False"/>
+        <max-num-teleports value="0"/>
+        <time-to-teleport value="300"/>
+        <time-to-teleport.highways value="0"/>
+        <max-depart-delay value="300"/>
+        <eager-insert value="true"/>
+    </processing>
+
+    <report>
+        <verbose value="true"/>
+        <no-warnings value="true"/>
+        <log value="C:\Users\Lendl\Documents\smart_traffic\sumo\003_demand_profile_5\003\../iteration_003.sumo.log"/>
+        <no-step-log value="true"/>
+    </report>
+
+    <traci_server>
+        <remote-port value="56493"/>
+    </traci_server>
+
+    <random_number>
+        <random value="False"/>
+    </random_number>
+
+    <gui_only>
+        <quit-on-end value="true"/>
+        <start value="true"/>
+    </gui_only>
+
+</configuration>
+-->
+
+<meandata xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/meandata_file.xsd">
+</meandata>

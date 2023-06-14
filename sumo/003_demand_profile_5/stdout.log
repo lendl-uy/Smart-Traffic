@@ -1,0 +1,134 @@
+> Executing step 0
+>> Running router on C:\Users\lendl\Documents\smart_traffic\sumo\003_demand_profile_5\4-3-test-demand-vianetedit.rou.xml
+>>> Begin time: 2023-05-24 23:21:30.175317
+>>> End time: 2023-05-24 23:21:31.919487
+>>> Duration: 0:00:01.744170
+<<
+>> Running simulation
+>>> Begin time: 2023-05-24 23:21:31.921486
+>>> End time: 2023-05-24 23:22:16.866513
+>>> Duration: 0:00:44.945027
+<<
+< Step 0 ended (duration: 0:00:46.691196)
+------------------
+
+> Executing step 1
+>> Running router on 000/4-3-test-demand-vianetedit_000.rou.alt.xml
+>>> Begin time: 2023-05-24 23:22:16.870513
+>>> End time: 2023-05-24 23:22:19.986017
+>>> Duration: 0:00:03.115504
+<<
+>> Running simulation
+>>> Begin time: 2023-05-24 23:22:19.987018
+>>> End time: 2023-05-24 23:23:04.586063
+>>> Duration: 0:00:44.599045
+<<
+< Step 1 ended (duration: 0:00:47.716550)
+------------------
+
+> Executing step 2
+>> Running router on 001/4-3-test-demand-vianetedit_001.rou.alt.xml
+>>> Begin time: 2023-05-24 23:23:04.591063
+>>> End time: 2023-05-24 23:23:07.793343
+>>> Duration: 0:00:03.202280
+<<
+>> Running simulation
+>>> Begin time: 2023-05-24 23:23:07.794343
+>>> End time: 2023-05-24 23:23:52.496851
+>>> Duration: 0:00:44.702508
+<<
+< Step 2 ended (duration: 0:00:47.907787)
+------------------
+
+> Executing step 3
+>> Running router on 002/4-3-test-demand-vianetedit_002.rou.alt.xml
+>>> Begin time: 2023-05-24 23:23:52.498850
+>>> End time: 2023-05-24 23:23:55.697750
+>>> Duration: 0:00:03.198900
+<<
+>> Running simulation
+>>> Begin time: 2023-05-24 23:23:55.698750
+>>> End time: 2023-05-24 23:24:39.496828
+>>> Duration: 0:00:43.798078
+<<
+< Step 3 ended (duration: 0:00:46.998979)
+------------------
+
+> Executing step 4
+>> Running router on 003/4-3-test-demand-vianetedit_003.rou.alt.xml
+>>> Begin time: 2023-05-24 23:24:39.500832
+>>> End time: 2023-05-24 23:24:42.509374
+>>> Duration: 0:00:03.008542
+<<
+>> Running simulation
+>>> Begin time: 2023-05-24 23:24:42.510494
+>>> End time: 2023-05-24 23:25:26.864474
+>>> Duration: 0:00:44.353980
+<<
+< Step 4 ended (duration: 0:00:47.365638)
+------------------
+
+> Executing step 5
+>> Running router on 004/4-3-test-demand-vianetedit_004.rou.alt.xml
+>>> Begin time: 2023-05-24 23:25:26.866474
+>>> End time: 2023-05-24 23:25:29.899844
+>>> Duration: 0:00:03.033370
+<<
+>> Running simulation
+>>> Begin time: 2023-05-24 23:25:29.900843
+>>> End time: 2023-05-24 23:26:13.880490
+>>> Duration: 0:00:43.979647
+<<
+< Step 5 ended (duration: 0:00:47.015014)
+------------------
+
+> Executing step 6
+>> Running router on 005/4-3-test-demand-vianetedit_005.rou.alt.xml
+>>> Begin time: 2023-05-24 23:26:13.882489
+>>> End time: 2023-05-24 23:26:16.937083
+>>> Duration: 0:00:03.054594
+<<
+>> Running simulation
+>>> Begin time: 2023-05-24 23:26:16.938083
+>>> End time: 2023-05-24 23:27:01.972221
+>>> Duration: 0:00:45.034138
+<<
+< Step 6 ended (duration: 0:00:48.089732)
+------------------
+
+> Executing step 7
+>> Running router on 006/4-3-test-demand-vianetedit_006.rou.alt.xml
+>>> Begin time: 2023-05-24 23:27:01.974219
+>>> End time: 2023-05-24 23:27:05.178011
+>>> Duration: 0:00:03.203792
+<<
+>> Running simulation
+>>> Begin time: 2023-05-24 23:27:05.179012
+>>> End time: 2023-05-24 23:27:49.604473
+>>> Duration: 0:00:44.425461
+<<
+< Step 7 ended (duration: 0:00:47.631256)
+------------------
+
+> Executing step 8
+>> Running router on 007/4-3-test-demand-vianetedit_007.rou.alt.xml
+>>> Begin time: 2023-05-24 23:27:49.608473
+>>> End time: 2023-05-24 23:27:52.731026
+>>> Duration: 0:00:03.122553
+<<
+>> Running simulation
+>>> Begin time: 2023-05-24 23:27:52.732026
+>>> End time: 2023-05-24 23:28:36.969176
+>>> Duration: 0:00:44.237150
+<<
+< Step 8 ended (duration: 0:00:47.362703)
+------------------
+
+> Executing step 9
+>> Running router on 008/4-3-test-demand-vianetedit_008.rou.alt.xml
+>>> Begin time: 2023-05-24 23:28:36.971177
+>>> End time: 2023-05-24 23:28:40.011354
+>>> Duration: 0:00:03.040177
+<<
+>> Running simulation
+>>> Begin time: 2023-05-24 23:28:40.012354

@@ -1,0 +1,61 @@
+Loading net-file from 'C:\Users\lendl\Documents\smart_traffic\sumo\25-3-lendl-ver.net.xml' ... done (9ms).
+Loading additional-files from '000/../edgedata.add.xml' ... done (1ms).
+Loading done.
+Simulation version 1.15.0 started with time: 0.00.
+Warning: Vehicle 'f_2_1_TAXI.3' performs emergency braking on lane '1078018164_0' with decel=9.00, wished=4.50, severity=1.00, time=4702.00.
+Warning: Vehicle 'f_5_1_CAR.24' performs emergency braking on lane '1076383725.80_0' with decel=9.00, wished=4.50, severity=1.00, time=9106.00.
+Warning: Vehicle 'f_10_1_CAR.59' performs emergency braking on lane ':J2_2_0' with decel=9.00, wished=4.50, severity=1.00, time=10619.00.
+Warning: Vehicle 'f_2_3_TAXI.1' performs emergency braking on lane '1078018164_0' with decel=9.00, wished=4.50, severity=1.00, time=10927.00.
+Warning: Vehicle 'f_2_3_CAR.98' performs emergency braking on lane '1078018164_0' with decel=9.00, wished=4.50, severity=1.00, time=13477.00.
+Warning: Vehicle 'f_10_1_CAR.139' performs emergency braking on lane ':J2_2_0' with decel=9.00, wished=4.50, severity=1.00, time=15028.00.
+Warning: Vehicle 'f_2_5_CAR.26' performs emergency braking on lane '1078018164_0' with decel=9.00, wished=4.50, severity=1.00, time=19027.00.
+Warning: Vehicle 'f_2_5_CAR.57' performs emergency braking on lane '1078018164_0' with decel=9.00, wished=4.50, severity=1.00, time=20227.00.
+Warning: Vehicle 'f_10_2_CAR.111' performs emergency braking on lane ':J2_2_0' with decel=9.00, wished=4.50, severity=1.00, time=20801.00.
+Warning: Vehicle 'f_2_5_CAR.88' performs emergency braking on lane '1078018164_0' with decel=9.00, wished=4.50, severity=1.00, time=21427.00.
+Warning: Vehicle 'f_2_6_CAR.14' performs emergency braking on lane '1078018164_0' with decel=9.00, wished=4.50, severity=1.00, time=21952.00.
+Warning: Vehicle 'f_2_6_CAR.33' performs emergency braking on lane '1078018164_0' with decel=9.00, wished=4.50, severity=1.00, time=22402.00.
+Warning: Vehicle 'f_2_6_CAR.52' performs emergency braking on lane '1078018164_0' with decel=9.00, wished=4.50, severity=1.00, time=22852.00.
+Warning: Vehicle 'f_2_6_CAR.71' performs emergency braking on lane '1078018164_0' with decel=9.00, wished=4.50, severity=1.00, time=23302.00.
+Warning: Vehicle 'f_2_6_CAR.109' performs emergency braking on lane '1078018164_0' with decel=9.00, wished=4.50, severity=1.00, time=24202.00.
+Warning: Vehicle 'f_2_6_CAR.128' performs emergency braking on lane '1078018164_0' with decel=9.00, wished=4.50, severity=1.00, time=24652.00.
+Warning: Vehicle 'f_2_6_CAR.147' performs emergency braking on lane '1078018164_0' with decel=9.00, wished=4.50, severity=1.00, time=25102.00.
+Warning: Vehicle 'f_5_4_CAR.27' performs emergency braking on lane '1076383725.80_0' with decel=9.00, wished=4.50, severity=1.00, time=32956.00.
+Warning: Vehicle 'f_5_4_CAR.27' performs emergency braking on lane ':cluster9883633497_cluster_25353129_33471551_cluster_26272655_288063291_29500569_5064338396_#2more_0_0' with decel=9.00, wished=4.50, severity=1.00, time=32959.00.
+Warning: Vehicle 'f_5_4_TAXI.15' performs emergency braking on lane '1076383725.80_0' with decel=9.00, wished=4.50, severity=1.00, time=33331.00.
+Warning: Vehicle 'f_2_9_CAR.26' performs emergency braking on lane '1078018164_0' with decel=9.00, wished=4.50, severity=1.00, time=33427.00.
+Warning: Vehicle 'f_5_4_CAR.39' performs emergency braking on lane ':cluster9883633497_cluster_25353129_33471551_cluster_26272655_288063291_29500569_5064338396_#2more_0_0' with decel=9.00, wished=4.50, severity=1.00, time=33806.50.
+Warning: Vehicle 'f_2_9_CAR.57' performs emergency braking on lane '1078018164_0' with decel=9.00, wished=4.50, severity=1.00, time=34627.00.
+Warning: Vehicle 'f_2_9_CAR.88' performs emergency braking on lane '1078018164_0' with decel=9.00, wished=4.50, severity=1.00, time=35827.00.
+Warning: Vehicle 'f_2_10_TAXI.7' performs emergency braking on lane '1078018164_0' with decel=9.00, wished=4.50, severity=1.00, time=37702.00.
+Warning: Vehicle 'f_2_10_CAR.61' performs emergency braking on lane '1078018164_0' with decel=9.00, wished=4.50, severity=1.00, time=37852.00.
+Warning: Vehicle 'f_10_5_CAR.79' performs emergency braking on lane ':J2_2_0' with decel=9.00, wished=4.50, severity=1.00, time=42185.50.
+Warning: Vehicle 'f_10_5_CAR.80' performs emergency braking on lane ':J2_2_0' with decel=9.00, wished=4.50, severity=1.00, time=42196.50.
+Warning: Vehicle 'f_10_6_TRUCK.0' performs emergency braking on lane ':J2_2_0' with decel=7.00, wished=4.00, severity=1.00, time=44968.00.
+Warning: Vehicle 'f_10_6_CAR.7' performs emergency braking on lane ':J2_2_0' with decel=9.00, wished=4.50, severity=1.00, time=45116.00.
+Warning: Vehicle 'f_2_12_CAR.89' performs emergency braking on lane '1078018164_0' with decel=9.00, wished=4.50, severity=1.00, time=45277.00.
+Warning: Vehicle 'f_5_6_CAR.0' performs emergency braking on lane '1076383725.80_0' with decel=9.00, wished=4.50, severity=1.00, time=45931.00.
+Warning: Vehicle 'f_5_6_CAR.0' performs emergency braking on lane ':cluster9883633497_cluster_25353129_33471551_cluster_26272655_288063291_29500569_5064338396_#2more_0_0' with decel=9.00, wished=4.50, severity=1.00, time=45966.50.
+Warning: Vehicle 'f_2_13_CAR.21' performs emergency braking on lane '1078018164_0' with decel=9.00, wished=4.50, severity=1.00, time=47227.00.
+Warning: Vehicle 'f_2_13_CAR.52' performs emergency braking on lane '1078018164_0' with decel=9.00, wished=4.50, severity=1.00, time=47827.00.
+Warning: Vehicle 'f_10_6_CAR.45' performs emergency braking on lane ':J2_2_0' with decel=9.00, wished=4.50, severity=1.00, time=48193.50.
+Warning: Vehicle 'f_2_13_CAR.83' performs emergency braking on lane '1078018164_0' with decel=9.00, wished=4.50, severity=1.00, time=48427.00.
+Warning: Vehicle 'f_10_6_CAR.53' performs emergency braking on lane ':J2_2_0' with decel=9.00, wished=4.50, severity=1.00, time=48694.50.
+Warning: Vehicle 'f_2_13_CAR.114' performs emergency braking on lane '1078018164_0' with decel=9.00, wished=4.50, severity=1.00, time=49027.00.
+Warning: Vehicle 'f_2_13_CAR.176' performs emergency braking on lane '1078018164_0' with decel=9.00, wished=4.50, severity=1.00, time=50227.00.
+Warning: Vehicle 'f_10_6_CAR.98' performs emergency braking on lane ':J2_2_0' with decel=9.00, wished=4.50, severity=1.00, time=51704.50.
+Warning: Vehicle 'f_10_8_CAR.50' performs emergency braking on lane ':J2_2_0' with decel=9.00, wished=4.50, severity=1.00, time=59961.50.
+Warning: Vehicle 'f_5_8_TAXI.22' performs emergency braking on lane '1076383725.80_0' with decel=9.00, wished=4.50, severity=1.00, time=67906.00.
+Warning: Vehicle 'f_10_10_CAR.59' performs emergency braking on lane ':J2_2_0' with decel=9.00, wished=4.50, severity=1.00, time=70472.50.
+Warning: Vehicle 'f_10_10_CAR.76' performs emergency braking on lane ':J2_2_0' with decel=9.00, wished=4.50, severity=1.00, time=71287.50.
+Warning: Vehicle 'f_5_12_TAXI.44' performs emergency braking on lane '1076383725.80_0' with decel=9.00, wished=4.50, severity=1.00, time=104281.00.
+Simulation ended at time: 115838.50
+Reason: All vehicles have left the simulation.
+Performance: 
+ Duration: 2148.21s
+ Real time factor: 53.9232
+ UPS: 19944.727522
+Vehicles: 
+ Inserted: 135517
+ Running: 0
+ Waiting: 0
+

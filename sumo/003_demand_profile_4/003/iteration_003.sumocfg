@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on 2023-06-10 14:08:06 by Eclipse SUMO sumo Version 1.15.0
+-->
+
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
+
+    <input>
+        <net-file value="C:\Users\Lendl\Documents\smart_traffic\sumo\25-3-lendl-ver.net.xml"/>
+        <route-files value="4-3-test-demand-vianetedit_003.rou.xml"/>
+        <additional-files value="../edgedata.add.xml"/>
+    </input>
+
+    <output>
+        <output-prefix value="003/"/>
+        <!-- <summary-output value="../summary_003.xml"/> -->
+    </output>
+
+    <time>
+        <begin value="0"/>
+        <step-length value="0.5"/>
+        <end value="50400"/>
+    </time>
+
+    <processing>
+        <extrapolate-departpos value="true"/>
+        <route-steps value="300"/>
+        <no-internal-links value="False"/>
+        <time-to-teleport value="300"/>
+        <time-to-teleport.highways value="0"/>
+        <eager-insert value="true"/>
+        <threads value="8"/>
+        <max-depart-delay value="300"/>
+        <max-num-teleports value="0"/>
+        <scale value="0.9"/>
+        <quit-on-end value="true"/>
+        <start value = "true"/>
+    </processing>
+
+    <viewsettings>
+        <scheme name="real world"/>
+    </viewsettings>
+
+    <report>
+        <verbose value="true"/>
+        <no-warnings value="true"/>
+        <log value="../iteration_003.sumo.log"/>
+        <no-step-log value="true"/>
+    </report>
+
+    <random_number>
+        <random value="False"/>
+    </random_number>
+
+</configuration>

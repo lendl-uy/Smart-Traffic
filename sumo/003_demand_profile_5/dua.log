@@ -1,0 +1,240 @@
+-------------------------------------------------------------------------------
+['C:\\Program Files (x86)\\Eclipse\\Sumo\\bin\\duarouter', '-c', '000/iteration_000_4-3-test-demand-vianetedit.duarcfg']
+Success.
+-------------------------------------------------------------------------------
+['C:\\Program Files (x86)\\Eclipse\\Sumo\\bin\\sumo', '-c', '000/iteration_000.sumocfg']
+Loading net-file from 'C:\Users\lendl\Documents\smart_traffic\sumo\25-3-lendl-ver.net.xml' ... done (10ms).
+Loading additional-files from '000/../edgedata.add.xml' ... done (1ms).
+Loading done.
+Simulation version 1.15.0 started with time: 0.00.
+Warning: Vehicle 'f_2_5_CAR.21' performs emergency braking on lane '1078018164_0' with decel=9.00, wished=4.50, severity=1.00, time=19664.00.
+Warning: Vehicle 'f_5_6_CAR.0' performs emergency braking on lane '1076383725.80_0' with decel=9.00, wished=4.50, severity=1.00, time=21624.00.
+Warning: Vehicle 'f_2_11_CAR.66' performs emergency braking on lane '1078018164_0' with decel=9.00, wished=4.50, severity=1.00, time=42148.00.
+Warning: Vehicle 'f_10_13_CAR.6' performs emergency braking on lane ':J2_2_0' with decel=9.00, wished=4.50, severity=1.00, time=48358.50.
+Simulation ended at time: 50541.50
+Reason: All vehicles have left the simulation.
+Performance: 
+ Duration: 44.73s
+ Real time factor: 1129.87
+ UPS: 219014.150943
+Vehicles: 
+ Inserted: 62679
+ Running: 0
+ Waiting: 0
+
+-------------------------------------------------------------------------------
+['C:\\Program Files (x86)\\Eclipse\\Sumo\\bin\\duarouter', '-c', '001/iteration_001_4-3-test-demand-vianetedit_000.duarcfg']
+Success.
+-------------------------------------------------------------------------------
+['C:\\Program Files (x86)\\Eclipse\\Sumo\\bin\\sumo', '-c', '001/iteration_001.sumocfg']
+Loading net-file from 'C:\Users\lendl\Documents\smart_traffic\sumo\25-3-lendl-ver.net.xml' ... done (9ms).
+Loading additional-files from '001/../edgedata.add.xml' ... done (1ms).
+Loading done.
+Simulation version 1.15.0 started with time: 0.00.
+Warning: Vehicle 'f_2_5_CAR.21' performs emergency braking on lane '1078018164_0' with decel=9.00, wished=4.50, severity=1.00, time=19664.00.
+Warning: Vehicle 'f_5_6_CAR.0' performs emergency braking on lane '1076383725.80_0' with decel=9.00, wished=4.50, severity=1.00, time=21624.00.
+Warning: Vehicle 'f_2_11_CAR.66' performs emergency braking on lane '1078018164_0' with decel=9.00, wished=4.50, severity=1.00, time=42148.00.
+Warning: Vehicle 'f_10_13_CAR.6' performs emergency braking on lane ':J2_2_0' with decel=9.00, wished=4.50, severity=1.00, time=48358.50.
+Simulation ended at time: 50541.50
+Reason: All vehicles have left the simulation.
+Performance: 
+ Duration: 44.39s
+ Real time factor: 1138.58
+ UPS: 220701.531877
+Vehicles: 
+ Inserted: 62679
+ Running: 0
+ Waiting: 0
+
+-------------------------------------------------------------------------------
+['C:\\Program Files (x86)\\Eclipse\\Sumo\\bin\\duarouter', '-c', '002/iteration_002_4-3-test-demand-vianetedit_001.duarcfg']
+Success.
+-------------------------------------------------------------------------------
+['C:\\Program Files (x86)\\Eclipse\\Sumo\\bin\\sumo', '-c', '002/iteration_002.sumocfg']
+Loading net-file from 'C:\Users\lendl\Documents\smart_traffic\sumo\25-3-lendl-ver.net.xml' ... done (10ms).
+Loading additional-files from '002/../edgedata.add.xml' ... done (1ms).
+Loading done.
+Simulation version 1.15.0 started with time: 0.00.
+Warning: Vehicle 'f_2_5_CAR.21' performs emergency braking on lane '1078018164_0' with decel=9.00, wished=4.50, severity=1.00, time=19664.00.
+Warning: Vehicle 'f_5_6_CAR.0' performs emergency braking on lane '1076383725.80_0' with decel=9.00, wished=4.50, severity=1.00, time=21624.00.
+Warning: Vehicle 'f_2_11_CAR.66' performs emergency braking on lane '1078018164_0' with decel=9.00, wished=4.50, severity=1.00, time=42148.00.
+Warning: Vehicle 'f_10_13_CAR.6' performs emergency braking on lane ':J2_2_0' with decel=9.00, wished=4.50, severity=1.00, time=48358.50.
+Simulation ended at time: 50541.50
+Reason: All vehicles have left the simulation.
+Performance: 
+ Duration: 44.51s
+ Real time factor: 1135.61
+ UPS: 220126.297578
+Vehicles: 
+ Inserted: 62679
+ Running: 0
+ Waiting: 0
+
+-------------------------------------------------------------------------------
+['C:\\Program Files (x86)\\Eclipse\\Sumo\\bin\\duarouter', '-c', '003/iteration_003_4-3-test-demand-vianetedit_002.duarcfg']
+Success.
+-------------------------------------------------------------------------------
+['C:\\Program Files (x86)\\Eclipse\\Sumo\\bin\\sumo', '-c', '003/iteration_003.sumocfg']
+Loading net-file from 'C:\Users\lendl\Documents\smart_traffic\sumo\25-3-lendl-ver.net.xml' ... done (10ms).
+Loading additional-files from '003/../edgedata.add.xml' ... done (1ms).
+Loading done.
+Simulation version 1.15.0 started with time: 0.00.
+Warning: Vehicle 'f_2_5_CAR.21' performs emergency braking on lane '1078018164_0' with decel=9.00, wished=4.50, severity=1.00, time=19664.00.
+Warning: Vehicle 'f_5_6_CAR.0' performs emergency braking on lane '1076383725.80_0' with decel=9.00, wished=4.50, severity=1.00, time=21624.00.
+Warning: Vehicle 'f_2_11_CAR.66' performs emergency braking on lane '1078018164_0' with decel=9.00, wished=4.50, severity=1.00, time=42148.00.
+Warning: Vehicle 'f_10_13_CAR.6' performs emergency braking on lane ':J2_2_0' with decel=9.00, wished=4.50, severity=1.00, time=48358.50.
+Simulation ended at time: 50541.50
+Reason: All vehicles have left the simulation.
+Performance: 
+ Duration: 43.59s
+ Real time factor: 1159.45
+ UPS: 224746.874355
+Vehicles: 
+ Inserted: 62679
+ Running: 0
+ Waiting: 0
+
+-------------------------------------------------------------------------------
+['C:\\Program Files (x86)\\Eclipse\\Sumo\\bin\\duarouter', '-c', '004/iteration_004_4-3-test-demand-vianetedit_003.duarcfg']
+Success.
+-------------------------------------------------------------------------------
+['C:\\Program Files (x86)\\Eclipse\\Sumo\\bin\\sumo', '-c', '004/iteration_004.sumocfg']
+Loading net-file from 'C:\Users\lendl\Documents\smart_traffic\sumo\25-3-lendl-ver.net.xml' ... done (10ms).
+Loading additional-files from '004/../edgedata.add.xml' ... done (1ms).
+Loading done.
+Simulation version 1.15.0 started with time: 0.00.
+Warning: Vehicle 'f_2_5_CAR.21' performs emergency braking on lane '1078018164_0' with decel=9.00, wished=4.50, severity=1.00, time=19664.00.
+Warning: Vehicle 'f_5_6_CAR.0' performs emergency braking on lane '1076383725.80_0' with decel=9.00, wished=4.50, severity=1.00, time=21624.00.
+Warning: Vehicle 'f_2_11_CAR.66' performs emergency braking on lane '1078018164_0' with decel=9.00, wished=4.50, severity=1.00, time=42148.00.
+Warning: Vehicle 'f_10_13_CAR.6' performs emergency braking on lane ':J2_2_0' with decel=9.00, wished=4.50, severity=1.00, time=48358.50.
+Simulation ended at time: 50541.50
+Reason: All vehicles have left the simulation.
+Performance: 
+ Duration: 44.15s
+ Real time factor: 1144.77
+ UPS: 221901.268403
+Vehicles: 
+ Inserted: 62679
+ Running: 0
+ Waiting: 0
+
+-------------------------------------------------------------------------------
+['C:\\Program Files (x86)\\Eclipse\\Sumo\\bin\\duarouter', '-c', '005/iteration_005_4-3-test-demand-vianetedit_004.duarcfg']
+Success.
+-------------------------------------------------------------------------------
+['C:\\Program Files (x86)\\Eclipse\\Sumo\\bin\\sumo', '-c', '005/iteration_005.sumocfg']
+Loading net-file from 'C:\Users\lendl\Documents\smart_traffic\sumo\25-3-lendl-ver.net.xml' ... done (10ms).
+Loading additional-files from '005/../edgedata.add.xml' ... done (1ms).
+Loading done.
+Simulation version 1.15.0 started with time: 0.00.
+Warning: Vehicle 'f_2_5_CAR.21' performs emergency braking on lane '1078018164_0' with decel=9.00, wished=4.50, severity=1.00, time=19664.00.
+Warning: Vehicle 'f_5_6_CAR.0' performs emergency braking on lane '1076383725.80_0' with decel=9.00, wished=4.50, severity=1.00, time=21624.00.
+Warning: Vehicle 'f_2_11_CAR.66' performs emergency braking on lane '1078018164_0' with decel=9.00, wished=4.50, severity=1.00, time=42148.00.
+Warning: Vehicle 'f_10_13_CAR.6' performs emergency braking on lane ':J2_2_0' with decel=9.00, wished=4.50, severity=1.00, time=48358.50.
+Simulation ended at time: 50541.50
+Reason: All vehicles have left the simulation.
+Performance: 
+ Duration: 43.77s
+ Real time factor: 1154.68
+ UPS: 223822.645130
+Vehicles: 
+ Inserted: 62679
+ Running: 0
+ Waiting: 0
+
+-------------------------------------------------------------------------------
+['C:\\Program Files (x86)\\Eclipse\\Sumo\\bin\\duarouter', '-c', '006/iteration_006_4-3-test-demand-vianetedit_005.duarcfg']
+Success.
+-------------------------------------------------------------------------------
+['C:\\Program Files (x86)\\Eclipse\\Sumo\\bin\\sumo', '-c', '006/iteration_006.sumocfg']
+Loading net-file from 'C:\Users\lendl\Documents\smart_traffic\sumo\25-3-lendl-ver.net.xml' ... done (9ms).
+Loading additional-files from '006/../edgedata.add.xml' ... done (1ms).
+Loading done.
+Simulation version 1.15.0 started with time: 0.00.
+Warning: Vehicle 'f_2_5_CAR.21' performs emergency braking on lane '1078018164_0' with decel=9.00, wished=4.50, severity=1.00, time=19664.00.
+Warning: Vehicle 'f_5_6_CAR.0' performs emergency braking on lane '1076383725.80_0' with decel=9.00, wished=4.50, severity=1.00, time=21624.00.
+Warning: Vehicle 'f_2_11_CAR.66' performs emergency braking on lane '1078018164_0' with decel=9.00, wished=4.50, severity=1.00, time=42148.00.
+Warning: Vehicle 'f_10_13_CAR.6' performs emergency braking on lane ':J2_2_0' with decel=9.00, wished=4.50, severity=1.00, time=48358.50.
+Simulation ended at time: 50541.50
+Reason: All vehicles have left the simulation.
+Performance: 
+ Duration: 44.62s
+ Real time factor: 1132.68
+ UPS: 219558.974474
+Vehicles: 
+ Inserted: 62679
+ Running: 0
+ Waiting: 0
+
+-------------------------------------------------------------------------------
+['C:\\Program Files (x86)\\Eclipse\\Sumo\\bin\\duarouter', '-c', '007/iteration_007_4-3-test-demand-vianetedit_006.duarcfg']
+Success.
+-------------------------------------------------------------------------------
+['C:\\Program Files (x86)\\Eclipse\\Sumo\\bin\\sumo', '-c', '007/iteration_007.sumocfg']
+Loading net-file from 'C:\Users\lendl\Documents\smart_traffic\sumo\25-3-lendl-ver.net.xml' ... done (10ms).
+Loading additional-files from '007/../edgedata.add.xml' ... done (1ms).
+Loading done.
+Simulation version 1.15.0 started with time: 0.00.
+Warning: Vehicle 'f_2_5_CAR.21' performs emergency braking on lane '1078018164_0' with decel=9.00, wished=4.50, severity=1.00, time=19664.00.
+Warning: Vehicle 'f_5_6_CAR.0' performs emergency braking on lane '1076383725.80_0' with decel=9.00, wished=4.50, severity=1.00, time=21624.00.
+Warning: Vehicle 'f_2_11_CAR.66' performs emergency braking on lane '1078018164_0' with decel=9.00, wished=4.50, severity=1.00, time=42148.00.
+Warning: Vehicle 'f_10_13_CAR.6' performs emergency braking on lane ':J2_2_0' with decel=9.00, wished=4.50, severity=1.00, time=48358.50.
+Simulation ended at time: 50541.50
+Reason: All vehicles have left the simulation.
+Performance: 
+ Duration: 44.23s
+ Real time factor: 1142.83
+ UPS: 221524.951950
+Vehicles: 
+ Inserted: 62679
+ Running: 0
+ Waiting: 0
+
+-------------------------------------------------------------------------------
+['C:\\Program Files (x86)\\Eclipse\\Sumo\\bin\\duarouter', '-c', '008/iteration_008_4-3-test-demand-vianetedit_007.duarcfg']
+Success.
+-------------------------------------------------------------------------------
+['C:\\Program Files (x86)\\Eclipse\\Sumo\\bin\\sumo', '-c', '008/iteration_008.sumocfg']
+Loading net-file from 'C:\Users\lendl\Documents\smart_traffic\sumo\25-3-lendl-ver.net.xml' ... done (10ms).
+Loading additional-files from '008/../edgedata.add.xml' ... done (2ms).
+Loading done.
+Simulation version 1.15.0 started with time: 0.00.
+Warning: Vehicle 'f_2_5_CAR.21' performs emergency braking on lane '1078018164_0' with decel=9.00, wished=4.50, severity=1.00, time=19664.00.
+Warning: Vehicle 'f_5_6_CAR.0' performs emergency braking on lane '1076383725.80_0' with decel=9.00, wished=4.50, severity=1.00, time=21624.00.
+Warning: Vehicle 'f_2_11_CAR.66' performs emergency braking on lane '1078018164_0' with decel=9.00, wished=4.50, severity=1.00, time=42148.00.
+Warning: Vehicle 'f_10_13_CAR.6' performs emergency braking on lane ':J2_2_0' with decel=9.00, wished=4.50, severity=1.00, time=48358.50.
+Simulation ended at time: 50541.50
+Reason: All vehicles have left the simulation.
+Performance: 
+ Duration: 44.03s
+ Real time factor: 1147.81
+ UPS: 222490.881839
+Vehicles: 
+ Inserted: 62679
+ Running: 0
+ Waiting: 0
+
+-------------------------------------------------------------------------------
+['C:\\Program Files (x86)\\Eclipse\\Sumo\\bin\\duarouter', '-c', '009/iteration_009_4-3-test-demand-vianetedit_008.duarcfg']
+Success.
+-------------------------------------------------------------------------------
+['C:\\Program Files (x86)\\Eclipse\\Sumo\\bin\\sumo', '-c', '009/iteration_009.sumocfg']
+Loading net-file from 'C:\Users\lendl\Documents\smart_traffic\sumo\25-3-lendl-ver.net.xml' ... done (11ms).
+Loading additional-files from '009/../edgedata.add.xml' ... done (0ms).
+Loading done.
+Simulation version 1.15.0 started with time: 0.00.
+Warning: Vehicle 'f_2_5_CAR.21' performs emergency braking on lane '1078018164_0' with decel=9.00, wished=4.50, severity=1.00, time=19664.00.
+Warning: Vehicle 'f_5_6_CAR.0' performs emergency braking on lane '1076383725.80_0' with decel=9.00, wished=4.50, severity=1.00, time=21624.00.
+Warning: Vehicle 'f_2_11_CAR.66' performs emergency braking on lane '1078018164_0' with decel=9.00, wished=4.50, severity=1.00, time=42148.00.
+Interrupt signal received, trying to exit gracefully.
+Simulation ended at time: 46001.00
+Reason: Interrupted.
+Performance: 
+ Duration: 40.64s
+ Real time factor: 1131.83
+ UPS: 218739.438526
+Vehicles: 
+ Inserted: 57149 (Loaded: 57152)
+ Running: 113
+ Waiting: 1
+

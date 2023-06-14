@@ -25,15 +25,15 @@ def get_weighted_u_min(veh_count, D, u_min):
     # Obtain constraints for green times to speed up GUROBI convergence
     # Compute constraints in terms of demand OR current vehicle count
 
-    x_total = np.sum(veh_count[:-1])
+    x_total = np.sum(veh_count)
 
-    d_sum_katip = np.sum(D[:,:2], axis=1)
+    d_sum_katip = np.sum(D[:,:2], axis=0)
     d_sum_aurora = np.sum(D[:,2:], axis=0)
     d_total_katip = np.sum(d_sum_katip)
     d_total_aurora = np.sum(d_sum_aurora)
     d_total = d_total_katip+d_total_aurora
 
-    max_multiplier = math.floor(((C-L)*0.8)/(u_min))
+    max_multiplier = math.floor(((C-L))/(u_min))
 
     if sum(veh_count) <= 0.0:
         u_1mult = max_multiplier*(d_total_katip/d_total)
@@ -41,25 +41,48 @@ def get_weighted_u_min(veh_count, D, u_min):
         u_43mult = max_multiplier*(d_sum_aurora[1]/d_total)
         u_41mult = max_multiplier*(d_sum_aurora[2]/d_total)
     else:
+        current_veh_weight = 0.5
+        future_veh_weight = 0.5
+
+        u_1weight = 0
+        u_3weight = 0
+        u_43weight = 0
+        u_41weight = 0
+
         if veh_count[1] >= veh_count[0]:
-            u_1mult = max_multiplier*((veh_count[1])/x_total)
+            x_total -= veh_count[0]
+            u_1weight += current_veh_weight*(veh_count[1]/x_total)
         else:
-            u_1mult = max_multiplier*((veh_count[0])/x_total)
-        u_3mult = max_multiplier*(veh_count[2]/x_total)
-        u_43mult = max_multiplier*(veh_count[3]/x_total)
-        u_41mult = max_multiplier*(veh_count[4]/x_total)
+            x_total -= veh_count[1]
+            u_1weight += current_veh_weight*(veh_count[0]/x_total)
+        u_3weight += current_veh_weight*(veh_count[2]/x_total)
+        u_43weight += current_veh_weight*(veh_count[3]/x_total)
+        u_41weight += current_veh_weight*(veh_count[4]/x_total)
+
+        if d_sum_katip[1] >= d_sum_katip[0]:
+            d_total -= veh_count[0]
+            u_1weight += current_veh_weight*(d_sum_katip[1]/d_total)
+        else:
+            d_total -= veh_count[1]
+            u_1weight += current_veh_weight*(d_sum_katip[0]/d_total)
+        u_3weight += future_veh_weight*(d_sum_aurora[0]/d_total)
+        u_43weight += future_veh_weight*(d_sum_aurora[1]/d_total)
+        u_41weight += future_veh_weight*(d_sum_aurora[2]/d_total)
+
+        print(f"u_1weight = {u_1weight}")
+        print(f"u_3weight = {u_3weight}")
+        print(f"u_43weight = {u_43weight}")
+        print(f"u_41weight = {u_41weight}")
+
+        u_1mult = max_multiplier*u_1weight
+        u_3mult = max_multiplier*u_3weight
+        u_43mult = max_multiplier*u_43weight
+        u_41mult = max_multiplier*u_41weight
 
     u_1min = round(u_min*u_1mult)
     u_3min = round(u_min*u_3mult)
     u_43min = round(u_min*u_43mult)
     u_41min = round(u_min*u_41mult)
-
-    if u_1min > C//2:
-        u_1min = C//2
-    elif u_3min > C//2:
-        u_3min = C//2
-    elif u_41min > C//2:
-        u_41min = C//2
 
     return u_1min, u_3min, u_43min, u_41min
 
@@ -81,6 +104,10 @@ def construct_demand_mtx(d_1, d_2, d_3, d_43, d_41, C, step):
 
     return D
 
+def get_C(array):
+
+    return int((array[0]+array[4]+array[2]+9)+0.5)
+
 def apply_u_additive(array, min_val):
 
     array_proc = []
@@ -93,7 +120,29 @@ def apply_u_additive(array, min_val):
     if len(array_proc) > 0:
         additional_time = max(array_proc)
         for i in range(len(array)):
-            array[i] += additional_time
+            if i != 3:
+                array[i] += additional_time
+            else:
+                array[i] += additional_time*2
+
+    running_C = get_C(array)
+
+    while running_C > C:
+        if array[0] > u_min_val:
+            array[0] -= 1
+            array[1] -= 1
+        if get_C(array) == C:
+            break
+        if array[4] > u_min_val:
+            array[4] -= 1
+            array[3] -= 1
+        if get_C(array) == C:
+            break
+        if array[2] > u_min_val:
+            array[2] -= 1
+            array[3] -= 1
+        if get_C(array) == C:
+            break
 
     return array
 
@@ -182,7 +231,6 @@ def do_mpc(x_curr=np.array([0,0,0,0,0]), step=0):
         num_random = np.random.randint(x_curr[i]-error_delta, x_curr[i]+error_delta+1)
         x_curr[i] = num_random
     '''
-
     # Intermediary variables to compute difference of x(k+ko|ko) and u(k+ko|ko)
     y = m.addMVar(shape=(N+1,5), lb=-GRB.INFINITY, vtype=GRB.CONTINUOUS, name="y") # x(k_o+k)-x(k_o)
     z = m.addMVar(shape=(N,5), lb=-GRB.INFINITY, vtype=GRB.CONTINUOUS, name="z") # u(k_o+k)-u(k_o)
@@ -203,16 +251,6 @@ def do_mpc(x_curr=np.array([0,0,0,0,0]), step=0):
         m.addConstr(u[k, 2] == u[k, 3]-u[k, 4]-3) # Green time of Aurora West
         m.addConstr(C == u[k, 0] + u[k, 4] + u[k, 2] + 9) # Total cycle time is equal to phase 1 + phase 2 + phase 3 + lost time
     
-        # Skip phase 2 if Aurora East to West is less than half of u_min_val
-        '''
-        if u_41min <= (u_min_val-1)/4:
-            m.addConstr(u[0, 4] == 0)
-            m.addConstr(u[0, 2] == u[0, 3]) # Phase 2 is skipped altogether
-            m.addConstr(C == u[k, 0] + u[k, 2] + 6) # Total cycle time is equal to phase 1 + phase 3 + lost time
-        else:
-            m.addConstr(u[k, 2] == u[k, 3]-u[k, 4]-3) # Green time of Aurora West
-            m.addConstr(C == u[k, 0] + u[k, 4] + u[k, 2] + 9) # Total cycle time is equal to phase 1 + phase 2 + phase 3 + lost time
-        '''
         # Intermediate variable to compute Q and R norm
         m.addConstr(y[k, :] == x[k, :] - xref)
         m.addConstr(z[k, :] == u[k, :] - u[0, :])
@@ -220,57 +258,45 @@ def do_mpc(x_curr=np.array([0,0,0,0,0]), step=0):
     m.addConstr(y[N, :] == x[N, :] - xref)
 
     # EXPERIMENTAL
-    # Set next set of green times such that based on the current vehicle count
+    # Set minimum green times based on the current vehicle count and future demand
     m.addConstr(u[0, 0] >= u_1min) # Green time constraint of Katipunan South and North
     m.addConstr(u[0, 2] >= u_3min) # Green time constraint of Aurora West
     m.addConstr(u[0, 3] >= u_43min) # Green time constraint of Aurora East to West
-    #m.addConstr(u[0, 4] >= u_41min) # Green time constraint of Aurora East to Katipunan South
-    '''
-    if u_3min >= u_41min:
-        m.addConstr(u[0, 2] >= u[0, 4])
-    else:
-        m.addConstr(u[0, 4] >= u[0, 2])
+    m.addConstr(u[0, 4] >= u_41min) # Green time constraint of Aurora East to Katipunan South
 
-    if u_1min > u_43min:
-    #if u_1min > u_43min+u_41min:
-        if u_1min > u_3min:
-            m.addConstr(u[0, 0] >= u[0, 3])
-    else:
+    u_aurora_max = max(u_3min, u_43min, u_41min)
+    u_aurora_min = min(u_3min, u_41min)
+    
+    if (u_43min > u_1min) or (u_3min > u_1min) or (u_41min > u_1min):
         m.addConstr(u[0, 3] >= u[0, 0])
-
-    #
-    if u_1min > u_3min:
-        if (u_41min > (u_min_val-1)/4):
-            m.addConstr(u[0, 0] >= u[0, 2]) # Green time constraint of Katipunan South and North
+        if u_aurora_max == u_3min:
+            if u_3min > u_43min:
+                m.addConstr(u[0, 2] >= u[0, 0])
+                #m.addConstr(u[0, 2] <= u[0, 0]*(u_3min/u_1min))
+        elif u_aurora_max == u_41min:
+            if u_41min > u_43min:
+                m.addConstr(u[0, 4] >= u[0, 0])
+                #m.addConstr(u[0, 4] <= u[0, 0]*(u_41min/u_1min))
+        else:
+            #m.addConstr(u[0, 3] <= u[0, 0]*((u_43min)/u_1min)+0.15)
+            if u_aurora_min == u_3min:
+                m.addConstr(u[0, 0] >= u[0, 2])
+            else:
+                m.addConstr(u[0, 0] >= u[0, 4])
     else:
-        m.addConstr(u[0, 2] >= u[0, 0]) # Green time constraint of Aurora West
+        if u_1min >= u_43min:
+            m.addConstr(u[0, 0] >= u[0, 3])
+        else:
+            if u_aurora_min == u_3min:
+                m.addConstr(u[0, 0] >= u[0, 2])
+            else:
+                m.addConstr(u[0, 0] >= u[0, 4])
 
-    if (u_41min <= u_min_val) and (u_41min > (u_min_val-1)/4):
-        m.addConstr(u[0, 4] == u_min_val)
-    #
-    
-    if u_1min >= u_3min:
-        m.addConstr(u[0, 0] >= u[0, 2]+(u_1min-u_3min)*0.75) # Green time constraint of Katipunan South and North
-    else:
-        m.addConstr(u[0, 2] >= u[0, 0]+(u_3min-u_1min)*0.75) # Green time constraint of Aurora West
-    
-    if u_3min >= u_41min:
+    if u_3min > u_41min:
         m.addConstr(u[0, 2] >= u[0, 4])
     else:
-        m.addConstr(u[0, 4] >= u[0, 2])
-    '''
-    if u_41min <= u_min_val:
-        m.addConstr(u[0, 4] == u_min_val)
-    else:
-        m.addConstr(u[0, 4] >= u_41min) # Green time constraint of Aurora East to Katipunan South
-        m.addConstr(u[0, 0] >= u[0, 4])
-        m.addConstr(u[0, 2] >= u[0, 4])
+        m.addConstr(u[0, 4] <= u[0, 2])
 
-    if u_1min > u_43min:
-        if u_1min > u_3min:
-            m.addConstr(u[0, 0] <= u[0, 3]*1.25) # Green time constraint of Katipunan South and North
-            #m.addConstr(u[0, 0] >= u[0, 3]) # Green time constraint of Katipunan South and North
-    
     # Objective function
     # Note: Transposition is automatically handled by GUROBI
     obj1 = sum(y[k, :] @ Q @ y[k, :] for k in range(N+1))
@@ -279,9 +305,6 @@ def do_mpc(x_curr=np.array([0,0,0,0,0]), step=0):
 
     # Set objective function
     m.setObjective(obj, GRB.MINIMIZE)
-
-    # Check for infeasibility / unboundedness
-    #m.setParam("DualReductions", 0) # Infeasible model check
 
     # Save the model
     m.write("mpc.lp")
@@ -292,8 +315,7 @@ def do_mpc(x_curr=np.array([0,0,0,0,0]), step=0):
     # Set maximum runtime of MPC to 2 seconds
     m.setParam('TimeLimit', 1.5)
 
-    #m.setParam("Heuristics", 0.1)
-    #m.setParam("MIPFocus", 1)
+    # Presolver the model for faster convergence
     m.setParam("Presolve", 2)
 
     # Run MPC
@@ -353,21 +375,9 @@ def do_mpc(x_curr=np.array([0,0,0,0,0]), step=0):
                 u_res.append(v.X)
             elif v.VarName[:1] == "x":
                 x_trajectory.append(int(v.X+0.5))
-    
+
     # Post-processing of data
-    '''
-    if u_41min <= (u_min_val-1)/4:
-        u_res = apply_u_additive(u_res, 0)
-    else:
-        u_res = apply_u_additive(u_res, u_min_val)
-    '''
     u_res = apply_u_additive(u_res, u_min_val)
-    '''
-    if u_41min <= (u_min_val-1)/4:
-        final_C = int((u_res[0]+u_res[2]+6)+0.5) # Convert to integer
-    else:
-        final_C = int((u_res[0]+u_res[4]+u_res[2]+9)+0.5) # Convert to integer
-    '''
     final_C = int((u_res[0]+u_res[4]+u_res[2]+9)+0.5) # Convert to integer
     
     return u_res, final_C, x_trajectory, relaxed

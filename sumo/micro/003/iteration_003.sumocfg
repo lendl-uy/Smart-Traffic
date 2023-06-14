@@ -6,14 +6,14 @@
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
 
     <input>
-        <net-file value="C:\Users\Lendl\Documents\smart_traffic\sumo\\25-3-lendl-ver.net.xml"/>
+        <net-file value="C:\Users\Lendl\Documents\smart_traffic\sumo\25-3-lendl-ver.net.xml"/>
         <route-files value="4-3-test-demand-vianetedit_003.rou.xml"/>
         <additional-files value="../edgedata.add.xml"/>
     </input>
 
     <output>
         <output-prefix value="003/"/>
-        <summary-output value="../summary_003.xml"/>
+        <!-- <summary-output value="../summary_003.xml"/> -->
     </output>
 
     <time>
@@ -24,15 +24,17 @@
 
     <processing>
         <extrapolate-departpos value="true"/>
-        <route-steps value="200"/>
+        <route-steps value="300"/>
         <no-internal-links value="False"/>
         <time-to-teleport value="300"/>
         <time-to-teleport.highways value="0"/>
         <eager-insert value="true"/>
         <threads value="8"/>
-        <max-depart-delay value="60"/>
+        <!-- <max-depart-delay value="600"/> -->
         <max-num-teleports value="0"/>
-        <scale value="1.012"/>
+        <scale value="1.005"/>
+        <quit-on-end value="true"/>
+        <start value = "true"/>
     </processing>
 
     <report>

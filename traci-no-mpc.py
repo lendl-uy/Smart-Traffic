@@ -21,7 +21,7 @@ else:
 
 # Directory of sumo-gui and sumocfg files
 sumoBinary = "C:\\Program Files (x86)\\Eclipse\\Sumo\\bin\\sumo-gui.exe"
-sumoCmd = [sumoBinary, "-c", "C:\\Users\\Lendl\\Documents\\smart_traffic\\sumo\\micro\\003\\iteration_003.sumocfg"]
+sumoCmd = [sumoBinary, "-c", "C:\\Users\\Lendl\\Documents\\smart_traffic\\sumo\\003_demand_profile_5\\003\\iteration_003.sumocfg"]
 
 # Starts the simulation
 traci.start(sumoCmd)
@@ -122,7 +122,7 @@ def main():
             if step % sampling_time == 0:
                 save_sim.write_results_per_window(ql_15min_final, qt_15min, flow_15min, actual_time_step)
             
-            if delta_step+1 == 154:
+            if delta_step+1 == 75:
                 step_C = actual_time_step+1
           
         if step == sim_steps:

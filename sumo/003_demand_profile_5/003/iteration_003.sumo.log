@@ -1,0 +1,16 @@
+***Starting server on port 56493 ***
+Loading net-file from 'C:\Users\Lendl\Documents\smart_traffic\sumo\25-3-lendl-ver.net.xml' ... done (11ms).
+Loading additional-files from 'C:\Users\Lendl\Documents\smart_traffic\sumo\003_demand_profile_5\003\../edgedata.add.xml' ... done (1ms).
+Loading done.
+Simulation started with time: 0.00.
+Simulation ended at time: 0.00
+Performance: 
+ Duration: 0.94s
+ TraCI-Duration: 0.00s
+ Real time factor: 0
+ UPS: 0.000000
+Vehicles: 
+ Inserted: 0 (Loaded: 48)
+ Running: 0
+ Waiting: 0
+

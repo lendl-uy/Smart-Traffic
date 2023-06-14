@@ -1,0 +1,26 @@
+Loading net-file from 'C:\Users\lendl\Documents\smart_traffic\sumo\25-3-lendl-ver.net.xml' ... done (10ms).
+Loading additional-files from '010/../edgedata.add.xml' ... done (0ms).
+Loading done.
+Simulation version 1.15.0 started with time: 0.00.
+Warning: Vehicle 'f_2_1_CAR.5' performs emergency braking on lane '1078018164_0' with decel=9.00, wished=4.50, severity=1.00, time=3802.00.
+Warning: Vehicle 'f_2_1_CAR.60' performs emergency braking on lane '1078018164_0' with decel=9.00, wished=4.50, severity=1.00, time=5804.00.
+Warning: Vehicle 'f_5_2_CAR.46' performs emergency braking on lane '1076383725.80_0' with decel=9.00, wished=4.50, severity=1.00, time=10074.00.
+Warning: Vehicle 'f_5_5_CAR.2' performs emergency braking on lane '1076383725.80_0' with decel=9.00, wished=4.50, severity=1.00, time=18236.00.
+Warning: Vehicle 'f_2_5_CAR.8' performs emergency braking on lane '1078018164_0' with decel=9.00, wished=4.50, severity=1.00, time=18432.00.
+Warning: Vehicle 'f_2_5_CAR.11' performs emergency braking on lane '1078018164_0' with decel=9.00, wished=4.50, severity=1.00, time=18586.00.
+Warning: Vehicle 'f_5_6_CAR.0' performs emergency braking on lane '1076383725.80_0' with decel=9.00, wished=4.50, severity=1.00, time=21624.00.
+Warning: Vehicle 'f_5_6_CAR.0' performs emergency braking on lane ':cluster9883633497_cluster_25353129_33471551_cluster_26272655_288063291_29500569_5064338396_#2more_0_0' with decel=9.00, wished=4.50, severity=1.00, time=21625.50.
+Warning: Vehicle 'f_2_8_CAR.46' performs emergency braking on lane '1078018164_0' with decel=9.00, wished=4.50, severity=1.00, time=31368.00.
+Warning: Vehicle 'f_10_8_CAR.33' performs emergency braking on lane ':J2_2_0' with decel=9.00, wished=4.50, severity=1.00, time=32213.00.
+Warning: Vehicle 'f_2_11_CAR.99' performs emergency braking on lane '1078018164_0' with decel=9.00, wished=4.50, severity=1.00, time=42148.00.
+Simulation ended at time: 55391.50
+Reason: Interrupted.
+Performance: 
+ Duration: 300.76s
+ Real time factor: 184.172
+ UPS: 137568.195798
+Vehicles: 
+ Inserted: 120522 (Loaded: 124635)
+ Running: 376
+ Waiting: 4113
+
